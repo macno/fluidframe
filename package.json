@@ -1,0 +1,8 @@
+{
+  "name": "fluidframe-skel",
+  "version": "0.1.0",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jade2php": "*"
+  }
+}

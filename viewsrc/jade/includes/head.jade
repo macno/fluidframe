@@ -1,0 +1,9 @@
+title= this.title
+
+each hreflang in this.hreflangs
+  link(rel="alternate" hreflang=hreflang['lang'] href=hreflang['href'])
+
+each stylesheet in this.stylesheets
+  link(href=stylesheet['href'] media=stylesheet['media'])
+
+block pageHead

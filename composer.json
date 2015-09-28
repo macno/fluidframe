@@ -1,0 +1,16 @@
+{
+  "repositories": [
+    {
+            "type": "pear",
+            "url": "http://pear.php.net"
+        }
+    ],
+  "require": {
+    "aura/router": "*",
+    "monolog/monolog": "*",
+    "pear-pear.php.net/DB_DataObject" : "*",
+    "pear-pear.php.net/MDB2" : "2.4.1",
+    "pear-pear.php.net/MDB2_Driver_mysqli": ">=1.4.1.0",
+    "pear-pear.php.net/MDB2_Driver_pgsql": ">=1.4.1.0"
+  }
+}

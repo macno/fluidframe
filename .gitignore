@@ -1,0 +1,56 @@
+
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+cachexml/
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin 
+.target
+
+# TeXlipse plugin
+.texlipse
+
+# Eclipse
+.project
+
+# WebStorm
+.idea
+
+# Specific config project
+bower_components/
+node_modules/
+*.log
+config/config.php
+files/*
+data/*
+.htaccess
+nginx.vhost
+
+# Composer
+vendor/*
+*.lock
+
+# Configurazione di Gulp
+vagrant.id
+
