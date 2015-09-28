@@ -45,6 +45,7 @@ class Config extends Managed_DataObject
                 self::_applySettings($settings);
             }
         } catch (Exception $e) {
+            common_error($e->getTraceAsString());
             return;
         }
     }

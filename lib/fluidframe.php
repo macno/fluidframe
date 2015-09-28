@@ -15,15 +15,24 @@ class Fluidframe {
         Fluidframe::loadTemplate();
         
         Fluidframe::initLogger();
+        
+        Fluidframe::initDb();
     }
     
     private static function initLogger() {
         global $logger;
 
+        $logLevel = (int)common_config('log', 'level',0);
+
         // create a log channel
         $logger = new Logger(common_config('site', 'code'));
-        $logger->pushHandler(new StreamHandler(common_config('site', 'logfile'), Logger::DEBUG));
-
+        
+        
+        if($logLevel < Logger::DEBUG) {
+            // It means no logging..
+            $logLevel = Logger::EMERGENCY*2;
+        }
+        $logger->pushHandler(new StreamHandler(common_config('log', 'file'), $logLevel));
     }
     
     private static function loadTemplate() {
@@ -49,5 +58,19 @@ class Fluidframe {
             throw new FluidframeException('Configuration not found');
         }
         include INSTALLDIR.Fluidframe::$configFile;
+    }
+    
+    private static function initDb() {
+        global $config;
+        $database = common_config('db','database');
+        if(empty($database)) {
+            common_debug('No database configured.');
+            return;
+        }
+        
+        $dbOptions = $config['db'];
+        
+        require_once INSTALLDIR.'/lib/db.php';
+        
     }
 }

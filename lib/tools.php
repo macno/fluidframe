@@ -85,3 +85,22 @@ function common_error($message) {
     if($logger)
         $logger->addError($message);
 }
+
+function common_sql_now() {
+    return common_sql_date(time());
+}
+
+function common_sql_date($datetime) {
+    return strftime('%Y-%m-%d %H:%M:%S', $datetime);
+}
+
+function common_string_to_date($str) {
+    $adatetime = explode(" ", $str);
+    $date = $adatetime[0];
+    $time = $adatetime[1];
+    $adate = explode("/", $date);
+    $atime = explode(":",$time);
+    // common_debug(print_r($adate,true). "\n" . print_r($atime,true));
+    return mktime($atime[0],$atime[1],(isset($atime[2]) ? $atime[2] : '00'),$adate[0],$adate[1],$adate[2]);
+}
+
