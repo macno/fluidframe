@@ -2,13 +2,15 @@
 if (! defined ( 'FLUIDFRAME' )) {
     exit ( 1 );
 }
-class HomeAction extends Action {
+class HomeAction extends Sbadmin2Action {
     function prepare($args) {
         parent::prepare($args);
         return true;
     }
     function handle() {
-        $this->render ( 'home', array () );
+        parent::handle();
+        
+        $this->render ( 'home', $this->renderOptions );
     }
     function getHreflangs() {
         $hreflangs = array ();

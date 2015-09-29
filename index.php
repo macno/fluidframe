@@ -59,6 +59,10 @@ try {
     $error = new ErrorAction($_lang);
     $error->setErrorMessage($e->getCode(), 'ServerException: '.$e->getMessage());
     $error->handle();
+} catch(FluidframeException $e) {
+        $error = new ErrorAction($_lang);
+        $error->setErrorMessage(500, 'FluidframeException: '.$e->getMessage());
+        $error->handle();
 } catch(Exception $e) {
     $error = new ErrorAction($_lang);
     $error->setErrorMessage(500, 'Exception: '. $e->getMessage());

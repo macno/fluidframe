@@ -21,7 +21,7 @@ class Sbadmin2Action extends Action {
                 ),
                 array (
                         'class' => 'fa-bar-chart-o',
-                        'href' => '#cazz',
+                        'href' => common_get_route('test',array('code'=>102)),
                         'title' => 'File',
                         'items' => array (
                                 array (

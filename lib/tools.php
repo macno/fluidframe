@@ -29,7 +29,11 @@ function common_template($type) {
     return array_key_exists($type, $template)  ? $template[$type] : false;
 }
 
-function attr($key, $val,$bool ) {
+function attr_class() {
+    $args = func_get_args();
+    echo ' class="'.implode(" ", $args).'"';
+}
+function attr($key, $val, $bool ) {
     echo " $key=\"$val\"";
 }
 

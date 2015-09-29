@@ -6,11 +6,13 @@ class Action {
     
     var $lang = false;
     var $args = false;
-    var $renderParams = array ();
+    private $renderParams = array ();
     
     function __construct($lang = false) {
         if($lang)
             $this->setLang($lang);
+        $this->setHomepage();
+        $this->setSitetitle();
     }
     
     function prepare($args) {
@@ -44,17 +46,29 @@ class Action {
         $this->handleStylesheets($params);
         $this->handleJavascripts($params);
         $this->setParams($params);
-        require_once INSTALLDIR.'/view/'.$page.'.php';
+        $tplFile = INSTALLDIR.'/view/'.$page.'.php';
+        if(!file_exists($tplFile)) {
+            throw new FluidframeException('View page not found');
+        }
+        require_once $tplFile;
 
     }
     private function setLang($lang) {
         $this->lang = $lang;
         $this->renderParams['lang'] = $this->lang;
     }
-    private function setParams($params) {
+    private function setSitetitle() {
+        $this->renderParams['site']['title']=common_config('site', 'title');
+    }
+    
+    private function setHomepage() {
+        $this->renderParams['homepage']=common_get_route('home',array('lang'=>$this->lang));
+    }
+    private function setParams(&$params) {
         foreach ($params as $key=>$val) {
             $this->{$key} = $val;
         }
+        unset($params);
     }
     protected function getJavascripts() {
         return array();
