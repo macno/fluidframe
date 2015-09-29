@@ -1,0 +1,20 @@
+{
+  "name": "skel",
+  "version": "0.0.1",
+  "homepage": "https://github.com/macno/fluidframe",
+  "description": "FLuidframe2 SBAdmin2",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "startbootstrap-sb-admin-2": "~1.0.7"
+  }
+}
