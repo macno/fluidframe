@@ -4,15 +4,23 @@ if (! defined ( 'FLUIDFRAME' )) {
 }
 class Action {
     
+    var $account = false;
+    
     var $lang = false;
     var $args = false;
     private $renderParams = array ();
     
     function __construct($lang = false) {
+        global $_cur;
+        
         if($lang)
             $this->setLang($lang);
         $this->setHomepage();
         $this->setSitetitle();
+        
+        if(common_logged_in()) {
+            $this->account = $_cur;
+        }
     }
     
     function prepare($args) {

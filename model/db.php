@@ -32,7 +32,12 @@ $classes = array (
         'Schema_version',
         'Config',
         'Role',
-        'Account'
+        'Account',
+        'Menu',
+        'MenuItem',
+        'Role_menu',
+        'Menu_menuitem',
+        'Remember_me'
 );
 
 foreach ( $classes as $cls ) {

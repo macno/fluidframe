@@ -5,22 +5,23 @@ if (!defined('FLUIDFRAME')) {
 }
 
 /**
- * Table Definition for Role
+ * Table Definition for MenuItem
  */
 
-class Role extends Managed_DataObject
+class MenuItem extends Managed_DataObject
 {
 
-    public $__table = 'role';                          // table name
+    public $__table = 'menuitem';
     public $id;
     public $name;
-    public $description;
+    public $action;
+    public $params;
     public $status;
     public $created;
     public $modified;
     public static function schemaDef() {
         $def = array (
-                'description' => 'Roles',
+                'description' => 'MenuItems',
                 'fields' => array (
                         'id' => array (
                                 'type' => 'serial',
@@ -31,19 +32,26 @@ class Role extends Managed_DataObject
                                 'type' => 'varchar',
                                 'length' => 64,
                                 'not null' => true,
-                                'description' => 'Role name.'
+                                'description' => 'MenuItem name.'
                         ),
-                        'description' => array (
+                        'action' => array (
                                 'type' => 'varchar',
                                 'length' => 255,
-                                'description' => 'Role description',
+                                'not null' => true,
+                                'description' => 'MenuItem href',
+                                'collate' => 'utf8_general_ci'
+                        ),
+                        'params' => array (
+                                'type' => 'varchar',
+                                'length' => 255,
+                                'description' => 'MenuItem params',
                                 'collate' => 'utf8_general_ci'
                         ),
                         'status' => array(
                                 'type'=>'tinyint',
                                 'length'=>1,
                                 'not null' => true,
-                                'description'=>'role status'
+                                'description'=>'MenuItem status'
                         ),
                         'created' => array (
                                 'type' => 'datetime',
@@ -63,4 +71,8 @@ class Role extends Managed_DataObject
     
         return $def;
     }
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
+    
 }

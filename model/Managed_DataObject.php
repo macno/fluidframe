@@ -43,7 +43,21 @@ abstract class Managed_DataObject extends DB_DataObject
         $table = call_user_func(array(get_class($this), 'schemaDef'));
         return array_map(array($this, 'columnBitmap'), $table['fields']);
     }
-
+    
+    static function staticGet($class, $k, $v = null) {
+    
+        $obj = new $class ();
+        if(empty($v)) {
+            $v = $k;
+            $k = 'id';
+        }
+        $obj->{$k} = $v;
+        if($obj->find(true)) {
+            return $obj;
+        }
+        return null;
+    }
+    
     /**
      * get/set an  array of table primary keys
      *
