@@ -8,7 +8,7 @@ class Route {
         
         $router->add('index', '/');
         $router->add('home', '/{lang}/');
-        $router->add('test', '/test/{code}');
+        
         $router->add('robots', '/robots.txt');
     }
 }

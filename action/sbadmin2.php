@@ -21,18 +21,18 @@ class Sbadmin2Action extends Action {
                 ),
                 array (
                         'class' => 'fa-bar-chart-o',
-                        'href' => common_get_route('test',array('code'=>102)),
+                        'href' => '#',
                         'title' => 'File',
                         'items' => array (
                                 array (
                                         'href' => common_get_route ( 'home', array (
-                                                'lang' => $this->lang 
+                                                'lang' => '123' 
                                         ) ),
                                         'title' => 'Images' 
                                 ),
                                 array (
                                         'href' => common_get_route ( 'home', array (
-                                                'lang' => $this->lang 
+                                                'lang' => '456' 
                                         ) ),
                                         'title' => 'Attachments' 
                                 ) 
@@ -45,6 +45,6 @@ class Sbadmin2Action extends Action {
                 ) 
         );
         
-        $this->renderOptions ['menu'] = $menu;
+        $this->renderOptions ['sidebar'] = $menu;
     }
 }

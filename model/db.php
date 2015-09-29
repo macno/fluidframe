@@ -30,7 +30,9 @@
  */
 $classes = array (
         'Schema_version',
-        'Config'
+        'Config',
+        'Role',
+        'Account'
 );
 
 foreach ( $classes as $cls ) {
