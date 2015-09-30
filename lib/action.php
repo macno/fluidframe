@@ -4,11 +4,17 @@ if (! defined ( 'FLUIDFRAME' )) {
 }
 class Action {
     
+    /**
+     * 
+     * @var Account
+     */
     var $account = false;
     
     var $lang = false;
     var $args = false;
     private $renderParams = array ();
+    
+    var $menu;
     
     function __construct($lang = false) {
         global $_cur;
@@ -20,6 +26,10 @@ class Action {
         
         if(common_logged_in()) {
             $this->account = $_cur;
+            $this->menu = $this->account->getMenu();
+        } else {
+            
+            $this->menu = MenuBuilder::build(MenuBuilder::getAnonRole());
         }
     }
     
