@@ -24,8 +24,10 @@ class MenuBuilder {
         
         $rm = new Role_menu();
         $qry = "select rm.menu_id 
-                from role_menu rm
-                where rm.role_id = ".(int)$role.".
+                from role_menu rm, menu m
+                where rm.menu_id = m.id
+                and m.status = 1 
+                and rm.role_id = ".(int)$role.".
                 order by rm.weight asc";
         $rm->query($qry);
         
@@ -48,7 +50,8 @@ class MenuBuilder {
         from menu_menuitem mmi 
         left outer JOIN menuitem mi on (mmi.menuitem_id = mi.id) 
         left outer join menu m on (mmi.menu_id = m.id)
-        where mmi.menu_id = ${menu_id}
+        where m.status = 1
+        and mmi.menu_id = ${menu_id}
         order by mmi.weight asc";
         $mi->query($qry);
         
