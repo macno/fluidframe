@@ -81,7 +81,7 @@ class PgsqlSchema extends Schema
             $orderedFields[$row['ordinal_position']] = $name;
 
             $field = array();
-            $field['type'] = $row['udt_name'];
+            $field['type'] = $type = $row['udt_name'];
 
             if ($type == 'char' || $type == 'varchar') {
                 if ($row['character_maximum_length'] !== null) {
@@ -363,12 +363,17 @@ class PgsqlSchema extends Schema
     {
         $map = array('serial' => 'bigserial', // FIXME: creates the wrong name for the sequence for some internal sequence-lookup function, so better fix this to do the real 'create sequence' dance.
                      'numeric' => 'decimal',
+                     'tinyint' => 'boolean',
                      'datetime' => 'timestamp',
                      'blob' => 'bytea');
 
         $type = $column['type'];
         if (isset($map[$type])) {
             $type = $map[$type];
+        }
+
+        if ($type == 'boolean') {
+            return 'boolean';
         }
 
         if ($type == 'int') {
@@ -422,6 +427,9 @@ class PgsqlSchema extends Schema
              */
             $col['type'] = $this->mapType($col);
             unset($col['size']);
+            if($col['type']=='boolean'){
+                unset($col['length']);
+            }
         }
         if (!empty($tableDef['primary key'])) {
             $tableDef['primary key'] = $this->filterKeyDef($tableDef['primary key']);
