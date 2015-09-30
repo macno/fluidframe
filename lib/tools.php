@@ -108,3 +108,275 @@ function common_string_to_date($str) {
     return mktime($atime[0],$atime[1],(isset($atime[2]) ? $atime[2] : '00'),$adate[0],$adate[1],$adate[2]);
 }
 
+
+
+// Common tools for account / password / user sessions
+
+$_cur = false;
+
+function common_logged_in() {
+    return (!is_null(common_current_user()));
+}
+
+function common_current_user() {
+    global $_cur;
+
+    if ($_cur === false) {
+
+        if (isset($_COOKIE[session_name()]) || isset($_GET[session_name()])
+        || (isset($_SESSION['userid']) && $_SESSION['userid'])) {
+            common_ensure_session();
+            $id = isset($_SESSION['userid']) ? $_SESSION['userid'] : false;
+            if ($id) {
+                $user = Account::staticGet($id);
+                if ($user) {
+                    $_cur = $user;
+                    return $_cur;
+                }
+            }
+        }
+
+        // that didn't work; try to remember; will init $_cur to null on failure
+        $_cur = common_remembered_user();
+
+
+    }
+
+    return $_cur;
+}
+
+
+function common_check_user($email, $password) {
+    // empty $email always unacceptable
+    if (empty($email)) {
+        return false;
+    }
+
+    $authenticatedUser = false;
+
+        $user = Account::staticGet('email', $email);
+        if (!empty($user)) {
+            if (!empty($password)) {
+                // never allow login with blank password
+                if (0 == strcmp(common_munge_password($password, $user->id),
+                        $user->password)) {
+                    //internal checking passed
+                    $authenticatedUser = $user;
+                }
+            }
+        }
+
+    return $authenticatedUser;
+}
+
+function common_munge_password($password, $id) {
+    if (is_object($id) || is_object($password)) {
+        $e = new Exception();
+        common_error(__METHOD__ . ' object in param to common_munge_password ' .
+                str_replace("\n", " ", $e->getTraceAsString()));
+    }
+    
+    return sha1($password . $id);
+}
+
+function common_real_login($real=true) {
+    common_ensure_session();
+    $_SESSION['real_login'] = $real;
+}
+
+function common_is_real_login() {
+    return common_logged_in() && $_SESSION['real_login'];
+}
+
+
+define('REMEMBERME', 'rememberme');
+define('REMEMBERME_EXPIRY', 30 * 24 * 60 * 60); // 30 days
+
+function common_rememberme($user=null)
+{
+    if (!$user) {
+        $user = common_current_user();
+        if (!$user) {
+            return false;
+        }
+    }
+
+    $rm = new Remember_me();
+
+    $rm->code = common_good_rand(16);
+    $rm->user_id = $user->id;
+
+    // Wrap the insert in some good ol' fashioned transaction code
+
+    $rm->query('BEGIN');
+
+    $result = $rm->insert();
+
+    if (!$result) {
+        common_log_db_error($rm, 'INSERT', __FILE__);
+        return false;
+    }
+
+    $rm->query('COMMIT');
+
+    $cookieval = $rm->user_id . ':' . $rm->code;
+
+    //     common_log(LOG_INFO, 'adding rememberme cookie "' . $cookieval . '" for ' . $user->nickname);
+
+    common_set_cookie(REMEMBERME, $cookieval, time() + REMEMBERME_EXPIRY);
+
+    return true;
+}
+
+
+function common_remembered_user() {
+    $user = null;
+
+    $packed = isset($_COOKIE[REMEMBERME]) ? $_COOKIE[REMEMBERME] : null;
+
+    if (!$packed) {
+        return null;
+    }
+
+    list($id, $code) = explode(':', $packed);
+
+    if (!$id || !$code) {
+        common_log(LOG_WARNING, 'Malformed rememberme cookie: ' . $packed);
+        common_forgetme();
+        return null;
+    }
+
+    $rm = Remember_me::staticGet($code);
+
+    if (!$rm) {
+        common_log(LOG_WARNING, 'No such remember code: ' . $code);
+        common_forgetme();
+        return null;
+    }
+
+    if ($rm->user_id != $id) {
+        common_log(LOG_WARNING, 'Rememberme code for wrong user: ' . $rm->user_id . ' != ' . $id);
+        common_forgetme();
+        return null;
+    }
+
+    $user = Profile::staticGet($rm->user_id);
+
+    if (!$user) {
+        common_log(LOG_WARNING, 'No such user for rememberme: ' . $rm->user_id);
+        common_forgetme();
+        return null;
+    }
+
+    // successful!
+    $result = $rm->delete();
+
+    if (!$result) {
+        common_log_db_error($rm, 'DELETE', __FILE__);
+        common_log(LOG_WARNING, 'Could not delete rememberme: ' . $code);
+        common_forgetme();
+        return null;
+    }
+
+    common_log(LOG_INFO, 'logging in ' . $user->email . ' using rememberme code ' . $rm->code);
+
+    common_set_user($user);
+    common_real_login(false);
+
+    // We issue a new cookie, so they can log in
+    // automatically again after this session
+
+    common_rememberme($user);
+
+    return $user;
+}
+
+/**
+ * must be called with a valid user!
+ */
+function common_forgetme()
+{
+    common_set_cookie(REMEMBERME, '', 0);
+}
+
+function common_get_returnto() {
+    common_ensure_session();
+    return (array_key_exists('returnto', $_SESSION)) ? $_SESSION['returnto'] : null;
+}
+
+
+
+
+
+function common_ensure_session()
+{
+    $c = null;
+    if (array_key_exists(session_name(), $_COOKIE)) {
+        $c = $_COOKIE[session_name()];
+    }
+    if (!common_have_session()) {
+        if (common_config('sessions', 'handle')) {
+            Session::setSaveHandler();
+        }
+        if (array_key_exists(session_name(), $_GET)) {
+            $id = $_GET[session_name()];
+        } else if (array_key_exists(session_name(), $_COOKIE)) {
+            $id = $_COOKIE[session_name()];
+        }
+        if (isset($id)) {
+            session_id($id);
+        }
+        @session_start();
+        if (!isset($_SESSION['started'])) {
+            $_SESSION['started'] = time();
+            if (!empty($id)) {
+                common_log(LOG_WARNING, 'Session cookie "' . $_COOKIE[session_name()] . '" ' .
+                        ' is set but started value is null');
+            }
+        }
+    }
+}
+
+function common_have_session() {
+    return (0 != strcmp(session_id(), ''));
+}
+
+function common_session_token() {
+    common_ensure_session();
+    if (!array_key_exists('token', $_SESSION)) {
+        $_SESSION['token'] = common_good_rand(64);
+    }
+    return $_SESSION['token'];
+}
+
+function common_good_rand($bytes) {
+    // XXX: use random.org...?
+    if (@file_exists('/dev/urandom')) {
+        return common_urandom($bytes);
+    } else { // FIXME: this is probably not good enough
+        return common_mtrand($bytes);
+    }
+}
+
+function common_urandom($bytes)
+{
+    $h = fopen('/dev/urandom', 'rb');
+    // should not block
+    $src = fread($h, $bytes);
+    fclose($h);
+    $enc = '';
+    for ($i = 0; $i < $bytes; $i++) {
+        $enc .= sprintf("%02x", (ord($src[$i])));
+    }
+    return $enc;
+}
+
+function common_mtrand($bytes)
+{
+    $enc = '';
+    for ($i = 0; $i < $bytes; $i++) {
+        $enc .= sprintf("%02x", mt_rand(0, 255));
+    }
+    return $enc;
+}
+

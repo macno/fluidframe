@@ -5,13 +5,13 @@ if (!defined('FLUIDFRAME')) {
 }
 
 /**
- * Table Definition for Role
+ * Table Definition for Menu
  */
 
-class Role extends Managed_DataObject
+class Menu extends Managed_DataObject
 {
 
-    public $__table = 'role';                          // table name
+    public $__table = 'menu';                          // table name
     public $id;
     public $name;
     public $description;
@@ -20,7 +20,7 @@ class Role extends Managed_DataObject
     public $modified;
     public static function schemaDef() {
         $def = array (
-                'description' => 'Roles',
+                'description' => 'Menus',
                 'fields' => array (
                         'id' => array (
                                 'type' => 'serial',
@@ -31,19 +31,19 @@ class Role extends Managed_DataObject
                                 'type' => 'varchar',
                                 'length' => 64,
                                 'not null' => true,
-                                'description' => 'Role name.'
+                                'description' => 'Menu name.'
                         ),
                         'description' => array (
                                 'type' => 'varchar',
                                 'length' => 255,
-                                'description' => 'Role description',
+                                'description' => 'Menu description',
                                 'collate' => 'utf8_general_ci'
                         ),
                         'status' => array(
                                 'type'=>'tinyint',
                                 'length'=>1,
-                                'not null' => true,
-                                'description'=>'role status'
+                                'description'=>'Menu status',
+                                'not null' => true
                         ),
                         'created' => array (
                                 'type' => 'datetime',
@@ -63,4 +63,8 @@ class Role extends Managed_DataObject
     
         return $def;
     }
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
+    
 }

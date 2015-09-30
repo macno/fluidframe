@@ -36,4 +36,9 @@ class Schema_version extends Managed_DataObject {
                 ) 
         );
     }
+    
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
+    
 }

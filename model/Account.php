@@ -18,6 +18,7 @@ class Account extends Managed_DataObject
     public $language;
     public $timezone;
     public $fullname;
+    public $status;
     public $role_id;
     public $created;
     public $modified;
@@ -90,5 +91,20 @@ class Account extends Managed_DataObject
                 ),
         );
         return $def;
+    }
+    
+
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
+    
+    
+    public function getMenu() {
+        /*
+         * select m.name, mmi.* from menu m, menu_menuitem mmi, role_menu rm, role r 
+         * where r.id = rm.role_id and rm.menu_id = m.id and m.id = mmi.menu_id  and r.name = 'ANON' 
+         * order by rm.weight asc, mmi.weight asc;
+         * 
+         */
     }
 }

@@ -37,6 +37,10 @@ class Config extends Managed_DataObject
 
     const settingsKey = 'config:settings';
 
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
+    
     static function loadSettings()
     {
         try {
