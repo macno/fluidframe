@@ -390,7 +390,7 @@ class PgsqlSchema extends Schema
     {
         $map = array('serial' => 'bigserial', // FIXME: creates the wrong name for the sequence for some internal sequence-lookup function, so better fix this to do the real 'create sequence' dance.
                      'numeric' => 'decimal',
-                     'tinyint' => 'boolean',
+                     'tinyint' => 'smallint',
                      'datetime' => 'timestamp',
                      'blob' => 'bytea');
 
@@ -399,8 +399,8 @@ class PgsqlSchema extends Schema
             $type = $map[$type];
         }
 
-        if ($type == 'boolean') {
-            return 'boolean';
+        if ($type == 'smallint') {
+            return 'smallint';
         }
 
         if ($type == 'int') {
@@ -424,7 +424,7 @@ class PgsqlSchema extends Schema
         if ($column['type'] == 'enum') {
             $vals = array_map(array($this, 'quote'), $column['enum']);
             return "text check ($name in " . implode(',', $vals) . ')';
-        } else if (($column['type'] == 'boolean')||($column['type'] == 'int2')||($column['type'] == 'int4')||($column['type'] == 'int8')) {
+        } else if (($column['type'] == 'smallint')||($column['type'] == 'int2')||($column['type'] == 'int4')||($column['type'] == 'int8')) {
             unset($column['length']);
         } else if ($column['type'] == 'timestamp') {
             $default=' default clock_timestamp()';
