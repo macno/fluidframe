@@ -50,6 +50,27 @@ if (!defined('FLUIDFRAME')) {
 class PgsqlSchema extends Schema
 {
 
+    function createUpdateFunction(){
+        $sql = array(
+            'CREATE OR REPLACE FUNCTION update_modified_column()
+            RETURNS TRIGGER AS $$
+            BEGIN
+                NEW.modified = now();
+            RETURN NEW;
+            END;
+            $$ language \'plpgsql\';'
+        );
+        $this->runSqlSet($sql);
+    }
+
+    function createTrigger($table){
+        $sql = array(
+            'DROP TRIGGER IF EXISTS update_'. $table  .'_modtime on '. $table  .';',
+            'CREATE TRIGGER update_'. $table .'_modtime BEFORE UPDATE ON '. $table .' FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();'
+        );
+        $this->runSqlSet($sql);
+    }
+
     /**
      * Returns a table definition array for the table
      * in the schema with the given name.
@@ -63,6 +84,7 @@ class PgsqlSchema extends Schema
 
     public function getTableDef($table)
     {
+        $this->createUpdateFunction();
         $def = array();
         $hasKeys = false;
 
@@ -81,7 +103,7 @@ class PgsqlSchema extends Schema
             $orderedFields[$row['ordinal_position']] = $name;
 
             $field = array();
-            $field['type'] = $row['udt_name'];
+            $field['type'] = $type = $row['udt_name'];
 
             if ($type == 'char' || $type == 'varchar') {
                 if ($row['character_maximum_length'] !== null) {
@@ -160,6 +182,11 @@ class PgsqlSchema extends Schema
                 $def['foreign keys'][$keyName] = array($fkey['table_name'], $colMap);
             } else {
                 $def['unique keys'][$keyName] = $cols;
+            }
+        }
+        if(isset($def['fields']['modified'])){
+            if($def['fields']['modified']['type'] == 'timestamp'){
+                $this->createTrigger($table);
             }
         }
         return $def;
@@ -363,12 +390,17 @@ class PgsqlSchema extends Schema
     {
         $map = array('serial' => 'bigserial', // FIXME: creates the wrong name for the sequence for some internal sequence-lookup function, so better fix this to do the real 'create sequence' dance.
                      'numeric' => 'decimal',
+                     'tinyint' => 'smallint',
                      'datetime' => 'timestamp',
                      'blob' => 'bytea');
 
         $type = $column['type'];
         if (isset($map[$type])) {
             $type = $map[$type];
+        }
+
+        if ($type == 'smallint') {
+            return 'smallint';
         }
 
         if ($type == 'int') {
@@ -392,9 +424,13 @@ class PgsqlSchema extends Schema
         if ($column['type'] == 'enum') {
             $vals = array_map(array($this, 'quote'), $column['enum']);
             return "text check ($name in " . implode(',', $vals) . ')';
-        } else {
-            return parent::typeAndSize($column);
+        } else if (($column['type'] == 'smallint')||($column['type'] == 'int2')||($column['type'] == 'int4')||($column['type'] == 'int8')) {
+            unset($column['length']);
+        } else if ($column['type'] == 'timestamp') {
+            $default=' default clock_timestamp()';
+            return parent::typeAndSize($column).$default;
         }
+        return parent::typeAndSize($column);
     }
 
     /**
@@ -422,6 +458,10 @@ class PgsqlSchema extends Schema
              */
             $col['type'] = $this->mapType($col);
             unset($col['size']);
+
+            // if($col['type']=='boolean'){
+            //     unset($col['length']);
+            // }
         }
         if (!empty($tableDef['primary key'])) {
             $tableDef['primary key'] = $this->filterKeyDef($tableDef['primary key']);
