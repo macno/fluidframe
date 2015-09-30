@@ -8,7 +8,8 @@ class Route {
         
         $router->add('index', '/');
         $router->add('home', '/{lang}/');
-        
+        $router->add('login', '/{lang}/auth/login');
+        $router->add('logout', '/{lang}/auth/logout');
         $router->add('robots', '/robots.txt');
     }
 }

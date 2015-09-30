@@ -24,19 +24,19 @@ class Action {
         $this->setHomepage();
         $this->setSitetitle();
         
-        if(common_logged_in()) {
-            $this->account = $_cur;
-            $this->menu = $this->account->getMenu();
-        } else {
-            
-            $this->menu = MenuBuilder::build(MenuBuilder::getAnonRole());
-        }
+
     }
     
     function prepare($args) {
         $this->args = $args;
         if(isset($this->args['lang'])) {
             $this->setLang($this->args['lang']);
+        }
+        if(common_logged_in()) {
+            $this->account = $_cur;
+            $this->menu = $this->account->getMenu($this->lang);
+        } else {
+            $this->menu = MenuBuilder::build(MenuBuilder::getAnonRole(),$this->lang);
         }
         return false;
     }

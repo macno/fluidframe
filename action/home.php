@@ -15,7 +15,6 @@ class HomeAction extends Sbadmin2Action {
     function getHreflangs() {
         $hreflangs = array ();
         $langs = common_config ( 'site', 'langs' );
-        common_debug('Langs:' . print_r($langs,true));
         foreach ( $langs as $key => $lang ) {
             
             $hreflangs [] = array('lang'=>$key,

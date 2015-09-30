@@ -14,7 +14,7 @@ class MenuBuilder {
      * @param int $role the role id
      * @return boolean|multitype: false if role_id is empty, otherwise an array 
      */
-    static function build($role) {
+    static function build($role, $lang = false) {
         
         if(empty($role)) {
             return false;
@@ -32,14 +32,14 @@ class MenuBuilder {
         $rm->query($qry);
         
         while($rm->fetch()) {
-            list($submenu,$menu_name) = self::getMenu($rm->menu_id, 0);
+            list($submenu,$menu_name) = self::getMenu($rm->menu_id, 0, $lang);
             $menu = array_merge($menu, $submenu);
         }
         $rm->free();
         return $menu;
     }
     
-    private static function getMenu($menu_id, $level) {
+    private static function getMenu($menu_id, $level, $lang = false) {
         if($level >= 3) {
             throw  new FluidframeException('Menu only supports 2 sub-levels');
         }
@@ -64,21 +64,30 @@ class MenuBuilder {
             }
             if($mi->sub_menu_id != null) {
                 
-                list($submenu,$menu_name) = self::getMenu($mi->sub_menu_id, $level+1);
-                
-                $menu[] = array(
-                        'class'=>'menu_item_'.$mi->sub_menu_id,
-                        'title'=>$menu_name,
-                        'href'=>'#',
-                        'items'=> $submenu
-                );
+                list($submenu,$menu_name) = self::getMenu($mi->sub_menu_id, $level+1, $lang);
+                $menuz = new stdClass();
+                $menuz->class = 'menu_item_'.$mi->sub_menu_id;
+                $menuz->title = $menu_name;
+                $menuz->href = '#';
+                $menuz->items = $submenu;
+                $menu[] = $menuz;
             } else {
                 if($mi->status) {
-                    $menu[] = array(
-                            'class'=>'menu_item_'.$mi->id,
-                            'title'=>$mi->name,
-                           'href'=>$mi->action
-                    );
+                    $menuz = new stdClass();
+                    $menuz->class = 'menu_item_'.$mi->id;
+                    $menuz->title = $mi->name;
+                    
+                    $params = null;
+                    if($lang && !empty($mi->params)) {
+                        
+                        if(strpos($mi->params, 'lang') !== false) {
+                            $params= array('lang'=>$lang);
+                        }
+                    }
+                    $href = common_get_route($mi->action,$params);
+                    $menuz->href = empty($href) ? '/' : $href;
+                    
+                    $menu[] = $menuz;
                 }
             }
         }
