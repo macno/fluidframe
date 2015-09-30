@@ -100,11 +100,6 @@ class Account extends Managed_DataObject
     
     
     public function getMenu() {
-        /*
-         * select m.name, mmi.* from menu m, menu_menuitem mmi, role_menu rm, role r 
-         * where r.id = rm.role_id and rm.menu_id = m.id and m.id = mmi.menu_id  and r.name = 'ANON' 
-         * order by rm.weight asc, mmi.weight asc;
-         * 
-         */
+        return MenuBuilder::build($this->role_id);
     }
 }

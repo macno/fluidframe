@@ -121,7 +121,7 @@ class SchemaUpdater
      */
     protected function saveChecksum($table, $checksum)
     {
-        PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
+        PEAR::pushErrorHandling(PEAR_ERROR_EXCEPTION);
         try {
             $sv = new Schema_version();
             $sv->table_name = $table;
