@@ -4,6 +4,7 @@ if (! defined ( 'FLUIDFRAME' )) {
 }
 class LoginAction extends Sbadmin2Action {
     
+    var $loginParams = array();
     
     function prepare($args) {
         parent::prepare($args);
@@ -11,18 +12,21 @@ class LoginAction extends Sbadmin2Action {
     }
     function handle() {
         parent::handle();
-        $this->renderOptions['loginform-url']=common_get_route('login',array('lang'=>$this->lang));
+        $this->loginParams['loginform_url']=common_get_route('login',array('lang'=>$this->lang));
         if($this->isPost()) {
             $this->checkLogin();
         } else {
-            $this->render ( 'login' );
+            $this->showForm();
+
         }
         
     }
     
-    function showForm($message) {
-        $this->renderOptions['loginform-message']=$message;
-        $this->render('login');
+    function showForm($message = null) {
+        if(!empty($message)) {
+            $this->loginParams['loginform_message']=$message;
+        }
+        $this->render('login', $this->loginParams);
     }
     
     function checkLogin($user_id = null, $token = null) {
@@ -44,20 +48,22 @@ class LoginAction extends Sbadmin2Action {
             
 //         }
         
+        common_debug('checkingLogin');
         $email = $this->trimmed ( 'email' );
         $password = $this->arg ( 'password' );
         
         $user = common_check_user ( $email, $password );
         
         if (! $user) {
+            common_debug('Incorrect username or password.');
             $this->showForm ( 'Incorrect username or password.' );
             return;
         }
         
         // success!
         if (! common_set_user ( $user )) {
-            $this->serverError (  'Error setting user. You are probably not authorized.' );
-            return;
+            throw new FluidframeException(  'Error setting user. You are probably not authorized.' );
+            
         }
         
         common_real_login ( true );

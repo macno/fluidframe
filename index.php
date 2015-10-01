@@ -34,7 +34,7 @@ if (isset($route->params['action'])) {
     $action = $route->params['action'];
 } else {
     // use a default action class
-    $action = 'home';
+    $action = 'index';
 }
 
 
@@ -48,7 +48,10 @@ if (!class_exists($action_class)) {
 
 $actionClass = new $action_class($_lang);
 try {
-    if($actionClass->prepare($route->params)) {
+    
+    $args = array_merge($route->params, $_REQUEST);
+    
+    if($actionClass->prepare($args)) {
     	$actionClass->handle();
     }
 } catch(ClientException $e) {
@@ -60,6 +63,7 @@ try {
     $error->setErrorMessage($e->getCode(), 'ServerException: '.$e->getMessage());
     $error->handle();
 } catch(FluidframeException $e) {
+    echo $e->getTraceAsString();
         $error = new ErrorAction($_lang);
         $error->setErrorMessage(500, 'FluidframeException: '.$e->getMessage());
         $error->handle();
