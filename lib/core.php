@@ -29,3 +29,4 @@ require_once('vendor/autoload.php');
 require_once('lib/tools.php');
 require_once('lib/router.php');
 require_once('lib/language.php');
+require_once('lib/translator.php');
