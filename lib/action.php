@@ -41,12 +41,6 @@ class Action {
         return false;
     }
     
-    function arg($key,$dflt = null) {
-        if(isset($this->args[$key])) {
-            return $this->args[$key];
-        }
-        return $dflt;
-    }
     function handle() {
     }
     function isPost() {
@@ -131,5 +125,50 @@ class Action {
         else
             $params['title'] = $title . ' | ' . $siteTitle;
         
+    }
+    
+    // Utilities
+    /**
+     * Returns query argument or default value if not found
+     *
+     * @param string $key requested argument
+     * @param string $def default value to return if $key is not provided
+     *
+     * @return boolean is read only action?
+     */
+    function arg($key, $def=null)
+    {
+        if (array_key_exists($key, $this->args)) {
+            return $this->args[$key];
+        } else {
+            return $def;
+        }
+    }
+    
+    /**
+     * Returns trimmed query argument or default value if not found
+     *
+     * @param string $key requested argument
+     * @param string $def default value to return if $key is not provided
+     *
+     * @return boolean is read only action?
+     */
+    function trimmed($key, $def=null) {
+        $arg = $this->arg($key, $def);
+        return is_string($arg) ? trim($arg) : $arg;
+    }
+    
+    function boolean($key, $def=false) {
+        $arg = strtolower($this->trimmed($key));
+    
+        if (is_null($arg)) {
+            return $def;
+        } else if (in_array($arg, array('true', 'yes', '1', 'on'))) {
+            return true;
+        } else if (in_array($arg, array('false', 'no', '0'))) {
+            return false;
+        } else {
+            return $def;
+        }
     }
 }

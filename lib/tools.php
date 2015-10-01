@@ -194,6 +194,29 @@ function common_current_user() {
     return $_cur;
 }
 
+function common_set_user($user) {
+    global $_cur;
+
+    if (is_null($user) && common_have_session()) {
+        $_cur = null;
+        unset($_SESSION['userid']);
+        return true;
+    } else if (is_string($user)) {
+        $email = $user;
+        $user = Account::staticGet('email', $email);
+    } else if (!($user instanceof Profile)) {
+        return false;
+    }
+
+    if ($user) {
+                common_ensure_session();
+                $_SESSION['userid'] = $user->id;
+                $_cur = $user;
+                return $_cur;
+    }
+    return false;
+}
+
 
 function common_check_user($email, $password) {
     // empty $email always unacceptable
