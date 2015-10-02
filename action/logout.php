@@ -21,10 +21,10 @@ class LogoutAction extends Action {
      *
      * @return nothing
      */
-    function handle($args) {
-        parent::handle($args);
+    function handle() {
+        parent::handle();
         if (!common_logged_in()) {
-            $this->clientError(_('Not logged in.'));
+            throw new ClientException('Not logged in.');
         } else {
             
             $this->logout();

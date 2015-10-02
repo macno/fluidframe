@@ -24,5 +24,9 @@ class Remember_me extends Managed_DataObject {
                 'remember_me_account_id_fkey' => array('account', array('account_id' => 'id')),
             ),
         );
-    }    
+    }
+    
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
 }

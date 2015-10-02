@@ -93,13 +93,12 @@ class Account extends Managed_DataObject
         return $def;
     }
     
-
     static function staticGet($k, $v = null) {
         return parent::staticGet(__CLASS__,$k, $v);
     }
     
     
-    public function getMenu() {
-        return MenuBuilder::build($this->role_id);
+    public function getMenu($lang=false) {
+        return MenuBuilder::build($this->role_id,$lang);
     }
 }

@@ -28,12 +28,14 @@ class Action {
     }
     
     function prepare($args) {
+        global $_cur;
         $this->args = $args;
         if(isset($this->args['lang'])) {
             $this->setLang($this->args['lang']);
         }
         if(common_logged_in()) {
             $this->account = $_cur;
+            $this->renderParams['common_actions']['logout'] = common_get_route('logout',array('lang'=>$this->lang));
             $this->menu = $this->account->getMenu($this->lang);
         } else {
             $this->menu = MenuBuilder::build(MenuBuilder::getAnonRole(),$this->lang);
