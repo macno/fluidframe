@@ -82,11 +82,20 @@ abstract class Managed_DataObject extends DB_DataObject
 
     function sequenceKey()
     {
+        global $_DB_DATAOBJECT;
+        
+        $dbtype    = $_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5]->dsn['phptype'];
+        
         $table = call_user_func(array(get_class($this), 'schemaDef'));
         foreach ($table['fields'] as $name => $column) {
-            if ($column['type'] == 'serial' || $column['type'] == 'bigserial' ) {
+            if ($column['type'] == 'serial' ) {
+                
                 // We have a serial/autoincrement column.
                 // Declare it to be a native sequence!
+                if($dbtype == 'pgsql') {
+                    // With pgsql sequence name is: <table_name>_<col_name>_seq
+                    return array($name, true, $this->__table.'_'.$name.'_seq');
+                }
                 return array($name, true, false);
             }
         }

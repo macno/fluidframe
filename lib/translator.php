@@ -26,7 +26,11 @@ function _t($str,$context='GENERIC') {
 		$gettext->translation=  $str ;
 		$gettext->translated= ($_default_language == $_lang) ? 1 : 0;
 		$gettext->original_text = $str;
-		$gettext->insert();
+		$gettext_id = $gettext->insert();
+		if(!$gettext_id) {
+		    throw new FluidframeException('Unable to insert translation row');
+		}
+		common_debug('Translation Row inserted with id: ' . $gettext_id);
 	}
 	$__t[$context][$strid]=$gettext->translation;
 	return $gettext->translation;
