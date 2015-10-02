@@ -13,10 +13,20 @@ block content
                 th status
                 th created
                 th modified
-    script var dataSet=[[1,'nome 1','descrizione 1','status 1','created 1','modified 1'],[2,'nome 2','descrizione 2','status 2','created 2','modified 2']];
+    // script var dataSet=[[1,'nome 1','descrizione 1','status 1','created 1','modified 1'],[2,'nome 2','descrizione 2','status 2','created 2','modified 2']];
 
 block pageJavascript
     script.
         $(document).ready(function(){
-            $("#example").DataTable({data:dataSet});
+            $("#example").DataTable({
+                ajax:'/admin/api/roles',
+                columns: [
+                    { "data": "id" },
+                    { "data": "name" },
+                    { "data": "description" },
+                    { "data": "status" },
+                    { "data": "created" },
+                    { "data": "modified" }
+                ]
+            });
         });

@@ -22,6 +22,7 @@ class Route {
                 'lang'=>'[a-z]{2}'
             )
         );
+        $router->add('adminroleapi', '/admin/api/roles');
         $router->add('adminrolelist', '/admin/roles');
         $router->add('robots', '/robots.txt');
     }
