@@ -84,7 +84,7 @@ abstract class Managed_DataObject extends DB_DataObject
     {
         $table = call_user_func(array(get_class($this), 'schemaDef'));
         foreach ($table['fields'] as $name => $column) {
-            if ($column['type'] == 'serial') {
+            if ($column['type'] == 'serial' || $column['type'] == 'bigserial' ) {
                 // We have a serial/autoincrement column.
                 // Declare it to be a native sequence!
                 return array($name, true, false);
