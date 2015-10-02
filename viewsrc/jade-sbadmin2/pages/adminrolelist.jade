@@ -13,13 +13,14 @@ block content
                 th status
                 th created
                 th modified
-    // script var dataSet=[[1,'nome 1','descrizione 1','status 1','created 1','modified 1'],[2,'nome 2','descrizione 2','status 2','created 2','modified 2']];
 
 block pageJavascript
     script.
         $(document).ready(function(){
             $("#example").DataTable({
                 ajax:'/admin/api/roles',
+                processing: true,
+                serverSide: true,
                 columns: [
                     { "data": "id" },
                     { "data": "name" },
