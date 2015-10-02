@@ -126,7 +126,7 @@ function common_debug($message) {
         $logger->addDebug ( $message );
 }
 
-function common_log( $level, $message) {
+function common_log( $level, $message = false) {
     global $logger;
     // add records to the log
     if ($logger) {
