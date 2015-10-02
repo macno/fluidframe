@@ -16,24 +16,24 @@ class AdminroleapiAction extends Sbadmin2Action {
     }
 
     function API(){
-        echo '{
-            "data":[
-                {
-                    "id": "1",
-                    "name": "nome 1",
-                    "description": "descrizione 1",
-                    "status": "status 1",
-                    "created": "created 1",
-                    "modified": "modified 1"
-                },
-                {
-                    "id": "2",
-                    "name": "nome 2",
-                    "description": "descrizione 2",
-                    "status": "status 2",
-                    "created": "created 2",
-                    "modified": "modified 2"
-                }
-            ]}';
+        $role = new Role();
+        $qry = "select * from role";
+        try {
+            $role->query($qry);
+        } catch (Exception $ex) {
+            $this->serverError($ex->getMessage());
+        }
+        $roles = array();
+        while($role->fetch()){
+            $roles[]=array(
+                'id'=>$role->id,
+                'name'=>$role->name,
+                'description'=>$role->description,
+                'status'=>$role->status,
+                'created'=>$role->created,
+                'modified'=>$role->modified
+            );
+        }
+        echo json_encode(array('data'=>$roles));
     }
 }
