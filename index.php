@@ -52,18 +52,22 @@ try {
     	$actionClass->handle();
     }
 } catch(ClientException $e) {
+    echo $e->getTraceAsString();
     $error = new ErrorAction($_lang);
     $error->setErrorMessage($e->getCode(), 'ClientException:' . $e->getMessage());
     $error->handle();
 } catch(ServerException $e) {
+    echo $e->getTraceAsString();
     $error = new ErrorAction($_lang);
     $error->setErrorMessage($e->getCode(), 'ServerException: '.$e->getMessage());
     $error->handle();
 } catch(FluidframeException $e) {
+    echo $e->getTraceAsString();
         $error = new ErrorAction($_lang);
         $error->setErrorMessage(500, 'FluidframeException: '.$e->getMessage());
         $error->handle();
 } catch(Exception $e) {
+    echo $e->getTraceAsString();
     $error = new ErrorAction($_lang);
     $error->setErrorMessage(500, 'Exception: '. $e->getMessage());
     $error->handle();

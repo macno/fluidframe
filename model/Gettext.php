@@ -30,7 +30,9 @@ class Gettext extends Managed_DataObject
     public $modified;
     
     /* Static get */
-    function staticGet($k,$v=NULL) { return Memcached_DataObject::staticGet('Gettext',$k,$v); }
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

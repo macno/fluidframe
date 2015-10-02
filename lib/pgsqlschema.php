@@ -326,6 +326,7 @@ class PgsqlSchema extends Schema
         }
         */
 
+        common_debug("Line: ".print_r($line,true));
         return implode(' ', $line);
     }
 

@@ -31,6 +31,7 @@
 $classes = array (
         'Schema_version',
         'Config',
+        'Gettext',
         'Role',
         'Account',
         'Menu',

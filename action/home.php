@@ -10,6 +10,7 @@ class HomeAction extends Sbadmin2Action {
     function handle() {
         parent::handle();
         
+        common_debug(_t('Testo da tradurre','CONTESTO'));
         $this->render ( 'home', $this->renderOptions );
     }
     function getHreflangs() {
