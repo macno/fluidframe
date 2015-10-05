@@ -1,17 +1,13 @@
 <?php
-
-if (!defined('FLUIDFRAME')) {
-    exit(1);
+if (! defined ( 'FLUIDFRAME' )) {
+    exit ( 1 );
 }
 
 /**
  * Table Definition for Role
  */
-
-class Role extends Managed_DataObject
-{
-
-    public $__table = 'role';                          // table name
+class Role extends Managed_DataObject {
+    public $__table = 'role'; // table name
     public $id;
     public $name;
     public $description;
@@ -25,42 +21,68 @@ class Role extends Managed_DataObject
                         'id' => array (
                                 'type' => 'serial',
                                 'not null' => true,
-                                'description' => 'unique identifier'
+                                'description' => 'unique identifier' 
                         ),
                         'name' => array (
                                 'type' => 'varchar',
                                 'length' => 64,
                                 'not null' => true,
-                                'description' => 'Role name.'
+                                'description' => 'Role name.' 
                         ),
                         'description' => array (
                                 'type' => 'varchar',
                                 'length' => 255,
                                 'description' => 'Role description',
-                                'collate' => 'utf8_general_ci'
+                                'collate' => 'utf8_general_ci' 
                         ),
-                        'status' => array(
-                                'type'=>'tinyint',
-                                'length'=>1,
+                        'status' => array (
+                                'type' => 'tinyint',
+                                'length' => 1,
                                 'not null' => true,
-                                'description'=>'role status'
+                                'description' => 'role status' 
                         ),
                         'created' => array (
                                 'type' => 'datetime',
                                 'not null' => true,
-                                'description' => 'date this record was created'
+                                'description' => 'date this record was created' 
                         ),
                         'modified' => array (
                                 'type' => 'timestamp',
                                 'not null' => true,
-                                'description' => 'date this record was modified'
-                        )
+                                'description' => 'date this record was modified' 
+                        ) 
                 ),
                 'primary key' => array (
-                        'id'
-                )
+                        'id' 
+                ) 
         );
-    
+        
         return $def;
+    }
+    static function getAdminTableStruct() {
+        return array (
+                array (
+                        'name' => 'id',
+                        'visible' => false 
+                ) ,
+                array (
+                        'name' => 'name',
+                        'i18n' => _t('Name'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                array (
+                        'name' => 'description',
+                        'i18n' => _t('Description'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                array (
+                        'name' => 'status',
+                        'i18n' => _t('Status'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+        );
     }
 }

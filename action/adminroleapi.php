@@ -17,7 +17,18 @@ class AdminroleapiAction extends Sbadmin2Action {
 
     function API(){
         $role = new Role();
-        $qry = "select * from role";
+        
+        $tableCols = Role::getAdminTableStruct();
+        
+        $sqlCols = array();
+        
+        foreach ($tableCols as $tableCol) {
+            if(!isset($tableCol['visible']) || $tableCol['visible']) {
+                $sqlCols[] = $tableCol['name'];
+            }
+        }
+        
+        $qry = "select " . implode(",", $sqlCols) . " from ".$role->__table;
         try {
             $role->query($qry);
         } catch (Exception $ex) {
@@ -25,14 +36,11 @@ class AdminroleapiAction extends Sbadmin2Action {
         }
         $roles = array();
         while($role->fetch()){
-            $roles[]=array(
-                'id'=>$role->id,
-                'name'=>$role->name,
-                'description'=>$role->description,
-                'status'=>$role->status,
-                'created'=>$role->created,
-                'modified'=>$role->modified
-            );
+            $row = array();
+            foreach ($sqlCols as $sqlCol) {
+                $row[$sqlCol] = $role->{$sqlCol};
+            }
+            $roles[]=$row;
         }
         echo json_encode(array('data'=>$roles));
     }

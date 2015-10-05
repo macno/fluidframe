@@ -5,14 +5,6 @@ block content
       .row
         .col-lg-12
           table#example.display.table(cellspacing="0" width="100%")
-            thead
-              tr
-                th id
-                th name
-                th description
-                th status
-                th created
-                th modified
 
 block pageJavascript
     script.
@@ -21,13 +13,6 @@ block pageJavascript
                 ajax:'/admin/api/roles',
                 processing: true,
                 serverSide: true,
-                columns: [
-                    { "data": "id" },
-                    { "data": "name" },
-                    { "data": "description" },
-                    { "data": "status" },
-                    { "data": "created" },
-                    { "data": "modified" }
-                ]
+                columns: !{this.tableStruct}
             });
         });

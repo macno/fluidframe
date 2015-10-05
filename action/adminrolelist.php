@@ -11,6 +11,23 @@ class AdminrolelistAction extends Sbadmin2Action {
 
     function handle() {
         parent::handle();
+        
+        $tableCols = Role::getAdminTableStruct();
+        
+        $tableColsJson = array();
+        
+        foreach ($tableCols as $tableCol) {
+            if(!isset($tableCol['visible']) || $tableCol['visible']) {
+                $tableColsJson[] = array(
+                        'data'=>$tableCol['name'],
+                        'title'=>$tableCol['i18n']
+                );
+            }
+        }
+        
+        
+        $this->renderOptions['tableStruct'] = json_encode($tableColsJson);
+        
         $this->render ( 'adminrolelist', $this->renderOptions );
     }
 
