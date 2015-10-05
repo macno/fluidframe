@@ -24,12 +24,12 @@ class AdminroleapiAction extends Sbadmin2Action {
     }
 
     function searchToSQL(&$obj,$search){
+        $defaultAction = array(
+            'varchar' => 'like',
+            'text' => 'like',
+            'tinyint' => '=',
+        );
         $schemaDef = $obj->schemaDef();
-        // common_debug("Obj: ".print_r($obj->schemaDef(),true));
-        // common_debug("Obj: ".print_r($obj->getAdminTableStruct(),true));
-        // common_debug("Search: ".$this->tableParams['search']['value']);
-        common_debug("Search: ".$search);
-        // common_debug("Searchable: ".(($obj->getAdminTableStruct()[2]['searchable']) ? 'true' : 'false'));
         $searchParams = explode(":",$search);
         $sql = '';
         switch (count($searchParams)){
@@ -43,8 +43,12 @@ class AdminroleapiAction extends Sbadmin2Action {
                         }
                     }
                     break;
-            // case 2: 
-            //         break;
+            case 2: $col=$searchParams[0]; $value=$searchParams[1];
+                    if(($schemaDef['fields'][$col]['type'] == 'varchar') ||
+                        ($schemaDef['fields'][$col]['type'] == 'text')){
+                        $sql .= 'lower('.$col .') '. $defaultAction[$schemaDef['fields'][$col]['type']] .' \'%'. strtolower($searchParams[1]) .'%\'';
+                    }
+                    break;
             // case 3: 
             //         break;
         }
