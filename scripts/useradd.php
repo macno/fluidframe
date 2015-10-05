@@ -40,6 +40,10 @@ if (empty ( $password )) {
 
 $role = Role::staticGet('name','ADMIN');
 
+if(!$role) {
+    echo "Role ADMIN does not exist. Please execute initMenu first";
+    exit (1);
+}
 $profile = new Account ();
 $profile->fullname = $fullname;
 $profile->email = $email;
