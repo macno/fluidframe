@@ -27,7 +27,13 @@ class AdminroleapiAction extends Sbadmin2Action {
         $defaultAction = array(
             'varchar' => 'like',
             'text' => 'like',
-            'tinyint' => '=',
+            'tinyint' => '='
+        );
+        $aliasValue = array(
+            'tinyint' => array(
+                'active'=> 1,
+                'inactive'=> 0
+            )
         );
         $schemaDef = $obj->schemaDef();
         $searchParams = explode(":",$search);
@@ -44,9 +50,13 @@ class AdminroleapiAction extends Sbadmin2Action {
                     }
                     break;
             case 2: $col=$searchParams[0]; $value=$searchParams[1];
-                    if(($schemaDef['fields'][$col]['type'] == 'varchar') ||
-                        ($schemaDef['fields'][$col]['type'] == 'text')){
-                        $sql .= 'lower('.$col .') '. $defaultAction[$schemaDef['fields'][$col]['type']] .' \'%'. strtolower($searchParams[1]) .'%\'';
+                    switch ($schemaDef['fields'][$col]['type']){
+                        case 'text':
+                        case 'varchar' :$sql .= 'lower('.$col .') '. $defaultAction[$schemaDef['fields'][$col]['type']] .' \'%'. strtolower($searchParams[1]) .'%\'';
+                                        break;
+                        case 'tinyint' :$sql .= $col .' '. $defaultAction[$schemaDef['fields'][$col]['type']] .' ';
+                                        $sql .= $aliasValue[$schemaDef['fields'][$col]['type']][strtolower($searchParams[1])];
+                                        break;
                     }
                     break;
             // case 3: 
