@@ -9,8 +9,9 @@ block content
 block pageJavascript
     script.
         $(document).ready(function(){
+            console.log("Ready: #{this.model}");
             $("#example").DataTable({
-                ajax:'/admin/api/roles',
+                ajax:'/admin/api/#{this.model}/datatable',
                 processing: true,
                 serverSide: true,
                 columns: !{this.tableStruct}

@@ -31,6 +31,10 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         return $qryWhere;
     }
 
+    function getColumnAlias(){
+        return array();
+    }
+
     private function operatorToSQL($operator){
         $defaultAction = array(
             'varchar' => 'like',
@@ -45,34 +49,48 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                 'inactive'=> 0
             )
         );
-        $columnAlias = array(
-            'is' => 'status'
+        $operators = array(
+            'is'=>"",
+            'not'=>"",
+            'like'=>"",
+            'eq'=>"",
+            'gt'=>"",
+            'lt'=>"",
+            'gte'=>"",
+            'lte'=>""
         );
+        $columnAlias = $this->getColumnAlias();
         $schemaDef = $this->schemaDef();
         $operatorParams = explode(":",$operator);
         $sql = '';
+        $tableStruct = static::getAdminTableStruct();
         switch (count($operatorParams)){
-            case 1: $cnt = 0; foreach(static::getAdminTableStruct() as $col){
+            // in caso di una stringa semplica la vado a cercare in tutti i campi testuali che siano searchable
+            case 1: $cnt = 0; foreach($tableStruct as $colName=>$col){
                         if(isset($col['searchable']) && ($col['searchable'])){
-                            if(($schemaDef['fields'][$col['name']]['type'] == 'varchar') ||
-                                ($schemaDef['fields'][$col['name']]['type'] == 'text')){
+                            if(($schemaDef['fields'][$colName]['type'] == 'varchar') ||
+                                ($schemaDef['fields'][$colName]['type'] == 'text')){
                                 $sql .= ($cnt++ == 0) ? ' ' : ' OR ';
-                                $sql .= 'lower('.$col['name'] .') like \'%'. strtolower($operatorParams[0]) .'%\'';
+                                $sql .= 'lower('.$colName .') like \'%'. strtolower($operatorParams[0]) .'%\'';
                             }
                         }
                     }
                     break;
+            // in caso di <colonna>:<valore> faccio una ricerca sulla colonna con l'operatore di default per il valore
             case 2: $colName=$operatorParams[0]; $value=$operatorParams[1];
-                    $colName=(isset($columnAlias[$colName])) ? $columnAlias[$colName] : $colName;
+                    common_debug("colName: ".$colName." value: ".$value);
                     $searchable = false;
-                    foreach(static::getAdminTableStruct() as $col){
-                        if(isset($col['searchable']) && ($col['searchable']) && ($col['name']==$colName)){
+                    $colFound = false;
+                    if(isset($tableStruct[$colName])){
+                        if(isset($tableStruct[$colName]['searchable']) && ($tableStruct[$colName]['searchable'])){
                             $searchable = true;
-                            break;
                         }
+                        $colFound = true;
+                        break;
                     }
 
                     if($searchable){
+                        common_debug("Searchable.");
                         switch ($schemaDef['fields'][$colName]['type']){
                             case 'text':
                             case 'varchar' :$sql .= 'lower('.$colName .') '. $defaultAction[$schemaDef['fields'][$colName]['type']] .' \'%'. strtolower($operatorParams[1]) .'%\'';
@@ -81,8 +99,26 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                                             $sql .= $aliasValue[$schemaDef['fields'][$colName]['type']][strtolower($operatorParams[1])];
                                             break;
                         }
+                    }else if(!$colFound){
+                        common_debug("Operatore?: ".print_r($operators,true));
+                        if(isset($operators[$colName])){
+                            $operator=$colName;
+                            $colName=(isset($columnAlias[$value])) ? $columnAlias[$value] : $value;
+                            common_debug("Operatore: ".$operator." Colonna: ".$colName);
+                            switch ($operator){
+                                case 'is': if($schemaDef['fields'][$colName]['type'] == 'tinyint'){
+                                                $sql .= $colName . ' = 1';
+                                            }
+                                            break;
+                                case 'not': if($schemaDef['fields'][$colName]['type'] == 'tinyint'){
+                                                $sql .= $colName . ' = 0';
+                                            }
+                                            break;
+                            }
+                        }
                     }
                     break;
+            // in caso di <colonna>:<operatore>:<valore> faccio una ricerca sulla colonna con l'operatore per il valore
             // case 3: 
             //         break;
         }
@@ -99,12 +135,12 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         
         $sqlCols = array();
         
-        foreach ($tableCols as $tableCol) {
+        foreach ($tableCols as $colName=>$tableCol) {
             if(!isset($tableCol['visible']) || $tableCol['visible']) {
-                $sqlCols[] = $tableCol['name'];
+                $sqlCols[] = $colName;
             }
         }
-        
+
         $qry = "select count(*) as conta from ".$this->__table;
         $this->query($qry);
         $this->fetch();

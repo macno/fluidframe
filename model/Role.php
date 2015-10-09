@@ -61,28 +61,30 @@ class Role extends DataTable_DataObject {
     }
     static function getAdminTableStruct() {
         return array (
-                array (
-                        'name' => 'id',
+                'id'=> array (
                         'visible' => false 
                 ) ,
-                array (
-                        'name' => 'name',
+                'name'=> array (
                         'i18n' => _t('Name'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
-                array (
-                        'name' => 'description',
+                'description'=> array (
                         'i18n' => _t('Description'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
-                array (
-                        'name' => 'status',
+                'status'=> array (
                         'i18n' => _t('Status'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
+        );
+    }
+
+    function getColumnAlias(){
+        return array(
+            'active'=>'status'
         );
     }
 }

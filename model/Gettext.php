@@ -68,34 +68,35 @@ class Gettext extends DataTable_DataObject
 
     static function getAdminTableStruct() {
         return array (
-                array (
-                        'name' => 'id',
+                'id' => array (
                         'visible' => false 
                 ) ,
-                array (
-                        'name' => 'context',
+                'context' => array (
                         'i18n' => _t('contesto'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
-                array (
-                        'name' => 'lang',
+                'lang' => array (
                         'i18n' => _t('linguaggio'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
-                array (
-                        'name' => 'original_text',
+                'original_text' => array (
                         'i18n' => _t('testo originale'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
-                array (
-                        'name' => 'translation',
+                'translation' => array (
                         'i18n' => _t('testo tradotto'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
+        );
+    }
+
+    function getColumnAlias(){
+        return array(
+            'active'=>'translated'
         );
     }
     

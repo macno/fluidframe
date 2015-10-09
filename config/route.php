@@ -24,7 +24,8 @@ class Route {
         );
         $router->add('admintableapi', '/admin/api/{model}/datatable')
             ->addTokens(array('model' => ('[a-zA-Z0-9-\s_]+')));
-        $router->add('adminrolelist', '/admin/roles');
+        $router->add('admintablelist', '/admin/{model}')
+            ->addTokens(array('model' => ('[a-zA-Z0-9-\s_]+')));
         $router->add('robots', '/robots.txt');
     }
 }

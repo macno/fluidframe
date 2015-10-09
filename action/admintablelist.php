@@ -2,7 +2,7 @@
 if (! defined ( 'FLUIDFRAME' )) {
     exit ( 1 );
 }
-class AdminrolelistAction extends Sbadmin2Action {
+class AdmintablelistAction extends Sbadmin2Action {
 
     function prepare($args) {
         parent::prepare($args);
@@ -12,14 +12,16 @@ class AdminrolelistAction extends Sbadmin2Action {
     function handle() {
         parent::handle();
         
-        $tableCols = Role::getAdminTableStruct();
+        $model = ucfirst($this->trimmed('model'));
+        common_debug("model: ".$model);
+        $tableCols = $model::getAdminTableStruct();
         
         $tableColsJson = array();
         
-        foreach ($tableCols as $tableCol) {
+        foreach ($tableCols as $tableName=>$tableCol) {
             if(!isset($tableCol['visible']) || $tableCol['visible']) {
                 $tableColsJson[] = array(
-                        'data'=>$tableCol['name'],
+                        'data'=>$tableName,
                         'title'=>$tableCol['i18n']
                 );
             }
@@ -27,8 +29,9 @@ class AdminrolelistAction extends Sbadmin2Action {
         
         
         $this->renderOptions['tableStruct'] = json_encode($tableColsJson);
+        $this->renderOptions['model'] = $this->trimmed('model');
         
-        $this->render ( 'adminrolelist', $this->renderOptions );
+        $this->render ( 'admintablelist', $this->renderOptions );
     }
 
     function getJavascripts(){
