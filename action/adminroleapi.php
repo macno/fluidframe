@@ -23,7 +23,26 @@ class AdminroleapiAction extends Sbadmin2Action {
         $this->API();
     }
 
-    function searchToSQL(&$obj,$search){
+    function searchToSQL($obj,$search){
+        $cnt=0;
+        $qryWhere = '';
+        foreach(explode(" ",$search) as $searchOperator){
+            $searchOperator = trim($searchOperator);
+            if($searchOperator != ""){
+                $tmpQry = $this->operatorToSQL($obj,$searchOperator);
+                if($tmpQry != ""){
+                    $qryWhere .= ($cnt++ == 0) ? ' ' : ' AND ';
+                    $qryWhere .= $tmpQry;
+                }
+            }
+        }
+        if(strlen($qryWhere) > 0){
+            $qryWhere = " where".$qryWhere;
+        }
+        return $qryWhere;
+    }
+
+    function operatorToSQL($obj,$search){
         $defaultAction = array(
             'varchar' => 'like',
             'text' => 'like',
@@ -32,8 +51,13 @@ class AdminroleapiAction extends Sbadmin2Action {
         $aliasValue = array(
             'tinyint' => array(
                 'active'=> 1,
+                'on'=> 1,
+                'off'=> 0,
                 'inactive'=> 0
             )
+        );
+        $columnAlias = array(
+            'is' => 'status'
         );
         $schemaDef = $obj->schemaDef();
         $searchParams = explode(":",$search);
@@ -49,14 +73,25 @@ class AdminroleapiAction extends Sbadmin2Action {
                         }
                     }
                     break;
-            case 2: $col=$searchParams[0]; $value=$searchParams[1];
-                    switch ($schemaDef['fields'][$col]['type']){
-                        case 'text':
-                        case 'varchar' :$sql .= 'lower('.$col .') '. $defaultAction[$schemaDef['fields'][$col]['type']] .' \'%'. strtolower($searchParams[1]) .'%\'';
-                                        break;
-                        case 'tinyint' :$sql .= $col .' '. $defaultAction[$schemaDef['fields'][$col]['type']] .' ';
-                                        $sql .= $aliasValue[$schemaDef['fields'][$col]['type']][strtolower($searchParams[1])];
-                                        break;
+            case 2: $colName=$searchParams[0]; $value=$searchParams[1];
+                    $colName=(isset($columnAlias[$colName])) ? $columnAlias[$colName] : $colName;
+                    $searchable = false;
+                    foreach($obj->getAdminTableStruct() as $col){
+                        if(isset($col['searchable']) && ($col['searchable']) && ($col['name']==$colName)){
+                            $searchable = true;
+                            break;
+                        }
+                    }
+
+                    if($searchable){
+                        switch ($schemaDef['fields'][$colName]['type']){
+                            case 'text':
+                            case 'varchar' :$sql .= 'lower('.$colName .') '. $defaultAction[$schemaDef['fields'][$colName]['type']] .' \'%'. strtolower($searchParams[1]) .'%\'';
+                                            break;
+                            case 'tinyint' :$sql .= $colName .' '. $defaultAction[$schemaDef['fields'][$colName]['type']] .' ';
+                                            $sql .= $aliasValue[$schemaDef['fields'][$colName]['type']][strtolower($searchParams[1])];
+                                            break;
+                        }
                     }
                     break;
             // case 3: 
@@ -67,7 +102,6 @@ class AdminroleapiAction extends Sbadmin2Action {
     }
 
     function API(){
-        // common_debug("Params: ".print_r($this->tableParams['columns'],true));
         $role = new Role();
         
         $tableCols = Role::getAdminTableStruct();
@@ -86,14 +120,8 @@ class AdminroleapiAction extends Sbadmin2Action {
         $recordsTotal=$role->conta;
 
         $qry = "select " . implode(",", $sqlCols) . " from ".$role->__table;
-        $qryWhere = '';
         if(!empty($this->tableParams['search'])){
-            $qryWhere = $this->searchToSQL($role,$this->tableParams['search']);
-            // $qry .= $this->searchToSQL($role,'admin');
-            if(strlen($qryWhere) > 0){
-                $qry .= " where ";
-                $qry .= $qryWhere ;
-            }
+            $qry .= $this->searchToSQL($role,$this->tableParams['search']);
         }
 
         $qry .= " order by";

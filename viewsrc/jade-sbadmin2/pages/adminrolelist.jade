@@ -15,4 +15,19 @@ block pageJavascript
                 serverSide: true,
                 columns: !{this.tableStruct}
             });
+            $("input[type='search']").hide().after($('<input type="text" id="fakeSearch">'));
+            $("#fakeSearch").on("keyup paste cut",updateSearch)
         });
+        function updateSearch(){
+            var fakeSearch,search;
+          if(typeof tout !== 'undefined'){
+            clearTimeout(tout);
+          }
+          tout=setTimeout(function(){
+            fakeSearch=$("#fakeSearch").val().trim();
+            search=$("input[type='search']").val();
+            if(search != fakeSearch){
+                $("input[type='search']").val(fakeSearch).trigger("search.DT");
+            }
+          },500);
+        }
