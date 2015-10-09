@@ -13,7 +13,6 @@ class AdmintablelistAction extends Sbadmin2Action {
         parent::handle();
         
         $model = ucfirst($this->trimmed('model'));
-        common_debug("model: ".$model);
         $tableCols = $model::getAdminTableStruct();
         
         $tableColsJson = array();
