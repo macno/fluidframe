@@ -6,7 +6,7 @@ if (! defined ( 'FLUIDFRAME' )) {
 /**
  * Table Definition for Role
  */
-class Role extends Managed_DataObject {
+class Role extends DataTable_DataObject {
     public $__table = 'role'; // table name
     public $id;
     public $name;
