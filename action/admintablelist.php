@@ -2,7 +2,7 @@
 if (! defined ( 'FLUIDFRAME' )) {
     exit ( 1 );
 }
-class AdmintablelistAction extends Sbadmin2Action {
+class AdmintablelistAction extends AuthAction {
 
     function prepare($args) {
         parent::prepare($args);

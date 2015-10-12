@@ -2,10 +2,11 @@
 if (! defined ( 'FLUIDFRAME' )) {
     exit ( 1 );
 }
-class AdmintableapiAction extends Sbadmin2Action {
-
+class AdmintableapiAction extends AuthAction {
 
     function prepare($args) {
+        global $isApi;
+        $isApi = true;
         parent::prepare($args);
         return true;
     }

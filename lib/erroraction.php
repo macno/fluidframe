@@ -85,6 +85,12 @@ class ErrorAction extends Action {
         $this->message = $message;
     }
     function handle() {
+        global $isApi;
+        if($isApi){
+            common_debug("API");
+        }else{
+            common_debug("NO API");
+        }
         if(!isset($this->http_codes[$this->code])) {
             $this->code = 404;
         }
