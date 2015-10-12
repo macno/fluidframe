@@ -84,7 +84,8 @@ class Role extends DataTable_DataObject {
 
     function getColumnAlias(){
         return array(
-            'active'=>'status'
+            'active'=>array('status',1),
+            'inactive'=>array('status',0)
         );
     }
 }

@@ -96,7 +96,8 @@ class Gettext extends DataTable_DataObject
 
     function getColumnAlias(){
         return array(
-            'active'=>'translated'
+            'active'=>array('translated',1),
+            'inactive'=>array('translated',0)
         );
     }
     

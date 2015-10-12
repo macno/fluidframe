@@ -50,8 +50,8 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             )
         );
         $operators = array(
-            'is'=>"",
-            'not'=>"",
+            'is'=>"=",
+            'not'=>"!=",
             'like'=>"",
             'eq'=>"",
             'gt'=>"",
@@ -78,19 +78,17 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                     break;
             // in caso di <colonna>:<valore> faccio una ricerca sulla colonna con l'operatore di default per il valore
             case 2: $colName=$operatorParams[0]; $value=$operatorParams[1];
-                    common_debug("colName: ".$colName." value: ".$value);
                     $searchable = false;
                     $colFound = false;
+                    // la colonna è "searchable" ?
                     if(isset($tableStruct[$colName])){
                         if(isset($tableStruct[$colName]['searchable']) && ($tableStruct[$colName]['searchable'])){
                             $searchable = true;
                         }
                         $colFound = true;
-                        break;
                     }
 
                     if($searchable){
-                        common_debug("Searchable.");
                         switch ($schemaDef['fields'][$colName]['type']){
                             case 'text':
                             case 'varchar' :$sql .= 'lower('.$colName .') '. $defaultAction[$schemaDef['fields'][$colName]['type']] .' \'%'. strtolower($operatorParams[1]) .'%\'';
@@ -100,27 +98,50 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                                             break;
                         }
                     }else if(!$colFound){
-                        common_debug("Operatore?: ".print_r($operators,true));
                         if(isset($operators[$colName])){
-                            $operator=$colName;
-                            $colName=(isset($columnAlias[$value])) ? $columnAlias[$value] : $value;
-                            common_debug("Operatore: ".$operator." Colonna: ".$colName);
-                            switch ($operator){
-                                case 'is': if($schemaDef['fields'][$colName]['type'] == 'tinyint'){
-                                                $sql .= $colName . ' = 1';
-                                            }
-                                            break;
-                                case 'not': if($schemaDef['fields'][$colName]['type'] == 'tinyint'){
-                                                $sql .= $colName . ' = 0';
-                                            }
-                                            break;
+                            if($operators[$colName]!=""){
+                                $operator=$operators[$colName];
+                            }else{
+                                $operator=$colName;
+                            }
+                            if(isset($columnAlias[$value])){
+                                $colName=$columnAlias[$value][0];
+                                $value=$columnAlias[$value][1];
+                            }else{
+                                $colName=$value;
+                                // in questo caso $value assume un valore di default
+                                $value = 1;
+                            }
+                            if($schemaDef['fields'][$colName]['type'] == 'tinyint'){
+                                $sql .= $colName . ' ' . $operator . ' ' .$value;
                             }
                         }
                     }
                     break;
             // in caso di <colonna>:<operatore>:<valore> faccio una ricerca sulla colonna con l'operatore per il valore
-            // case 3: 
-            //         break;
+            case 3: $colName=$operatorParams[0]; $operator=$operatorParams[1]; $value=$operatorParams[2];
+                    $searchable = false;
+                    // la colonna è "searchable" ?
+                    if(isset($tableStruct[$colName])){
+                        if(isset($tableStruct[$colName]['searchable']) && ($tableStruct[$colName]['searchable'])){
+                            if(isset($operators[$operator])){
+                                if($operators[$operator]!=""){
+                                    $operator=$operators[$operator];
+                                }
+                                if($operator == "like"){
+                                    $value = "%".$value."%";
+                                }
+                                switch ($schemaDef['fields'][$colName]['type']){
+                                    case 'text':
+                                    case 'varchar' :$sql .= 'lower('.$colName .') '. $operator .' \''. strtolower($value) .'\'';
+                                                    break;
+                                    case 'tinyint' :$sql .= $colName .' '. $operator .' '. $value;
+                                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
         }
         common_debug("SQL: ".$sql);
         return $sql;
