@@ -187,7 +187,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             $qry .= ($cnt++ == 0) ? ' ' : ', ';
             $qry .= $tableParams['columns'][(int)$order['column']]['data'] . " " . $order['dir'];
         }
-        $qry .= " offset ". $tableParams['start'] ." limit ".$tableParams['length'];
+        $qry .= " limit ".$tableParams['length'] . " offset ". $tableParams['start'] ;
 
         common_debug("SQL: ".$qry);
         try {
