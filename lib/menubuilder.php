@@ -35,6 +35,7 @@ class MenuBuilder {
             list($submenu,$menu_name) = self::getMenu($rm->menu_id, 0, $lang);
             $menu = array_merge($menu, $submenu);
         }
+    
         $rm->free();
         return $menu;
     }
@@ -78,12 +79,28 @@ class MenuBuilder {
                     $menuz->title = $mi->name;
                     
                     $params = null;
-                    if($lang && !empty($mi->params)) {
-                        
-                        if(strpos($mi->params, 'lang') !== false) {
-                            $params= array('lang'=>$lang);
+                    
+                    if(!empty($mi->params)) {
+                        $params = array();
+                        common_debug('menuitem params:' . $mi->params);
+                        $xparams= split(',',$mi->params);
+                        foreach ($xparams as $param) {
+                            $p = split('=',$param);
+                            common_debug('menuitem params:' . $p[0] . ' => ' . $p[1]);
+                            
+                            $val = '';
+                            if($p[1][0]=='$') {
+                                if(!isset(${substr($p[1],1)})) throw new FluidframeException('Item ' . $mi->name . ' requires params ' . $p[1] .' and it\'s not set.' );
+                                $val = ${substr($p[1],1)};
+                            } else {
+                                $val = $p[1];
+                            }
+                            $params[$p[0]] = $val;
                         }
+ 
                     }
+                    
+                    common_debug('action: ' . $mi->action . ' ' . print_r($params,true));
                     $href = common_get_route($mi->action,$params);
                     $menuz->href = empty($href) ? '/' : $href;
                     
