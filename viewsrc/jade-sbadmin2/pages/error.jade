@@ -1,8 +1,6 @@
 extends ../layouts/layout.jade
 
 block content
-  .primary
-    block primary
-      h1 HTTP Error
-      h2= this.status
-      h3= this.message
+  .error
+    block error
+      != this.message

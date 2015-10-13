@@ -20,7 +20,7 @@ $path = parse_url ( $_SERVER ['REQUEST_URI'], PHP_URL_PATH );
 // get the route based on the path and server
 $route = $router->match ( $path, $_SERVER );
 
-// variabile usata per differenziare i tentativi di accesso anonimi alle pagine o alle API
+// variabile usata per differenziare le chiamate alle pagine o alle API
 $isApi = false;
 
 if (empty ( $route )) {
@@ -56,7 +56,7 @@ try {
     }
 } catch ( ClientException $e ) {
     $error = new ErrorAction ( $_lang );
-    $error->setErrorMessage ( $e->getCode (), 'ClientException:' . $e->getMessage () );
+    $error->setErrorMessage ( $e->getCode (), $e->getMessage () );
     $error->handle ();
 } catch ( ServerException $e ) {
     $error = new ErrorAction ( $_lang );
