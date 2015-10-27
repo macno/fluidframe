@@ -1,6 +1,6 @@
 <?php
 
-$config['site']['code'] = 'skel';
+$config['site']['code'] = 'VHOST';
 $config['site']['title'] = 'Fluidframe SKEL';
 
 $config['site']['robotsallow'] = true;
@@ -12,12 +12,12 @@ $config['site']['langs'] = array(
 $config['site']['language'] = 'it';
 $config['site']['langdetect'] = true;
 
-$config['log']['file'] = INSTALLDIR.'/tmp/skel.log';
+$config['log']['file'] = INSTALLDIR.'/tmp/VHOST.log';
 $config['log']['level'] = 100; // NONE= 0; DEBUG = 100; INFO = 200; NOTICE = 250; 
                                // WARNING = 300; ERROR = 400; CRITICAL = 500;
                                // ALERT = 550; EMERGENCY = 600;
 
-$config ['db'] ['database'] = 'mysqli://skel:skel@127.0.0.1/skel';
+$config ['db'] ['database'] = 'mysqli://VHOST:VHOST@127.0.0.1/VHOST';
 $config ['db'] ['type'] = 'mysql';
 $config ['db'] ['debug'] = 0;
 $config ['db'] ['schemacheck'] = 'script';
