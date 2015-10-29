@@ -84,7 +84,13 @@ class Config extends Managed_DataObject
 
     function pkeyGet($kv)
     {
-        return Memcached_DataObject::pkeyGet('Config', $kv);
+        $config = new Config();
+        $config->section = $kv['section'];
+        $config->setting = $kv['setting'];
+        if($config->find(true)) {
+            return $config;
+        }
+        return false;
     }
 
     static function save($section, $setting, $value)
@@ -94,6 +100,7 @@ class Config extends Managed_DataObject
         $config = Config::pkeyGet(array('section' => $section,
                                         'setting' => $setting));
 
+        common_log('Trovato config ' . $section . ' / ' . $setting . ' :' .print_r($config,true));
         if (!empty($config)) {
             $orig = clone($config);
             $config->value = $value;

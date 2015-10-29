@@ -37,11 +37,14 @@ if (empty ( $password )) {
     echo ('password required');
     exit ();
 }
+
+$role = Role::staticGet('name','ADMIN');
+
 $profile = new Account ();
 $profile->fullname = $fullname;
 $profile->email = $email;
 $profile->status = 1;
-$profile->role_id = 1;
+$profile->role_id = $role->id;
 $profile->created = common_sql_now ();
 $profile_id = $profile->insert ();
 

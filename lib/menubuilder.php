@@ -2,10 +2,8 @@
 
 class MenuBuilder {
     
-    private static $ANONROLE = 1;
-    
     public static function getAnonRole() {
-        return self::$ANONROLE;
+        return common_config('role', 'anon');
     }
     
     /**
@@ -27,8 +25,9 @@ class MenuBuilder {
                 from role_menu rm, menu m
                 where rm.menu_id = m.id
                 and m.status = 1 
-                and rm.role_id = ".(int)$role.".
+                and rm.role_id = ".(int)$role."
                 order by rm.weight asc";
+        
         $rm->query($qry);
         
         while($rm->fetch()) {

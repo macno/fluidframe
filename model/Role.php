@@ -88,4 +88,9 @@ class Role extends DataTable_DataObject {
             'inactive'=>array('status',0)
         );
     }
+
+    static function staticGet($k, $v = null) {
+        return parent::staticGet(__CLASS__,$k, $v);
+    }
+    
 }
