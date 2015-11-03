@@ -72,22 +72,22 @@ class Gettext extends DataTable_DataObject
                         'visible' => false 
                 ) ,
                 'context' => array (
-                        'i18n' => _t('contesto'),
+                        'i18n' => _i18n('ADMIN', 'context', 'contesto'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'lang' => array (
-                        'i18n' => _t('linguaggio'),
+                        'i18n' => _i18n('ADMIN', 'lang', 'lingua'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'original_text' => array (
-                        'i18n' => _t('testo originale'),
+                        'i18n' => _i18n('ADMIN', 'original_text', 'testo originale'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'translation' => array (
-                        'i18n' => _t('testo tradotto'),
+                        'i18n' => _i18n('ADMIN', 'translation', 'testo tradotto'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,

@@ -22,10 +22,16 @@ class Route {
                 'lang'=>'[a-z]{2}'
             )
         );
+        // Gestione Traduzione
+        $router->add('admintranslationapi', '/admin/api/translation/datatable');
+        $router->add('admintranslationlist', '/admin/translation');
+
+        // Gestione Tabelle
         $router->add('admintableapi', '/admin/api/{model}/datatable')
             ->addTokens(array('model' => ('[a-zA-Z0-9-\s_]+')));
         $router->add('admintablelist', '/admin/{model}')
             ->addTokens(array('model' => ('[a-zA-Z0-9-\s_]+')));
+
         $router->add('robots', '/robots.txt');
     }
 }

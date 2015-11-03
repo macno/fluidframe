@@ -143,7 +143,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                     }
                     break;
         }
-        common_debug("SQL: ".$sql);
+        // common_debug("SQL: ".$sql);
         return $sql;
     }
 

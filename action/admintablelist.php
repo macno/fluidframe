@@ -29,6 +29,7 @@ class AdmintablelistAction extends AuthAction {
         
         $this->renderOptions['tableStruct'] = json_encode($tableColsJson);
         $this->renderOptions['model'] = $this->trimmed('model');
+        common_debug("tableColsJson: ".print_r($tableColsJson,true));
         
         $this->render ( 'admintablelist', $this->renderOptions );
     }

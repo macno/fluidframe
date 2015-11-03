@@ -9,7 +9,6 @@ block content
 block pageJavascript
     script.
         $(document).ready(function(){
-            console.log("Ready: #{this.model}");
             $("#example").DataTable({
                 ajax:'/admin/api/#{this.model}/datatable',
                 processing: true,

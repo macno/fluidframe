@@ -1,0 +1,20 @@
+{
+    "PROVA": {
+        "key6": "Lorem Ipsum 6",
+        "key5": "Lorem Ipsum 5",
+        "key4": "Lorem Ipsum 4",
+        "key3": "Lorem Ipsum 3",
+        "key2": "Lorem Ipsum 2",
+        "key1": "Lorem Ipsum 1"
+    },
+    "ADMIN": {
+        "out": "testo tradotto",
+        "tbt": "da tradurre",
+        "html": "HTML",
+        "key": "chiave",
+        "context": "contesto",
+        "lang": "lingua",
+        "original_text": "testo originale",
+        "translation": "testo tradotto"
+    }
+}

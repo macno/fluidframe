@@ -12,7 +12,6 @@ function _i18n($context, $key, $deflt,$html = false) {
 
         $i = file_get_contents(INSTALLDIR.'/i18n/'.$_lang.'.json');
         $i18n = json_decode($i,true);
-        common_debug(print_r($i18n,true));
         if($_lang != common_config('site','language')) {
             // Load default language as fallback..
             $id = file_get_contents(INSTALLDIR.'/i18n/'.common_config('site','language').'.json');

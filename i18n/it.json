@@ -1,0 +1,76 @@
+{
+    "ADMIN": {
+        "out": {
+            "tbt": false,
+            "html": false,
+            "out": "Questo testo è stato tradotto"
+        },
+        "tbt": {
+            "tbt": true,
+            "html": false,
+            "out": "da tradurre"
+        },
+        "html": {
+            "tbt": true,
+            "html": false,
+            "out": "HTML"
+        },
+        "key": {
+            "tbt": true,
+            "html": false,
+            "out": "chiave"
+        },
+        "context": {
+            "tbt": true,
+            "html": false,
+            "out": "contesto"
+        },
+        "lang": {
+            "tbt": true,
+            "html": false,
+            "out": "lingua"
+        },
+        "original_text": {
+            "tbt": true,
+            "html": false,
+            "out": "testo originale"
+        },
+        "translation": {
+            "tbt": true,
+            "html": false,
+            "out": "testo tradotto"
+        }
+    },
+    "PROVA": {
+        "key6": {
+            "tbt": true,
+            "html": false,
+            "out": "Lorem Ipsum 6"
+        },
+        "key5": {
+            "tbt": true,
+            "html": false,
+            "out": "Lorem Ipsum 5"
+        },
+        "key4": {
+            "tbt": true,
+            "html": false,
+            "out": "Lorem Ipsum 4"
+        },
+        "key3": {
+            "tbt": true,
+            "html": false,
+            "out": "Lorem Ipsum 3"
+        },
+        "key2": {
+            "tbt": true,
+            "html": false,
+            "out": "Lorem Ipsum 2"
+        },
+        "key1": {
+            "tbt": true,
+            "html": false,
+            "out": "Lorem Ipsum 1"
+        }
+    }
+}
