@@ -25,7 +25,7 @@ class Translation
         $tableParams['start']=$args['start'];
         $tableParams['length']=$args['length'];
         $tableParams['search']=$args['search']['value'];
-        common_debug("tableParams: ".print_r($tableParams,true));
+        // common_debug("tableParams: ".print_r($tableParams,true));
         return $tableParams;
     }
 
@@ -33,11 +33,13 @@ class Translation
         return array (
                 'lang' => array (
                         'i18n' => _i18n('ADMIN', 'lang', 'lingua'),
+                        'selectable'=> true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'context' => array (
                         'i18n' => _i18n('ADMIN', 'context', 'contesto'),
+                        'selectable'=> true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
@@ -55,11 +57,13 @@ class Translation
                 ) ,
                 'html' => array (
                         'i18n' => _i18n('ADMIN', 'html', 'HTML'),
+                        'selectable'=> true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'tbt' => array (
                         'i18n' => _i18n('ADMIN', 'tbt', 'da tradurre'),
+                        'selectable'=> true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
@@ -145,7 +149,7 @@ class Translation
                                             }
                                             break;
                                 case 'src':
-                                case 'out': common_debug('s '.$col['search']['value'].' v '.$vals[$col['data']]);
+                                case 'out': // common_debug('s '.$col['search']['value'].' v '.$vals[$col['data']]);
                                             if(strpos($vals[$col['data']],$col['search']['value'])===false){
                                                 $found = false;
                                             }

@@ -27,13 +27,27 @@ class AdmintranslationlistAction extends AuthAction {
             if(!isset($translationCol['visible']) || $translationCol['visible']) {
                 $translationColsJson[] = array(
                         'data'=>$translationName,
-                        'title'=>$translationCol['i18n']
+                        'title'=>$translationCol['i18n'],
+                        'search'=>((isset($translationCol['selectable'])&&($translationCol['selectable'])) ?
+                                '<select id="search_'. $translationName .'"><option value=""></option></select>' :
+                                '<input type="text" id="search_'. $translationName .'">')
                 );
             }
         }
         
+        $srcData = array();
+        $i = file_get_contents(INSTALLDIR.'/i18n/sources.json');
+        $l = json_decode($i,true);
+        if($l === null) {
+            echo "There's an error parsing sources.json\n";
+        } else {
+            $srcData = $l;
+        }
+
         $this->renderOptions['translationStruct'] = json_encode($translationColsJson);
         $this->renderOptions['model'] = $this->trimmed('model');
+        $this->renderOptions['langs'] = json_encode(array_keys(common_config('site','langs')));
+        $this->renderOptions['contexts'] = json_encode(array_keys($srcData));
         
         $this->render ( 'admintranslationlist', $this->renderOptions );
     }
