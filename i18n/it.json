@@ -1,76 +1,96 @@
 {
-    "ADMIN": {
-        "out": {
-            "tbt": false,
-            "html": false,
-            "out": "Questo testo è stato tradotto"
-        },
-        "tbt": {
-            "tbt": true,
-            "html": false,
-            "out": "da tradurre"
-        },
-        "html": {
-            "tbt": true,
-            "html": false,
-            "out": "HTML"
-        },
-        "key": {
-            "tbt": true,
-            "html": false,
-            "out": "chiave"
-        },
-        "context": {
-            "tbt": true,
-            "html": false,
-            "out": "contesto"
-        },
-        "lang": {
-            "tbt": true,
-            "html": false,
-            "out": "lingua"
-        },
-        "original_text": {
-            "tbt": true,
-            "html": false,
-            "out": "testo originale"
-        },
-        "translation": {
-            "tbt": true,
-            "html": false,
-            "out": "testo tradotto"
-        }
-    },
     "PROVA": {
         "key6": {
             "tbt": true,
             "html": false,
+            "in": "Lorem Ipsum 6",
             "out": "Lorem Ipsum 6"
         },
         "key5": {
             "tbt": true,
             "html": false,
+            "in": "Lorem Ipsum 5",
             "out": "Lorem Ipsum 5"
         },
         "key4": {
             "tbt": true,
             "html": false,
+            "in": "Lorem Ipsum 4",
             "out": "Lorem Ipsum 4"
         },
         "key3": {
             "tbt": true,
             "html": false,
+            "in": "Lorem Ipsum 3",
             "out": "Lorem Ipsum 3"
+        },
+        "key1": {
+            "tbt": false,
+            "html": true,
+            "in": "<h1>Lorem Ipsum 1<\/h1>",
+            "out": "<h1>Lorem Ipsum 1<\/h1>"
         },
         "key2": {
             "tbt": true,
             "html": false,
+            "in": "Lorem Ipsum 2",
             "out": "Lorem Ipsum 2"
-        },
-        "key1": {
+        }
+    },
+    "ADMIN": {
+        "context": {
             "tbt": true,
             "html": false,
-            "out": "Lorem Ipsum 1"
+            "in": "contesto",
+            "out": "contesto"
+        },
+        "lang": {
+            "tbt": true,
+            "html": false,
+            "in": "lingua",
+            "out": "lingua"
+        },
+        "original_text": {
+            "tbt": true,
+            "html": false,
+            "in": "testo originale",
+            "out": "testo originale"
+        },
+        "translation": {
+            "tbt": true,
+            "html": false,
+            "in": "testo tradotto",
+            "out": "testo tradotto"
+        },
+        "key": {
+            "tbt": true,
+            "html": false,
+            "in": "chiave",
+            "out": "chiave"
+        },
+        "src": {
+            "tbt": true,
+            "html": false,
+            "in": "testo originale",
+            "out": "testo originale"
+        },
+        "html": {
+            "tbt": true,
+            "html": false,
+            "in": "HTML",
+            "out": "HTML"
+        },
+        "tbt": {
+            "tbt": true,
+            "html": false,
+            "in": "da tradurre",
+            "out": "da tradurre"
+        },
+        "out": {
+            "tbt": true,
+            "html": false,
+            "in": "testo tradotto",
+            "out": "testo tradotto"
         }
     }
 }

@@ -59,7 +59,8 @@ class Translation
                         'i18n' => _i18n('ADMIN', 'html', 'HTML'),
                         'selectable'=> true,
                         'searchable'=> true,
-                        'sortable' => true
+                        'sortable' => true,
+                        'visible' => false
                 ) ,
                 'tbt' => array (
                         'i18n' => _i18n('ADMIN', 'tbt', 'da tradurre'),
@@ -67,10 +68,17 @@ class Translation
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
-                'out' => array (
-                        'i18n' => _i18n('ADMIN', 'out', 'testo tradotto'),
+                'in' => array (
+                        'i18n' => _i18n('ADMIN', 'src', 'testo inserito'),
                         'searchable'=> true,
-                        'sortable' => true
+                        'sortable' => false,
+                        'visible' => true
+                ) ,
+                'out' => array (
+                        'i18n' => _i18n('ADMIN', 'out', 'testo finale'),
+                        'searchable'=> true,
+                        'sortable' => true,
+                        'visible' => false
                 ) 
         );
     }
@@ -142,15 +150,17 @@ class Translation
                         if($col['search']['value']!=''){
                             switch($col['data']){
                                 case 'lang':
-                                case 'context':
+                                case 'context': if($col['search']['value']!=$vals[$col['data']]){
+                                                    $found = false;
+                                                }
+                                                break;
                                 case 'html':
-                                case 'tbt': if($col['search']['value']!=$vals[$col['data']]){
+                                case 'tbt': if(($col['search']['value'] === 'true' ? true : false)!=$vals[$col['data']]){
                                                 $found = false;
                                             }
                                             break;
                                 case 'src':
-                                case 'out': // common_debug('s '.$col['search']['value'].' v '.$vals[$col['data']]);
-                                            if(strpos($vals[$col['data']],$col['search']['value'])===false){
+                                case 'out': if(strpos($vals[$col['data']],$col['search']['value'])===false){
                                                 $found = false;
                                             }
                                             break;
@@ -161,15 +171,13 @@ class Translation
                         }
                     }
                     if($found){
-                        $i18nData[]=$vals;
+                        // $vals['in']=htmlentities($vals['in']);
+                        $i18nData[]=array_merge($vals,array('rowId'=>$vals['lang'].'-'.$vals['context'].'-'.$vals['key']));
                     }
                     $recordsTotal++;
                 }
             }
         }
-        // $recordsTotal=count($i18nData);
-
-        // $i18nData = $this->search($i18nData,$tableParams['search']);
         $recordsFiltered=count($i18nData);
 
         $colNames=$this->visible_cols();

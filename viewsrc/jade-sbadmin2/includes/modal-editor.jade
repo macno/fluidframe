@@ -1,0 +1,29 @@
+#modal-editor.modal.fade
+    .modal-dialog
+        .modal-content
+            .modal-header
+                button.close(type="button", data-dismiss="modal", aria-label="Chiudi")
+                    span(aria-hidden="true") &times;
+                h4.modal-title Traduzione
+            .modal-body
+                p Corpo
+                form
+                    input#lang.editor(type='hidden', name='lang')
+                    input#context.editor(type='hidden', name='context')
+                    input#key.editor(type='hidden', name='key')
+                    .form-group#code-group.hidden
+                        label Codice
+                        select.form-control#code.editor(name='code')
+                            option(value='testo') Testo semplice
+                            option(value='html') HTML
+                            option(value='markdown') Markdown
+                    .form-group
+                        label Testo
+                        textarea#in.editor.form-control(name='in')
+                    .form-group
+                        label Codice
+                        textarea#out.editor.form-control(readonly, name='out')
+
+            .modal-footer
+                button.btn.btn-default(type="button", data-dismiss="modal") Chiudi
+                button.btn.btn-primary#save-translation(type="button") Salva

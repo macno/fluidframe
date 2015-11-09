@@ -126,6 +126,7 @@ function checkString($arg) {
             // is to be translated?
             if(isset($i18ns[$lang][$arg[0]][$arg[1]]['tbt']) && $i18ns[$lang][$arg[0]][$arg[1]]['tbt']) {
                 // Update it by law
+                $i18ns[$lang][$arg[0]][$arg[1]]['in']=$arg[2];
                 $i18ns[$lang][$arg[0]][$arg[1]]['out']=$arg[2];
                 $i18ns[$lang][$arg[0]][$arg[1]]['html']=(isset($arg[3]) ? $arg[3] : false);
             }
@@ -137,6 +138,7 @@ function checkString($arg) {
             $i18ns[$lang][$arg[0]][$arg[1]] = array(
                     'tbt'=>true, // ToBeTranslated
                     'html'=>(isset($arg[3]) ? $arg[3] : false),
+                    'in'=>$arg[2],
                     'out'=>$arg[2]
             );
         }

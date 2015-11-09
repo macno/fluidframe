@@ -8,13 +8,14 @@
         "key1": "Lorem Ipsum 1"
     },
     "ADMIN": {
-        "out": "testo tradotto",
-        "tbt": "da tradurre",
-        "html": "HTML",
-        "key": "chiave",
         "context": "contesto",
         "lang": "lingua",
         "original_text": "testo originale",
-        "translation": "testo tradotto"
+        "translation": "testo tradotto",
+        "key": "chiave",
+        "src": "testo originale",
+        "html": "HTML",
+        "tbt": "da tradurre",
+        "out": "testo tradotto"
     }
 }

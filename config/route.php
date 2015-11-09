@@ -24,6 +24,7 @@ class Route {
         );
         // Gestione Traduzione
         $router->add('admintranslationapi', '/admin/api/translation/datatable');
+        $router->add('adminsavetranslationapi', '/admin/api/translation/save');
         $router->add('admintranslationlist', '/admin/translation');
 
         // Gestione Tabelle

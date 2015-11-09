@@ -7,7 +7,7 @@ class AdmintranslationlistAction extends AuthAction {
     function prepare($args) {
         parent::prepare($args);
         /* Chiamate di test per avere testi nelle traduzioni
-        _i18n('PROVA', 'key1', 'Lorem Ipsum 1');
+        _i18n('PROVA', 'key1', 'Lorem Ipsum 1',true);
         _i18n('PROVA', 'key2', 'Lorem Ipsum 2');
         _i18n('PROVA', 'key3', 'Lorem Ipsum 3');
         _i18n('PROVA', 'key4', 'Lorem Ipsum 4');
@@ -27,6 +27,7 @@ class AdmintranslationlistAction extends AuthAction {
             if(!isset($translationCol['visible']) || $translationCol['visible']) {
                 $translationColsJson[] = array(
                         'data'=>$translationName,
+                        'className'=>$translationName,
                         'title'=>$translationCol['i18n'],
                         'search'=>((isset($translationCol['selectable'])&&($translationCol['selectable'])) ?
                                 '<select id="search_'. $translationName .'"><option value=""></option></select>' :
@@ -52,10 +53,21 @@ class AdmintranslationlistAction extends AuthAction {
         $this->render ( 'admintranslationlist', $this->renderOptions );
     }
 
+    function getStylesheets(){
+        return array(
+            "/bower_components/markitup/markitup/skins/markitup/style.css",
+            "/bower_components/markitup/markitup/sets/html/style.css",
+            "/bower_components/markitup/markitup/sets/markdown/style.css"
+        );
+    }
+
     function getJavascripts(){
         return array(
             "/bower_components/datatables/media/js/jquery.dataTables.min.js",
-            "/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"
+            "/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js",
+            "/bower_components/markitup/markitup/jquery.markitup.js",
+            "/bower_components/markitup/markitup/sets/markdown/set.js",
+            "/bower_components/markitup/markitup/sets/html/set.js"
         );
     }
 
