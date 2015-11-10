@@ -27,8 +27,9 @@
         "key1": {
             "tbt": false,
             "html": true,
-            "in": "<h1>Lorem Ipsum 1<\/h1>",
-            "out": "<h1>Lorem Ipsum 1<\/h1>"
+            "in": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
+            "out": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
+            "code": "html"
         },
         "key2": {
             "tbt": true,

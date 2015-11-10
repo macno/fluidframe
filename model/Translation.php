@@ -72,13 +72,13 @@ class Translation
                         'i18n' => _i18n('ADMIN', 'src', 'testo inserito'),
                         'searchable'=> true,
                         'sortable' => false,
-                        'visible' => true
+                        'visible' => false
                 ) ,
                 'out' => array (
                         'i18n' => _i18n('ADMIN', 'out', 'testo finale'),
                         'searchable'=> true,
                         'sortable' => true,
-                        'visible' => false
+                        'visible' => true
                 ) 
         );
     }

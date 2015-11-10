@@ -54,8 +54,15 @@ class AdminsavetranslationapiAction extends AuthAction {
                 'error'=>"Translations " . $this->lang." not loaded"
             );
         }
-        common_debug('Code: '.$this->code);
-        $l[$this->context][$this->tkey]['out']=$this->out;
+        switch($this->code){
+            case 'testo': $l[$this->context][$this->tkey]['out']=nl2br($this->out);
+                        break;
+            case 'html': $l[$this->context][$this->tkey]['out']=$this->out;
+                        break;
+            case 'markdown':
+                            $l[$this->context][$this->tkey]['out']=Parsedown::instance()->text($this->in);
+                            break;
+        }
         $l[$this->context][$this->tkey]['in']=$this->in;
         $l[$this->context][$this->tkey]['code']=$this->code;
         $l[$this->context][$this->tkey]['tbt']=false;

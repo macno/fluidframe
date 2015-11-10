@@ -23,34 +23,60 @@ $(document).ready(function(){
     $(document).on('change', '#code:visible', function(){
         changeCode($(this).val());
     });
-    $(document).on('change', '#in', function(){
-        saveOut();
-    });
+    // $(document).on('change', '#in', function(){
+    //     convertIn2Out();
+    // });
     $(document).on('click','#save-translation',function(){
-        saveOut();
-        $.post('/admin/api/translation/save',$('#modal-editor form .editor').serialize(),function(data){
-            var row=$('#translation tbody tr:eq('+$('#modal-editor').data('index')+')');
-            $(row).find('.tbt').text(data['data']['tbt']);
-            $(row).find('.out').text(data['data']['out']);
-            $(row).find('.html').text(data['data']['html']);
-            $('#translation').DataTable().draw();
-            $('#modal-editor').modal('hide');
-        });
+        convertIn2Out(save);
     });
 });
-function saveOut(){
-    switch($('#code:visible').val()){
-        case 'markdown': // TODO
-                        break;
+function save(){
+    $('#out').removeClass('hidden');
+    $.post('/admin/api/translation/save',$('#modal-editor form .editor').serialize(),function(data){
+        $('#out').addClass('hidden');
+        var row=$('#translation tbody tr:eq('+$('#modal-editor').data('index')+')');
+        $(row).find('.tbt').text(data['data']['tbt']);
+        $(row).find('.out').text(data['data']['out']);
+        $(row).find('.html').text(data['data']['html']);
+        $('#translation').DataTable().draw();
+        $('#modal-editor').modal('hide');
+    });
+}
+function convertIn2Out(callback){
+    var actuallang =$('#code:visible').val();
+    switch(actuallang){
         case 'html':
+                    $('#out').val($('#in').val());
+                    callback();
+                    break;
+
         case 'testo':
-        default:        $('#out').val($('#in').val());
-                        break;
+        case 'markdown':
+                    $.post('/admin/api/conversion',{ conversion: actuallang+'2html', in: $('#in').val() }, function(data){
+                        $('#out').val(data['out']);
+                        callback();
+                    });
+                    break;
+        default: 
+                    $('#out').val($('#in').val());
+                    callback();
+                    break;
     }
 }
 function changeCode(code){
+    var actual=$('#code').val(),
+        prev=$('#code').data('prev'),
+        conversion='';
+    if(actual != prev) {
+        $('#code').data('prev',actual);
+        conversion = prev+"2"+actual;
+        $.post('/admin/api/conversion',{ conversion: conversion, in: $('#in').val() }, function(data){
+            $('#in').val(data['out']);
+        });
+    }
     $("#in").markItUpRemove();
     switch(code){
+        case 'testo': $("#in").addClass('markItUpEditor'); break;
         case 'html': $("#in").markItUp(myHtmlSettings); break;
         case 'markdown': $("#in").markItUp(myMarkdownSettings); break;
     }
@@ -94,7 +120,8 @@ function changeSearch(){
 }
 function openEditor(index){
     var elem = $('#translation').DataTable().ajax.json()['data'][index];
-    // console.log(elem);
+    $("#in").markItUpRemove();
+    $('#in').addClass('markItUpEditor');
     $('#modal-editor').data('index',index);
     $('#modal-editor').modal();
     $('#modal-editor form .editor[type!="checkbox"]:not("select")').each(function(){
@@ -104,12 +131,11 @@ function openEditor(index){
         $(this).attr('checked',elem[$(this).attr('id')]);
     });
     if(elem['html'] === true){
-        // debugger;
         $('#code option[value='+ elem['code'] +']').prop('selected',true);
+        $('#code').data('prev',elem['code']);
         $('#code-group').removeClass('hidden');
         changeCode($('#code').val());
     }else{
-        $("#in").markItUpRemove();
         $('#code-group').addClass('hidden');
     }
 }

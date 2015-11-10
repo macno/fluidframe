@@ -27,9 +27,9 @@
         "key1": {
             "tbt": false,
             "html": true,
-            "in": "<h1>html<\/h1>\r\n<p>bold<\/p>\r\n<ul>\r\n<li>prova 1<\/li>\r\n<li>prova 2<\/li>\r\n<li>prova 3<\/li>\r\n<li>prova 4<\/li>\r\n<li>prova 5<\/li>\r\n<li>prova 6<\/li>\r\n<li>prova 7<\/li>\r\n<li>prova 8<\/li>\r\n<li>prova 9<\/li>\r\n<li>prova 10<\/li>\r\n<\/ul>\r\n",
-            "out": "<h1>html<\/h1>\r\n<p>bold<\/p>\r\n<ul>\r\n<li>prova 1<\/li>\r\n<li>prova 2<\/li>\r\n<li>prova 3<\/li>\r\n<li>prova 4<\/li>\r\n<li>prova 5<\/li>\r\n<li>prova 6<\/li>\r\n<li>prova 7<\/li>\r\n<li>prova 8<\/li>\r\n<li>prova 9<\/li>\r\n<li>prova 10<\/li>\r\n<\/ul>\r\n",
-            "code": "html"
+            "in": "markdown\r\n========\r\n\r\n- item 1\r\n- item 2\r\n- item 3\r\n- item 4\r\n- item 5\r\n\r\n**fine**",
+            "out": "<h1>markdown<\/h1>\n<ul>\n<li>item 1<\/li>\n<li>item 2<\/li>\n<li>item 3<\/li>\n<li>item 4<\/li>\n<li>item 5<\/li>\n<\/ul>\n<p><strong>fine<\/strong><\/p>",
+            "code": "markdown"
         },
         "key2": {
             "tbt": true,
@@ -40,10 +40,11 @@
     },
     "ADMIN": {
         "context": {
-            "tbt": true,
+            "tbt": false,
             "html": false,
-            "in": "contesto",
-            "out": "contesto"
+            "in": "questo \u00e8 il contesto\r\npu\u00f2 essere su pi\u00f9 righe",
+            "out": "questo \u00e8 il contesto\r\npu\u00f2 essere su pi\u00f9 righe",
+            "code": "html"
         },
         "lang": {
             "tbt": true,
