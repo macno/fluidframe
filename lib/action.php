@@ -55,6 +55,12 @@ class Action {
     public function render($page, Array $params = array()) {
         
         $params = array_merge ( $this->renderParams, $params );
+        $typekit = array (
+            'tkenabled' => (common_config('typekit','enabled') ? true : false),
+            'tkasync' => (common_config('typekit','async') ? "true" : "false"),
+            'tkurl' => common_config('typekit','url')
+        );
+        $params = array_merge ( $params, $typekit );
         $this->handleHreflangs($params);
         $this->handleTitle($params);
         $this->handleStylesheets($params);

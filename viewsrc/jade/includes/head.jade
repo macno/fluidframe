@@ -6,4 +6,14 @@ each hreflang in this.hreflangs
 each stylesheet in this.stylesheets
   link(href=stylesheet['href'] media=stylesheet['media'])
 
+if this.tkenabled
+    script(src="#{this.tkurl}")
+    script.
+        try{
+            Typekit.load({
+                async: #{this.tkasync}
+            });
+        }
+        catch(e){}
+
 block pageHead
