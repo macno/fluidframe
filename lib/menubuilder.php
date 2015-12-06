@@ -44,7 +44,7 @@ class MenuBuilder {
         }
         
         
-        $mi = new Menuitem();
+        $mi = new MenuItem();
         $qry = "select m.name menu_name, mmi.sub_menu_id sub_menu_id, mi.id, mi.name, mi.action, mi.params , mi.status 
         from menu_menuitem mmi 
         left outer JOIN menuitem mi on (mmi.menuitem_id = mi.id) 
