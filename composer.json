@@ -6,12 +6,13 @@
         }
     ],
   "require": {
-    "aura/router": "*",
-    "monolog/monolog": "*",
-    "pear-pear.php.net/DB_DataObject" : "*",
+    "aura/router": "2.3.0",
+    "monolog/monolog": "1.17.2",
+    "pear-pear.php.net/PEAR": "1.9.5",
+    "pear-pear.php.net/DB_DataObject" : "1.11.4",
     "pear-pear.php.net/MDB2" : "2.4.1",
     "pear-pear.php.net/MDB2_Driver_mysqli": ">=1.4.1.0",
     "pear-pear.php.net/MDB2_Driver_pgsql": ">=1.4.1.0",
-    "pear-pear.php.net/Console_Getopt": "*"
+    "pear-pear.php.net/Console_Getopt": "1.4.1"
   }
 }
