@@ -23,7 +23,6 @@ class Action {
             $this->setLang($lang);
         $this->setHomepage();
         $this->setSitetitle();
-        
 
     }
     
@@ -31,7 +30,12 @@ class Action {
         global $_cur;
         $this->args = $args;
         if(isset($this->args['lang'])) {
-            $this->setLang($this->args['lang']);
+            $lang = $this->args['lang'];
+            $langs = common_config('site','langs');
+            if(!isset($langs[$lang])) {
+                common_redirect(common_get_route('index'));
+            }
+            $this->setLang($lang);
         }
         if(common_logged_in()) {
             $this->account = $_cur;
