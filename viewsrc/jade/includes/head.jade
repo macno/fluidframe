@@ -1,19 +1,15 @@
 title= this.title
+meta(charset='utf-8')
+meta(http-equiv='X-UA-Compatible', content='IE=edge')
+meta(name='viewport', content='width=device-width, initial-scale=1')
 
 each hreflang in this.hreflangs
   link(rel="alternate" hreflang=hreflang['lang'] href=hreflang['href'])
 
 each stylesheet in this.stylesheets
-  link(href=stylesheet['href'] media=stylesheet['media'])
+  link(href=stylesheet['href'] rel="stylesheet" media=stylesheet['media'] type="text/css")
 
 if this.tkenabled
     script(src="#{this.tkurl}")
-    script.
-        try{
-            Typekit.load({
-                async: #{this.tkasync}
-            });
-        }
-        catch(e){}
-
+    script try{Typekit.load({ async: #{this.tkasync} });}catch(e){}
 block pageHead

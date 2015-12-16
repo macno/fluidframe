@@ -65,17 +65,17 @@ class Role extends DataTable_DataObject {
                         'visible' => false 
                 ) ,
                 'name'=> array (
-                        'i18n' => _18n('ADMIN', 'name', 'Name'),
+                        'i18n' => _i18n('ADMIN', 'name', 'Name'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'description'=> array (
-                        'i18n' => _18n('ADMIN', 'desc', 'Description'),
+                        'i18n' => _i18n('ADMIN', 'desc', 'Description'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'status'=> array (
-                        'i18n' => _18n('ADMIN', 'status', 'Status'),
+                        'i18n' => _i18n('ADMIN', 'status', 'Status'),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,

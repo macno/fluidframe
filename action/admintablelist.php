@@ -18,12 +18,11 @@ class AdmintablelistAction extends AuthAction {
         $tableColsJson = array();
         
         foreach ($tableCols as $tableName=>$tableCol) {
-            if(!isset($tableCol['visible']) || $tableCol['visible']) {
-                $tableColsJson[] = array(
-                        'data'=>$tableName,
-                        'title'=>$tableCol['i18n']
-                );
-            }
+            $tableColsJson[] = array(
+                    'data'=>$tableName,
+                    'title'=>(isset($tableCol['i18n'])) ? $tableCol['i18n'] : $tableName,
+                    'visible'=>(isset($tableCol['visible'])) ? $tableCol['visible'] : true
+            );
         }
         
         
