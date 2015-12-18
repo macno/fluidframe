@@ -9,7 +9,7 @@ class AdminroleeditAction extends AuthAction {
 
     function prepare($args) {
         parent::prepare($args);
-        $id = ( int ) $this->trimmed ( 'rowid' );
+        $id = ( int ) $this->trimmed ( 'id' );
         $this->role = Role::staticGet ( 'id', $id );
         if (! $this->role) {
             $error = new ErrorAction ( $_lang );
@@ -36,9 +36,18 @@ class AdminroleeditAction extends AuthAction {
                 )));
             }
             // se non si tratta di una cancellazione allora devo validare
-            $validationRules = array();
+            foreach( Role::getAdminTableStruct() as $fieldName=>$rules){
+                foreach( $rules as $rule=>$extra ){
+                    // gestione campi richiesti
+                    if($rule == 'required'){
+                        $validationRules[$fieldName][$rule] =
+                            $this->trimmed($fieldName);
+                    }
+                    // common_debug("validationRule: ".print_r($validationRules[$fieldName],true));
+                }
+            }
             $this->inputError = Role::validateData($validationRules);
-            // $this->renderOptions['inputError']=array('name'=>'Errore');
+
             $this->role->name = $this->trimmed('name');
             $this->role->description = $this->trimmed('description');
             $this->role->status = ($this->trimmed('status') == 'on') ? 1 : 0;

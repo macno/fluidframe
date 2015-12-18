@@ -187,7 +187,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         }
         $qry .= " limit ".$tableParams['length'] . " offset ". $tableParams['start'] ;
 
-        common_debug("SQL: ".$qry);
+        // common_debug("SQL: ".$qry);
         try {
             $this->query($qry);
         } catch (Exception $ex) {
@@ -213,6 +213,16 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         $result = array(
             // 'fieldId'=> 'errorMessage'
         );
+        foreach($validationRules as $fieldName=>$rules){
+            foreach( $rules as $rule=>$extra ){
+                // common_debug($fieldName.": ".$rule." - ".$extra);
+                if($rule == 'required'){
+                    if(empty($extra)){
+                        $result[$fieldName]="Campo obbligatorio";
+                    }
+                }
+            }
+        }
         return $result;
     }
 }
