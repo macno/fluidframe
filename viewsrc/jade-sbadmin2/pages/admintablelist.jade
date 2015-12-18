@@ -16,7 +16,8 @@ block pageJavascript
                 serverSide: true,
                 columns: !{this.tableStruct}
             });
-            $("input[type='search']").hide().after($('<input type="text" id="fakeSearch">'));
+            $("input[type='search']").hide().after(
+                $('<input type="text" id="fakeSearch">'));
             $("#fakeSearch").on("keyup paste cut",updateSearch)
             $(document).on('click','#tablelist tbody tr',function(){
                 var table = $('#tablelist').DataTable();
@@ -25,17 +26,20 @@ block pageJavascript
         });
         function updateSearch(){
             var fakeSearch,search;
-          if(typeof tout !== 'undefined'){
-            clearTimeout(tout);
-          }
-          tout=setTimeout(function(){
-            fakeSearch=$("#fakeSearch").val().trim();
-            search=$("input[type='search']").val();
-            if(search != fakeSearch){
-                $("input[type='search']").val(fakeSearch).trigger("search.DT");
+            if(typeof tout !== 'undefined'){
+                clearTimeout(tout);
             }
-          },500);
+            tout=setTimeout(function(){
+                fakeSearch=$("#fakeSearch").val().trim();
+                search=$("input[type='search']").val();
+                if(search != fakeSearch){
+                    $("input[type='search']").val(fakeSearch)
+                        .trigger("search.DT");
+                }
+            },500);
         }
         function openEditor(rowId){
             console.log(rowId);
+            window.location = window.location.origin + window.location.pathname
+                + "/" + rowId;
         }

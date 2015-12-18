@@ -11,25 +11,29 @@ class AdmintablelistAction extends AuthAction {
 
     function handle() {
         parent::handle();
-        
+
         $model = ucfirst($this->trimmed('model'));
         $tableCols = $model::getAdminTableStruct();
-        
+
         $tableColsJson = array();
-        
+
         foreach ($tableCols as $tableName=>$tableCol) {
             $tableColsJson[] = array(
                     'data'=>$tableName,
-                    'title'=>(isset($tableCol['i18n'])) ? $tableCol['i18n'] : $tableName,
-                    'visible'=>(isset($tableCol['visible'])) ? $tableCol['visible'] : true
+                    'title'=>(isset($tableCol['i18n']))
+                        ? $tableCol['i18n']
+                        : $tableName,
+                    'visible'=>(isset($tableCol['visible']))
+                        ? $tableCol['visible']
+                        : true
             );
         }
-        
-        
+
+
         $this->renderOptions['tableStruct'] = json_encode($tableColsJson);
         $this->renderOptions['model'] = $this->trimmed('model');
-        common_debug("tableColsJson: ".print_r($tableColsJson,true));
-        
+        // common_debug("tableColsJson: ".print_r($tableColsJson,true));
+
         $this->render ( 'admintablelist', $this->renderOptions );
     }
 

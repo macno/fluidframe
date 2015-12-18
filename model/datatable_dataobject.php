@@ -153,9 +153,9 @@ abstract class DataTable_DataObject extends Managed_DataObject {
     function getTableData($args){
         $tableParams=$this->parse_args($args);
         $tableCols = static::getAdminTableStruct();
-        
+
         $sqlCols = array();
-        
+
         foreach ($tableCols as $colName=>$tableCol) {
             $sqlCols[] = $colName;
         }
@@ -207,5 +207,12 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             'recordsFiltered' => (int)$recordsFiltered,
             'data'=>$objs
         );
+    }
+
+    function validateData($validationRules){
+        $result = array(
+            // 'fieldId'=> 'errorMessage'
+        );
+        return $result;
     }
 }

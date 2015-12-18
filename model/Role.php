@@ -62,20 +62,24 @@ class Role extends DataTable_DataObject {
     static function getAdminTableStruct() {
         return array (
                 'id'=> array (
-                        'visible' => false 
+                        'required' => true,
+                        'visible' => false
                 ) ,
                 'name'=> array (
                         'i18n' => _i18n('ADMIN', 'name', 'Name'),
+                        'required' => true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'description'=> array (
                         'i18n' => _i18n('ADMIN', 'desc', 'Description'),
+                        'required' => true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'status'=> array (
                         'i18n' => _i18n('ADMIN', 'status', 'Status'),
+                        'required' => true,
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
@@ -93,4 +97,7 @@ class Role extends DataTable_DataObject {
         return parent::staticGet(__CLASS__,$k, $v);
     }
     
+    function validateData($validationRules){
+        return parent::validateData($validationRules);
+    }
 }
