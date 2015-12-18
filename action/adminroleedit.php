@@ -36,14 +36,18 @@ class AdminroleeditAction extends AuthAction {
                 )));
             }
             // se non si tratta di una cancellazione allora devo validare
-            foreach( Role::getAdminTableStruct() as $fieldName=>$rules){
-                foreach( $rules as $rule=>$extra ){
-                    // gestione campi richiesti
-                    if($rule == 'required'){
-                        $validationRules[$fieldName][$rule] =
-                            $this->trimmed($fieldName);
+            foreach( Role::getAdminTableStruct() as $fieldName=>$keys){
+                foreach( $keys as $key=>$rules){
+                    if($key == "rules"){
+                        foreach( $rules as $rule=>$extra ){
+                            // gestione campi richiesti
+                            if($rule == 'required'){
+                                $validationRules[$fieldName][$rule] =
+                                    $this->trimmed($fieldName);
+                            }
+                            // common_debug("validationRule: ".print_r($validationRules[$fieldName],true));
+                        }
                     }
-                    // common_debug("validationRule: ".print_r($validationRules[$fieldName],true));
                 }
             }
             $this->inputError = Role::validateData($validationRules);

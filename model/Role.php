@@ -62,24 +62,32 @@ class Role extends DataTable_DataObject {
     static function getAdminTableStruct() {
         return array (
                 'id'=> array (
-                        'required' => true,
+                        'rules' => array(
+                            'required' => true,
+                        ),
                         'visible' => false
                 ) ,
                 'name'=> array (
                         'i18n' => _i18n('ADMIN', 'name', 'Name'),
-                        'required' => true,
+                        'rules' => array(
+                            'required' => true,
+                        ),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'description'=> array (
                         'i18n' => _i18n('ADMIN', 'desc', 'Description'),
-                        'required' => true,
+                        'rules' => array(
+                            'required' => true,
+                        ),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
                 'status'=> array (
                         'i18n' => _i18n('ADMIN', 'status', 'Status'),
-                        'required' => true,
+                        'rules' => array(
+                            'required' => true,
+                        ),
                         'searchable'=> true,
                         'sortable' => true
                 ) ,
