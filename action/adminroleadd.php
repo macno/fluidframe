@@ -54,7 +54,7 @@ class AdminroleaddAction extends AuthAction {
                 $this->renderOptions['role_description']= $this->role->description;
                 $this->renderOptions['role_status']= $this->role->status;
                 // common_debug("renderOptions: ".print_r($this->renderOptions,true));
-                $this->render ( 'adminroleedit', $this->renderOptions );
+                $this->render ( 'adminroleform', $this->renderOptions );
             }else{
                 $this->role->created = $this->role->modified = common_sql_now();
                 if($this->role->insert()){
@@ -66,6 +66,6 @@ class AdminroleaddAction extends AuthAction {
                 }
             }
         }
-        $this->render ( 'adminroleedit', $this->renderOptions );
+        $this->render ( 'adminroleform', $this->renderOptions );
     }
 }

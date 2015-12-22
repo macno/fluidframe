@@ -65,7 +65,7 @@ class AdminroleeditAction extends AuthAction {
                 $this->renderOptions['role_name']= $this->role->name;
                 $this->renderOptions['role_description']= $this->role->description;
                 $this->renderOptions['role_status']= $this->role->status;
-                $this->render ( 'adminroleedit', $this->renderOptions );
+                $this->render ( 'adminroleform', $this->renderOptions );
             }else{
                 $this->role->modified = common_sql_now();
                 if($this->role->update()){
@@ -80,7 +80,7 @@ class AdminroleeditAction extends AuthAction {
             $this->renderOptions['role_name']= $this->role->name;
             $this->renderOptions['role_description']= $this->role->description;
             $this->renderOptions['role_status']= $this->role->status;
-            $this->render ( 'adminroleedit', $this->renderOptions );
+            $this->render ( 'adminroleform', $this->renderOptions );
         }
     }
 }
