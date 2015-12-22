@@ -11,20 +11,23 @@ block content
                     value="#{this.role_name}")
                 span.text-danger(class=this.inputError['name'] ? '' : 'hidden')
                     | #{this.inputError['name']}
-            .form-group
+            .form-group(class=this.inputError['description'] ? 'has-error' : '')
                 label(for="description") Description
                 input#description.form-control(type="text", name="description",
                     required,
                     value="#{this.role_description}")
+                span.text-danger(class=this.inputError['description'] ? '' : 'hidden')
+                    | #{this.inputError['description']}
             .checkbox
                 label
-                    input#status(type="checkbox", name="status",
+                    input#status(type="checkbox", name="status", value="1",
                         checked=this.role_status == 1)
                     | Status
-            .checkbox
-                label
-                    input#remove(type="checkbox", name="remove")
-                    | Cancella ?
+            if this.role_id
+                .checkbox
+                    label
+                        input#remove(type="checkbox", name="remove")
+                        | Cancella ?
             button#save.btn.btn-default Salva
             button#cancel.btn.btn-default Annulla
 

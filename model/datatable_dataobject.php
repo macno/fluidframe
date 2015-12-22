@@ -217,7 +217,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             foreach( $rules as $rule=>$extra ){
                 // common_debug($fieldName.": ".$rule." - ".$extra);
                 if($rule == 'required'){
-                    if(empty($extra)){
+                    if($extra === ""){
                         $result[$fieldName]="Campo obbligatorio";
                     }
                 }

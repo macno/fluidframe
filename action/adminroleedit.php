@@ -5,12 +5,16 @@ if (! defined ( 'FLUIDFRAME' )) {
 class AdminroleeditAction extends AuthAction {
 
     var $role,
-        $inputError;
+        $inputError,
+        $field;
 
     function prepare($args) {
         parent::prepare($args);
-        $id = ( int ) $this->trimmed ( 'id' );
-        $this->role = Role::staticGet ( 'id', $id );
+        $this->field['id'] = (int) $this->trimmed('id');
+        $this->field['name'] = $this->trimmed('name');
+        $this->field['description'] = $this->trimmed('description');
+        $this->field['status'] = ($this->trimmed('status', 0) == '1') ? 1 : 0;
+        $this->role = Role::staticGet ( 'id', $this->field['id'] );
         if (! $this->role) {
             $error = new ErrorAction ( $_lang );
             $error->setErrorMessage ( 404, _i18n('ADMIN', 'unknownrole',
@@ -29,7 +33,7 @@ class AdminroleeditAction extends AuthAction {
         }
         if ($this->isPost ()) {
             // ho ricevuto i dati per l'aggiornamento/cancellazione
-            if($this->trimmed('remove') == 'on'){
+            if($this->trimmed( 'remove' ) == 'on'){
                 $this->role->delete();
                 common_redirect( common_get_route('admintablelist', array(
                     'model' => 'role'
@@ -43,7 +47,7 @@ class AdminroleeditAction extends AuthAction {
                             // gestione campi richiesti
                             if($rule == 'required'){
                                 $validationRules[$fieldName][$rule] =
-                                    $this->trimmed($fieldName);
+                                    $this->field[ $fieldName ];
                             }
                             // common_debug("validationRule: ".print_r($validationRules[$fieldName],true));
                         }
@@ -52,11 +56,12 @@ class AdminroleeditAction extends AuthAction {
             }
             $this->inputError = Role::validateData($validationRules);
 
-            $this->role->name = $this->trimmed('name');
-            $this->role->description = $this->trimmed('description');
-            $this->role->status = ($this->trimmed('status') == 'on') ? 1 : 0;
+            foreach ($this->field as $fieldName=>$value){
+                $this->role->$fieldName = $value;
+            }
             if(!empty($this->inputError)){
                 $this->renderOptions['inputError'] = $this->inputError;
+                $this->renderOptions['role_id']= $this->role->id;
                 $this->renderOptions['role_name']= $this->role->name;
                 $this->renderOptions['role_description']= $this->role->description;
                 $this->renderOptions['role_status']= $this->role->status;

@@ -38,6 +38,7 @@ class Route {
         $router->add('admintablelist', '/admin/{model}')
             ->addTokens(array('model' => ('[a-zA-Z0-9-\s_]+')));
 
+        $router->add('adminroleadd', '/admin/role/add');
         $router->add('adminroleedit', '/admin/role/{id}')
             ->addTokens(array('id' => ('[0-9]+')));
 
