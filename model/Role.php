@@ -21,42 +21,41 @@ class Role extends DataTable_DataObject {
                         'id' => array (
                                 'type' => 'serial',
                                 'not null' => true,
-                                'description' => 'unique identifier' 
+                                'description' => 'unique identifier'
                         ),
                         'name' => array (
                                 'type' => 'varchar',
                                 'length' => 64,
                                 'not null' => true,
-                                'description' => 'Role name.' 
+                                'description' => 'Role name.'
                         ),
                         'description' => array (
                                 'type' => 'varchar',
                                 'length' => 255,
                                 'description' => 'Role description',
-                                'collate' => 'utf8_general_ci' 
+                                'collate' => 'utf8_general_ci'
                         ),
                         'status' => array (
                                 'type' => 'tinyint',
                                 'length' => 1,
                                 'not null' => true,
-                                'description' => 'role status' 
+                                'description' => 'role status'
                         ),
                         'created' => array (
                                 'type' => 'datetime',
                                 'not null' => true,
-                                'description' => 'date this record was created' 
+                                'description' => 'date this record was created'
                         ),
                         'modified' => array (
                                 'type' => 'timestamp',
                                 'not null' => true,
-                                'description' => 'date this record was modified' 
-                        ) 
+                                'description' => 'date this record was modified'
+                        )
                 ),
                 'primary key' => array (
-                        'id' 
-                ) 
+                        'id'
+                )
         );
-        
         return $def;
     }
     static function getAdminTableStruct() {
@@ -78,7 +77,7 @@ class Role extends DataTable_DataObject {
                 'description'=> array (
                         'i18n' => _i18n('ADMIN', 'desc', 'Description'),
                         'rules' => array(
-                            'required' => true,
+                            'required' => false,
                         ),
                         'searchable'=> true,
                         'sortable' => true
@@ -94,6 +93,10 @@ class Role extends DataTable_DataObject {
         );
     }
 
+    function validateData($validationRules){
+        return parent::validateData($validationRules);
+    }
+
     function getColumnAlias(){
         return array(
             'active'=>array('status',1),
@@ -103,9 +106,5 @@ class Role extends DataTable_DataObject {
 
     static function staticGet($k, $v = null) {
         return parent::staticGet(__CLASS__,$k, $v);
-    }
-    
-    function validateData($validationRules){
-        return parent::validateData($validationRules);
     }
 }
