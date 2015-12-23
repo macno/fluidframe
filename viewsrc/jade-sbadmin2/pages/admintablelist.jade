@@ -1,0 +1,52 @@
+extends ../layouts/layout.jade
+
+block content
+    #page-wrapper
+      .row
+        .col-lg-12
+            button#insert.btn.btn-default New #{this.model}
+      .row
+        .col-lg-12
+          table#tablelist.display.table.table-striped(cellspacing="0" width="100%")
+
+block pageJavascript
+    script.
+        $(document).ready(function(){
+            $("#tablelist").DataTable({
+                ajax:'/admin/api/#{this.model}/datatable',
+                rowId: 'id',
+                processing: true,
+                serverSide: true,
+                columns: !{this.tableStruct}
+            });
+            $("input[type='search']").hide().after(
+                $('<input type="text" id="fakeSearch">'));
+            $("#fakeSearch").on("keyup paste cut",updateSearch)
+            $(document).on('click','#tablelist tbody tr',function(){
+                var table = $('#tablelist').DataTable();
+                openEditor(table.row( this ).id());
+            });
+            $(document).on('click','#insert',function(e){
+                e.preventDefault();
+                window.location = window.location.origin + '/admin/#{this.model}/add'
+            });
+        });
+        function updateSearch(){
+            var fakeSearch,search;
+            if(typeof tout !== 'undefined'){
+                clearTimeout(tout);
+            }
+            tout=setTimeout(function(){
+                fakeSearch=$("#fakeSearch").val().trim();
+                search=$("input[type='search']").val();
+                if(search != fakeSearch){
+                    $("input[type='search']").val(fakeSearch)
+                        .trigger("search.DT");
+                }
+            },500);
+        }
+        function openEditor(rowId){
+            console.log(rowId);
+            window.location = window.location.origin + window.location.pathname
+                + "/" + rowId;
+        }

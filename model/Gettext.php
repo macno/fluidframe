@@ -15,7 +15,7 @@ if (!defined('FLUIDFRAME')) {
  * Table Definition for config
  */
 
-class Gettext extends Managed_DataObject
+class Gettext extends DataTable_DataObject
 {
 
     public $__table = 'gettext';
@@ -64,6 +64,41 @@ class Gettext extends Managed_DataObject
         $lastModified = strtotime($gettext->modified);
         $gettext->free();
         return $lastModified;
+    }
+
+    static function getAdminTableStruct() {
+        return array (
+                'id' => array (
+                        'visible' => false 
+                ) ,
+                'context' => array (
+                        'i18n' => _i18n('ADMIN', 'context', 'contesto'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                'lang' => array (
+                        'i18n' => _i18n('ADMIN', 'lang', 'lingua'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                'original_text' => array (
+                        'i18n' => _i18n('ADMIN', 'original_text', 'testo originale'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                'translation' => array (
+                        'i18n' => _i18n('ADMIN', 'translation', 'testo tradotto'),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+        );
+    }
+
+    function getColumnAlias(){
+        return array(
+            'active'=>array('translated',1),
+            'inactive'=>array('translated',0)
+        );
     }
     
 }

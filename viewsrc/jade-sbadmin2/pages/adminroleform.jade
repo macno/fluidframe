@@ -1,0 +1,35 @@
+extends ../layouts/layout.jade
+
+block content
+    #page-wrapper
+        form(method="POST")
+            input#id(type="hidden", value="#{this.role_id}")
+            .form-group(class=this.inputError['name'] ? 'has-error' : '')
+                label(for="name") Name
+                input#name.form-control(type="text", name="name",
+                    value="#{this.role_name}" , required)
+                span.text-danger(class=this.inputError['name'] ? '' : 'hidden')
+                    | #{this.inputError['name']}
+            .form-group(class=this.inputError['description'] ? 'has-error' : '')
+                label(for="description") Description
+                input#description.form-control(type="text", name="description",
+                    value="#{this.role_description}" )
+                span.text-danger(class=this.inputError['description'] ? '' : 'hidden')
+                    | #{this.inputError['description']}
+            .checkbox
+                label
+                    input#status(type="checkbox", name="status", value="1",
+                        checked=this.role_status == 1)
+                    | Status
+            if this.role_id
+                .checkbox
+                    label
+                        input#remove(type="checkbox", name="remove")
+                        | Cancella ?
+            button#save.btn.btn-default Salva
+            button#cancel.btn.btn-default Annulla
+
+block pageJavascript
+    if this.jsfile
+        script(src=this.jsfile)
+    script(src="/js/adminaddedit.js")

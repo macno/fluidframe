@@ -24,4 +24,3 @@ $config ['db'] ['schemacheck'] = 'script';
 $config ['db'] ['mysql_foreign_keys'] = true;
 
 // $config ['typekit'] = array ( 'async' => false, 'enabled' => true, 'url' => 'https://use.typekit.net/dyc7bek.js' );
-

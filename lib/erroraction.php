@@ -85,6 +85,12 @@ class ErrorAction extends Action {
         $this->message = $message;
     }
     function handle() {
+        global $isApi;
+        if($isApi){
+            common_debug("API");
+        }else{
+            common_debug("NO API");
+        }
         if(!isset($this->http_codes[$this->code])) {
             $this->code = 404;
         }
@@ -93,12 +99,18 @@ class ErrorAction extends Action {
     
         header('HTTP/1.1 ' . $status_string, true, $this->code);
         
-        $this->render('error',array(
+        $ret = array(
                 'code'=>$this->code,
                 'status'=>$this->http_codes[$this->code],
                 'title'=>$status_string,
                 'message'=>$this->message
-        ));
+        );
+        if($isApi) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($ret);
+        } else {
+            $this->render('error',$ret);
+        }
         exit();
     }
 

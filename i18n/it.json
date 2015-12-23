@@ -1,0 +1,97 @@
+{
+    "PROVA": {
+        "key6": {
+            "tbt": true,
+            "html": false,
+            "in": "Lorem Ipsum 6",
+            "out": "Lorem Ipsum 6"
+        },
+        "key5": {
+            "tbt": true,
+            "html": false,
+            "in": "Lorem Ipsum 5",
+            "out": "Lorem Ipsum 5"
+        },
+        "key4": {
+            "tbt": true,
+            "html": false,
+            "in": "Lorem Ipsum 4",
+            "out": "Lorem Ipsum 4"
+        },
+        "key3": {
+            "tbt": true,
+            "html": false,
+            "in": "Lorem Ipsum 3",
+            "out": "Lorem Ipsum 3"
+        },
+        "key1": {
+            "tbt": false,
+            "html": true,
+            "in": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
+            "out": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
+            "code": "html"
+        },
+        "key2": {
+            "tbt": true,
+            "html": false,
+            "in": "Lorem Ipsum 2",
+            "out": "Lorem Ipsum 2"
+        }
+    },
+    "ADMIN": {
+        "context": {
+            "tbt": true,
+            "html": false,
+            "in": "contesto",
+            "out": "contesto"
+        },
+        "lang": {
+            "tbt": true,
+            "html": false,
+            "in": "lingua",
+            "out": "lingua"
+        },
+        "original_text": {
+            "tbt": true,
+            "html": false,
+            "in": "testo originale",
+            "out": "testo originale"
+        },
+        "translation": {
+            "tbt": true,
+            "html": false,
+            "in": "testo tradotto",
+            "out": "testo tradotto"
+        },
+        "key": {
+            "tbt": true,
+            "html": false,
+            "in": "chiave",
+            "out": "chiave"
+        },
+        "src": {
+            "tbt": true,
+            "html": false,
+            "in": "testo originale",
+            "out": "testo originale"
+        },
+        "html": {
+            "tbt": true,
+            "html": false,
+            "in": "HTML",
+            "out": "HTML"
+        },
+        "tbt": {
+            "tbt": true,
+            "html": false,
+            "in": "da tradurre",
+            "out": "da tradurre"
+        },
+        "out": {
+            "tbt": true,
+            "html": false,
+            "in": "testo tradotto",
+            "out": "testo tradotto"
+        }
+    }
+}

@@ -98,7 +98,7 @@ class Action {
         return array();
     }
     
-    protected function getStylesheet() {
+    protected function getStylesheets() {
         return array();
     }
     function getHreflangs() {
@@ -110,7 +110,7 @@ class Action {
     private function handleStylesheets(&$params = array()) {
         $siteCss = common_template('stylesheets');
         $this->prepareStylesheet($params, $siteCss);
-        $pageCss = $this->getStylesheet();
+        $pageCss = $this->getStylesheets();
         $this->prepareStylesheet($params, $pageCss);
     }
     

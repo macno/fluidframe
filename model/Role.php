@@ -1,17 +1,13 @@
 <?php
-
-if (!defined('FLUIDFRAME')) {
-    exit(1);
+if (! defined ( 'FLUIDFRAME' )) {
+    exit ( 1 );
 }
 
 /**
  * Table Definition for Role
  */
-
-class Role extends Managed_DataObject
-{
-
-    public $__table = 'role';                          // table name
+class Role extends DataTable_DataObject {
+    public $__table = 'role'; // table name
     public $id;
     public $name;
     public $description;
@@ -39,11 +35,11 @@ class Role extends Managed_DataObject
                                 'description' => 'Role description',
                                 'collate' => 'utf8_general_ci'
                         ),
-                        'status' => array(
-                                'type'=>'tinyint',
-                                'length'=>1,
+                        'status' => array (
+                                'type' => 'tinyint',
+                                'length' => 1,
                                 'not null' => true,
-                                'description'=>'role status'
+                                'description' => 'role status'
                         ),
                         'created' => array (
                                 'type' => 'datetime',
@@ -60,11 +56,55 @@ class Role extends Managed_DataObject
                         'id'
                 )
         );
-    
         return $def;
     }
+    static function getAdminTableStruct() {
+        return array (
+                'id'=> array (
+                        'rules' => array(
+                            'required' => true,
+                        ),
+                        'visible' => false
+                ) ,
+                'name'=> array (
+                        'i18n' => _i18n('ADMIN', 'name', 'Name'),
+                        'rules' => array(
+                            'required' => true,
+                        ),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                'description'=> array (
+                        'i18n' => _i18n('ADMIN', 'desc', 'Description'),
+                        'rules' => array(
+                            'required' => false,
+                        ),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+                'status'=> array (
+                        'i18n' => _i18n('ADMIN', 'status', 'Status'),
+                        'rules' => array(
+                            'required' => true,
+                        ),
+                        'searchable'=> true,
+                        'sortable' => true
+                ) ,
+        );
+    }
+
+    function validateData($validationRules){
+        return parent::validateData($validationRules);
+    }
+
+    function getColumnAlias(){
+        return array(
+            'active'=>array('status',1),
+            'inactive'=>array('status',0)
+        );
+    }
+
     static function staticGet($k, $v = null) {
         return parent::staticGet(__CLASS__,$k, $v);
     }
-    
 }

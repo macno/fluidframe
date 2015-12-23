@@ -1,0 +1,18 @@
+extends ../layouts/layout.jade
+
+block content
+    #page-wrapper
+      .row
+        .col-lg-12
+          table#translation.display.table.table-striped.table-hover(cellspacing="0" width="100%")
+      .row
+        .col-lg-12
+          #editor
+            include ../includes/modal-translation-editor.jade
+
+block pageJavascript
+    script.
+        var datacolumnstruct = !{this.translationStruct},
+            contexts = !{this.contexts},
+            langs = !{this.langs};
+    script(src="/js/admintranslation.js")
