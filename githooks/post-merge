@@ -1,0 +1,17 @@
+#!/bin/bash
+
+path_to_executable=$(which npm)
+if [ -n "$path_to_executable" ] ; then
+    path_to_executable=$(which gulp)
+    if [ -z "$path_to_executable" ] ; then
+        npm install -g gulp
+    fi
+    if [ ! -d "node_modules"i ]
+    then
+        npm install
+    fi
+    gulp dev
+else
+    echo "NODE.JS non risulta installato. Si prega di provvedere."
+fi
+

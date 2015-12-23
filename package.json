@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-jade2php": "*"
+    "gulp-livereload": "^3.8.0",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "yargs": "^3.15.0",
+    "gulp-jade2php": "^1.0.3",
+    "gulp-sass": "^2.1.1",
+    "jade2php": "^1.2.2"
   }
 }
