@@ -28,7 +28,7 @@ class Admin%model%addAction extends AuthAction {
                         if($key == "rules"){
                             foreach( $rules as $rule=>$extra ){
                                 // gestione campi richiesti
-                                if($rule == 'required'){
+                                if(($rule == 'required')&&($extra)){
                                     $validationRules[$fieldName][$rule] =
                                         $this->field[ $fieldName ];
                                 }

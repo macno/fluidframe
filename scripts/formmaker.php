@@ -3,8 +3,8 @@
 
 define('INSTALLDIR', realpath(dirname(__FILE__) . '/..'));
 
-$shortoptions = 's:n:p:b:';
-$longoptions = array('schema=','plural=','single=','baseaction=');
+$shortoptions = 'fs:n:p:b: ';
+$longoptions = array('force', 'schema=','plural=','single=','baseaction=');
 
 $helptext = <<<END_OF_CHECKSCHEMA_HELP
 php formmaker.php [options]
@@ -13,6 +13,7 @@ php formmaker.php [options]
             -n --single=    Single form
             -p --plural=    Plural form
             -b --baseaction= Base action
+            -f --force=      Force to overwrite files
 
 END_OF_CHECKSCHEMA_HELP;
 
@@ -37,6 +38,12 @@ if (have_option('p', 'plural')) {
 
 if (have_option('b', 'baseaction')) {
     $baseAction = trim(get_option_value('b', 'baseaction'));
+}
+
+$force = false;
+if (have_option('f', 'force')) {
+    $force = true;
+    // $force = (trim(get_option_value('f', 'force')) == 'yes') ? true : false;
 }
 
 if(empty($single)) {
@@ -93,7 +100,7 @@ foreach($fields as $field=>$attributes){
                 input#$field.form-control(type="text", name="$field",
                     value="#{this.${cls}_$field}" $required)
                 span.text-danger(class=this.inputError['$field'] ? '' : 'hidden')
-                    | #{this.inputError['description']}
+                    | #{this.inputError['$field']}
 
 FIELD;
     }
@@ -118,13 +125,13 @@ block pageJavascript
 ENDFORM;
 
 $fileJade = INSTALLDIR .'/viewsrc/jade-sbadmin2/pages/admin'. $cls .'form.jade';
-if(!file_exists($fileJade)){
+if((!file_exists($fileJade))||($force)){
     file_put_contents($fileJade, $form);
 }
 
 // Generazione del template JAVASCRIPT
 $fileJS = INSTALLDIR .'/js/admin'. $cls .'.js';
-if(!file_exists($fileJS)){
+if((!file_exists($fileJS))||($force)){
     $js = file_get_contents(INSTALLDIR . '/scripts/template/adminmodel.js');
     file_put_contents($fileJS, $js);
 }
@@ -143,7 +150,7 @@ foreach($fields as $field=>$attributes){
     }
 }
 $fileAdd = INSTALLDIR .'/action/admin'. $cls .'add.php';
-if(!file_exists($fileAdd)){
+if((!file_exists($fileAdd))||($force)){
     $adminmodeladd = file_get_contents(INSTALLDIR . '/scripts/template/adminmodeladd.php');
     $adminmodeladd = str_replace('/* PREPAREFIELDS */', $prepareFields, $adminmodeladd);
     $adminmodeladd = str_replace('/* ERRORFIELDS */', $errorFields, $adminmodeladd);
@@ -171,7 +178,7 @@ foreach($fields as $field=>$attributes){
     }
 }
 $fileEdit = INSTALLDIR .'/action/admin'. $cls .'edit.php';
-if(!file_exists($fileEdit)){
+if((!file_exists($fileEdit))||($force)){
     $adminmodeledit = file_get_contents(INSTALLDIR . '/scripts/template/adminmodeledit.php');
     $adminmodeledit = str_replace('/* PREPAREFIELDS */', $prepareFields, $adminmodeledit);
     $adminmodeledit = str_replace('/* RENDERFIELDS */', $renderFields, $adminmodeledit);
