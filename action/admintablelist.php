@@ -13,28 +13,39 @@ class AdmintablelistAction extends AuthAction {
         parent::handle();
 
         $model = ucfirst($this->trimmed('model'));
-        $tableCols = $model::getAdminTableStruct();
+        if(class_exists($model)){
+            $tableCols = $model::getAdminTableStruct();
 
-        $tableColsJson = array();
+            $tableColsJson = array();
 
-        foreach ($tableCols as $tableName=>$tableCol) {
-            $tableColsJson[] = array(
-                    'data'=>$tableName,
-                    'title'=>(isset($tableCol['i18n']))
-                        ? $tableCol['i18n']
-                        : $tableName,
-                    'visible'=>(isset($tableCol['visible']))
-                        ? $tableCol['visible']
-                        : true
-            );
+            foreach ($tableCols as $tableName=>$tableCol) {
+                $tableColsJson[] = array(
+                        'data'=>$tableName,
+                        'title'=>(isset($tableCol['i18n']))
+                            ? $tableCol['i18n']
+                            : $tableName,
+                        'visible'=>(isset($tableCol['visible']))
+                            ? $tableCol['visible']
+                            : true
+                );
+            }
+
+
+            $this->renderOptions['tableStruct'] = json_encode($tableColsJson);
+            $this->renderOptions['model'] = $this->trimmed('model');
+            // common_debug("tableColsJson: ".print_r($tableColsJson,true));
+
+            $this->render ( 'admintablelist', $this->renderOptions );
+        }else{
+            common_debug("Errore");
+            $html ='<div id="error-body" class="row">';
+            $html .= '<div class="col-xs-12">';
+            $html .= '<h1>Errore</h1>';
+            $html .= 'Tabella non esistente o non editabile';
+            $html .= '</div>';
+            $html .= '</div>';
+            throw new ClientException($html,401);
         }
-
-
-        $this->renderOptions['tableStruct'] = json_encode($tableColsJson);
-        $this->renderOptions['model'] = $this->trimmed('model');
-        // common_debug("tableColsJson: ".print_r($tableColsJson,true));
-
-        $this->render ( 'admintablelist', $this->renderOptions );
     }
 
     function getJavascripts(){
