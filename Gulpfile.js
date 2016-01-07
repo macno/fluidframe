@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 gulp.task('dev',['dev-npm','dev-composer', 'dev-bower', 'dev-schema']);
 
 // Task di aggiornamento del sito
-gulp.task('design',['compile-jade', 'compile-jade-admin', 'compile-sass']);
+gulp.task('design',['compile-jade', 'compile-sass']);
 
 // Task di controllo sui tool di sviluppo
 gulp.task('dev-watch',function(){
@@ -18,8 +18,7 @@ gulp.task('dev-watch',function(){
     gulp.watch('composer.json',['dev-composer']);
     gulp.watch('bower.json',['dev-bower']);
     gulp.watch(['classes/*.php','db/core.php'],['dev-schema']);
-    gulp.watch('./viewsrc/jade/**/*.jade',['compile-jade']);
-    gulp.watch('./viewsrc/jade-sbadmin2/**/*.jade',['compile-jade-admin']);
+    gulp.watch('./viewsrc/jade-sbadmin2/**/*.jade',['compile-jade']);
 });
 
 gulp.task('dev-npm',function (cb) {
@@ -55,14 +54,6 @@ gulp.task('dev-schema',function (cb) {
 });
 
 gulp.task('compile-jade',function (cb) {
-  exec('jade2php --omit-php-runtime --omit-php-extractor --basedir viewsrc/jade --no-arrays-only --out view/ viewsrc/jade/pages', function (err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      cb(err);
-    });
-});
-
-gulp.task('compile-jade-admin',function (cb) {
   exec('jade2php --omit-php-runtime --omit-php-extractor --basedir viewsrc/jade-sbadmin2 --no-arrays-only --out view/ viewsrc/jade-sbadmin2/pages', function (err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
@@ -95,8 +86,7 @@ gulp.task('watch',['dev-watch'], function(){
 
     // quando viene modificato un file scss viene richiamato il task 'compile-sass'
     gulp.watch('./stylesheets/**/*.scss',['compile-sass']);
-    gulp.watch('./viewsrc/jade/**/*.jade',['compile-jade']);
-    gulp.watch('./viewsrc/jade-sbadmin2/**/*.jade',['compile-jade-admin']);
+    gulp.watch('./viewsrc/jade-sbadmin2/**/*.jade',['compile-jade']);
     if(!argv.nowatch){
         // quando viene modificato un file viene richiamato la funzione notifyLivereaload
         gulp.watch(['./view/*.php','./actions/**/*.php','./lib/*.php','./js/*.js','./css/*.css'],notifyLivereload);

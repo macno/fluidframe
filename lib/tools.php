@@ -378,6 +378,11 @@ function common_get_returnto() {
     return (array_key_exists ( 'returnto', $_SESSION )) ? $_SESSION ['returnto'] : null;
 }
 
+function common_set_returnto($url) {
+    common_ensure_session ();
+    $_SESSION ['returnto'] = $url;
+}
+
 function common_set_cookie($key, $value, $expiration=0)
 {
     $path = common_config('site', 'path');

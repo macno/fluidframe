@@ -9,7 +9,7 @@ class Route {
         $router->add('index', '/');
         $router->add('home', '/{lang}/')
             ->addTokens(array(
-            	'lang'=>'[a-z]{2}'
+                'lang'=>'[a-z]{2}'
             )
         );
         $router->add('login', '/{lang}/auth/login')
@@ -22,6 +22,10 @@ class Route {
                 'lang'=>'[a-z]{2}'
             )
         );
+
+        // Pagina principale del cms
+        $router->add('adminhome', '/admin/');
+
         // Gestione Traduzione
         $router->add('admintranslationapi', '/admin/api/translation/datatable');
         $router->add('adminsavetranslationapi', '/admin/api/translation/save');

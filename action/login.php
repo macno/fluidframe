@@ -79,7 +79,7 @@ class LoginAction extends Sbadmin2Action {
             common_set_returnto ( null );
             
         } else {
-            $url = common_get_route('index');
+            $url = common_get_route('adminhome');
         }
         
         common_redirect ( $url, 303 );

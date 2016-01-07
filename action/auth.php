@@ -12,6 +12,8 @@ class AuthAction extends Sbadmin2Action {
             $html .= 'Please <strong><a href="'. common_get_route('login',array('lang'=>$this->lang)) .'">log in</a></strong>';
             $html .= '</div>';
             $html .= '</div>';
+            $url="http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
+            common_set_returnto($url);
             throw new ClientException($html,401);
         }
         return true;
