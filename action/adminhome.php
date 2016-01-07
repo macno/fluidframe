@@ -10,7 +10,7 @@ class AdminhomeAction extends AuthAction {
     function handle() {
         parent::handle();
         
-        $this->render ( 'admin/home', $this->renderOptions );
+        $this->render ( 'adminhome', $this->renderOptions );
     }
     function getHreflangs() {
         $hreflangs = array ();
