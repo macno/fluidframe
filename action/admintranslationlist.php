@@ -6,14 +6,6 @@ class AdmintranslationlistAction extends AuthAction {
 
     function prepare($args) {
         parent::prepare($args);
-        /* Chiamate di test per avere testi nelle traduzioni
-        _i18n('PROVA', 'key1', 'Lorem Ipsum 1',true);
-        _i18n('PROVA', 'key2', 'Lorem Ipsum 2');
-        _i18n('PROVA', 'key3', 'Lorem Ipsum 3');
-        _i18n('PROVA', 'key4', 'Lorem Ipsum 4');
-        _i18n('PROVA', 'key5', 'Lorem Ipsum 5');
-        _i18n('PROVA', 'key6', 'Lorem Ipsum 6');
-         */
         return true;
     }
 
