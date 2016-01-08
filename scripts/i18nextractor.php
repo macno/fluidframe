@@ -137,7 +137,7 @@ function checkString($arg) {
             }
             $i18ns[$lang][$arg[0]][$arg[1]] = array(
                     'tbt'=>true, // ToBeTranslated
-                    'html'=>(isset($arg[3]) ? $arg[3] : false),
+                    'html'=>(isset($arg[3]) ? filter_var($arg[3], FILTER_VALIDATE_BOOLEAN) : false),
                     'in'=>$arg[2],
                     'out'=>$arg[2]
             );
