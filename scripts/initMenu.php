@@ -35,7 +35,7 @@ $menuItems = array (
         array (
                 'name' => 'LOGIN',
                 'action' => 'login',
-                'params' => 'lang' 
+                'params' => 'lang=$lang' 
         ) 
 );
 
