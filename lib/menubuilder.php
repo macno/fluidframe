@@ -97,8 +97,9 @@ class MenuBuilder {
                             $params[$p[0]] = $val;
                         }
  
+                    }else{
+                        $params=array();
                     }
-                    
                     common_debug('action: ' . $mi->action . ' ' . print_r($params,true));
                     $href = common_get_route($mi->action,$params);
                     $menuz->href = empty($href) ? '/' : $href;

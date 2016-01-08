@@ -36,7 +36,12 @@ $menuItems = array (
                 'name' => 'LOGIN',
                 'action' => 'login',
                 'params' => 'lang=$lang' 
-        ) 
+        ),
+        array(
+            'name' => 'TRADUZIONE',
+            'action' => 'admintranslationlist',
+            'params' => ''
+            )
 );
 
 $role_menu = array(
@@ -46,6 +51,7 @@ $role_menu = array(
 
 $menu_menuitem = array(
         array('ANON','LOGIN',900),
+        array('ADMIN','TRADUZIONE',900),
 );
 
 foreach ( $roles as $role ) {
