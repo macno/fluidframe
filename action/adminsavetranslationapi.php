@@ -55,7 +55,7 @@ class AdminsavetranslationapiAction extends AuthAction {
             );
         }
         switch($this->code){
-            case 'testo': $l[$this->context][$this->tkey]['out']=nl2br($this->out);
+            case 'testo': $l[$this->context][$this->tkey]['out']=$this->out;
                         break;
             case 'html': $l[$this->context][$this->tkey]['out']=$this->out;
                         break;
