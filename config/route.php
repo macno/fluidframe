@@ -12,12 +12,12 @@ class Route {
                 'lang'=>'[a-z]{2}'
             )
         );
-        $router->add('login', '/{lang}/auth/login')
+        $router->add('login', '/auth/login')
             ->addTokens(array(
                 'lang'=>'[a-z]{2}'
             )
         );
-        $router->add('logout', '/{lang}/auth/logout')
+        $router->add('logout', '/auth/logout')
             ->addTokens(array(
                 'lang'=>'[a-z]{2}'
             )
