@@ -81,7 +81,7 @@ $status = <<<STATUS
 STATUS;
 $fields = $obj->getAdminTableStruct();
 $form = <<<FORM
-extends ../layouts/layout.jade
+extends ../layouts/adminlayout.jade
 
 block content
     #page-wrapper
