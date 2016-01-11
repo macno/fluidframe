@@ -17,7 +17,7 @@ gulp.task('dev-watch',function(){
     gulp.watch('package.json',['dev-npm']);
     gulp.watch('composer.json',['dev-composer']);
     gulp.watch('bower.json',['dev-bower']);
-    gulp.watch(['classes/*.php','db/core.php'],['dev-schema']);
+    gulp.watch(['classes/*.php','model/db.php'],['dev-schema']);
     gulp.watch('./viewsrc/jade-sbadmin2/**/*.jade',['compile-jade']);
 });
 
