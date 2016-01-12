@@ -75,7 +75,7 @@ $status = <<<STATUS
             .checkbox
                 label
                     input#status(type="checkbox", name="status", value="1",
-                        checked=this.role_status == 1)
+                        checked=this.{$cls}_status == 1)
                     | Status
 
 STATUS;
@@ -86,7 +86,7 @@ extends ../layouts/adminlayout.jade
 block content
     #page-wrapper
         form(method="POST")
-            input#id(type="hidden", value="#{this.role_id}")
+            input#id(type="hidden", value="#{this.{$cls}_id}")
 
 FORM;
 foreach($fields as $field=>$attributes){
@@ -109,7 +109,7 @@ FIELD;
     }
 }
 $form .= <<<ENDFORM
-            if this.role_id
+            if this.{$cls}_id
                 .checkbox
                     label
                         input#remove(type="checkbox", name="remove")
