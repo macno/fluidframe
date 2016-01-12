@@ -65,6 +65,9 @@ class Admin%model%editAction extends AuthAction {
                     common_redirect( common_get_route('admintablelist', array(
                         'model' => '%model%'
                     )));
+                }else{
+                    common_debug("ERRORE IN UPDATE %MODEL%: ". print_r($this->obj,true));
+                    throw new ServerException( 'Impossibile aggiornare il %MODEL%.' );
                 }
             }
         } else {

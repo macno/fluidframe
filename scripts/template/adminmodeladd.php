@@ -54,7 +54,8 @@ class Admin%model%addAction extends AuthAction {
                         'model' => '%model%'
                     )));
                 }else{
-                    common_debug("Qualcosa è andato storto");
+                    common_debug("ERRORE IN UPDATE %MODEL%: ". print_r($this->obj,true));
+                    throw new ServerException( 'Impossibile aggiornare il %MODEL%.' );
                 }
             }
         }
