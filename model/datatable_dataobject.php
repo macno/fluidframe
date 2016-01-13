@@ -157,7 +157,9 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         $sqlCols = array();
 
         foreach ($tableCols as $colName=>$tableCol) {
-            $sqlCols[] = $colName;
+            if(!isset($tableCol['queryable']) || ($tableCol['queryable']==true)){
+                $sqlCols[] = $colName;
+            }
         }
 
         $qry = "select count(*) as conta from ".$this->__table;
