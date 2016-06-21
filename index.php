@@ -2,6 +2,8 @@
 define ( 'FLUIDFRAME', true );
 define ( 'INSTALLDIR', dirname ( __FILE__ ) );
 
+require_once (INSTALLDIR . '/version.php');
+
 require_once (INSTALLDIR . '/lib/core.php');
 
 try {
@@ -14,25 +16,54 @@ try {
     $error->handle ();
 }
 
-// get the incoming request URL path
-$path = parse_url ( $_SERVER ['REQUEST_URI'], PHP_URL_PATH );
+function getPath($req) {
+    if ((common_config('site', 'fancy') || !array_key_exists('PATH_INFO', $_SERVER))
+            && array_key_exists('p', $req)
+            ) {
+                $path = $req['p'];
+                if(substr($path,0,1) == '/') {
+                    $path = substr($path,1);
+                }
+                return $path;
+            } else if (array_key_exists('PATH_INFO', $_SERVER)) {
+                $path = $_SERVER['PATH_INFO'];
+                $script = $_SERVER['SCRIPT_NAME'];
+                if (substr($path, 0, mb_strlen($script)) == $script) {
+                    return substr($path, mb_strlen($script));
+                } else {
+                    return $path;
+                }
+            } else {
+                return null;
+            }
+}
 
-// get the route based on the path and server
-$route = $router->match ( $path, $_SERVER );
+$path = getPath($_REQUEST);
+$r = Router::get();
 
-// variabile usata per differenziare le chiamate alle pagine o alle API
-$isApi = false;
+$args = $r->map($path);
 
-if (empty ( $route )) {
+if (!$args) {
     $error = new ErrorAction ( $_lang );
     $error->setErrorMessage ( 404, 'Unkown page' );
     $error->handle ();
+    return;
+}
+
+
+// do I have a lang in URL?
+if(isset($args['lang'])) {
+    $__lang = $args['lang'];
+    $__all_lang = common_config('site','langs');
+    if(isset($__all_lang[$__lang])) {
+        $_lang = $__lang;
+    }
 }
 
 // does the route indicate an action?
-if (isset ( $route->params ['action'] )) {
+if (isset ( $args['action'] )) {
     // take the action class directly from the route
-    $action = $route->params ['action'];
+    $action = $args['action'];
 } else {
     // use a default action class
     $action = 'index';
@@ -49,14 +80,15 @@ if (! class_exists ( $action_class )) {
 $actionClass = new $action_class ( $_lang );
 try {
     
-    $args = array_merge ( $route->params, $_REQUEST );
+    $args = array_merge($args, $_REQUEST);
+    
     
     if ($actionClass->prepare ( $args )) {
         $actionClass->handle ();
     }
 } catch ( ClientException $e ) {
     $error = new ErrorAction ( $_lang );
-    $error->setErrorMessage ( $e->getCode (), $e->getMessage () );
+    $error->setErrorMessage ( $e->getCode (), 'ClientException:' . $e->getMessage () );
     $error->handle ();
 } catch ( ServerException $e ) {
     $error = new ErrorAction ( $_lang );

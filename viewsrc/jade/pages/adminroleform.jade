@@ -1,7 +1,6 @@
 extends ../layouts/adminlayout.jade
 
 block content
-    #page-wrapper
         form(method="POST")
             input#id(type="hidden", value="#{this.role_id}")
             .form-group(class=this.inputError['name'] ? 'has-error' : '')

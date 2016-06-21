@@ -1,30 +1,56 @@
 extends ../layouts/adminlayout.jade
 
 block content
-    #page-wrapper
-      .row
+    .row
         .col-lg-12
-            button#insert.btn.btn-default New #{this.model}
-      .row
-        .col-lg-12
-          table#tablelist.display.table.table-striped(cellspacing="0" width="100%")
+            .panel.panel-default
+                .panel-heading
+                    strong #{this.model}
+                .panel-body
+                    .btn-commands(style="margin-bottom: 20px;")
+                        button#insert.btn.btn-default New #{this.model}
+
+                    .dataTable_wrapper
+                        .dataTables_wrapper.form-inline.dt-bootstrap.no-footer
+                            table#tablelist.display.table.table-striped.table-hover(cellspacing="0" width="100%")
+
 
 block pageJavascript
+    if this.jsfile
+        script(src=this.jsfile)
     script.
+        function merge_options(obj1,obj2){
+            var obj3 = {};
+            for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+            for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+            return obj3;
+        }
+        function get_datatable_custom_params(){
+            if(typeof(datatable_custom_params) === 'function'){
+                return datatable_custom_params();
+            }else{
+                return {};
+            }
+        }
         $(document).ready(function(){
-            $("#tablelist").DataTable({
+            var datatable_default_params = {
                 ajax:'/admin/api/#{this.model}/datatable',
                 rowId: 'id',
                 processing: true,
                 serverSide: true,
                 columns: !{this.tableStruct}
-            });
+            };
+            $("#tablelist").DataTable(
+                merge_options(datatable_default_params, get_datatable_custom_params())
+            );
             $("input[type='search']").hide().after(
                 $('<input type="text" id="fakeSearch">'));
             $("#fakeSearch").on("keyup paste cut",updateSearch)
             $(document).on('click','#tablelist tbody tr',function(){
-                var table = $('#tablelist').DataTable();
-                openEditor(table.row( this ).id());
+                if($(this).find(".dataTables_empty").length == 0){
+                    var table = $('#tablelist').DataTable();
+                    openEditor(table.row( this ).id());
+                }
             });
             $(document).on('click','#insert',function(e){
                 e.preventDefault();

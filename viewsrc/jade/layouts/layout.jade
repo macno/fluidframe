@@ -1,14 +1,9 @@
 doctype html
-html(lang= this.lang)
+html(lang= this.lang, xmlns:og="http://ogp.me/ns#")
   head
     include ../includes/head.jade
-  body.front
-    #wrapper
-      include ../includes/header.jade
-
-      block content
-
-
+  body(class=this.renderpage)
+    block content
     block javascript
       each javascript in this.javascripts
         script(src=javascript)

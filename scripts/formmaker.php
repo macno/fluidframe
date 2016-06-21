@@ -21,7 +21,7 @@ require_once INSTALLDIR.'/scripts/commandline.inc';
 
 if (have_option('s', 'schema')) {
     $cls = trim(get_option_value('s', 'schema'));
-} 
+}
 
 if(empty($cls)) {
      print "You must be supply a valid class name\n";
@@ -84,8 +84,7 @@ $form = <<<FORM
 extends ../layouts/adminlayout.jade
 
 block content
-    #page-wrapper
-        form(method="POST")
+        form(method="POST", action=this.form_action)
             input#id(type="hidden", value="#{this.{$cls}_id}")
 
 FORM;
@@ -124,7 +123,7 @@ block pageJavascript
 
 ENDFORM;
 
-$fileJade = INSTALLDIR .'/viewsrc/jade-sbadmin2/pages/admin'. $cls .'form.jade';
+$fileJade = INSTALLDIR .'/viewsrc/jade/pages/admin'. $cls .'form.jade';
 if((!file_exists($fileJade))||($force)){
     file_put_contents($fileJade, $form);
 }
@@ -139,6 +138,8 @@ if((!file_exists($fileJS))||($force)){
 // Generazione Action admin<model>add
 $className = ucfirst($cls);
 $lowerClassName = strtolower($cls);
+$prepareFields = '';
+$errorFields = '';
 foreach($fields as $field=>$attributes){
     if(($field != 'id')&&($field != 'status')){
         $prepareFields .= "        ".'$this->field[\''.$field.'\'] = $this->trimmed(\''.$field.'\');'."\n";

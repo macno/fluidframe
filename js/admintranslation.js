@@ -23,43 +23,40 @@ $(document).ready(function(){
     $(document).on('change', '#code:visible', function(){
         changeCode($(this).val());
     });
-    // $(document).on('change', '#in', function(){
-    //     convertIn2Out();
-    // });
-    $(document).on('click','#save-translation',function(){
-        convertIn2Out(save);
+    $(document).on('click','.save-translation',function(){
+        convertIn2Out($(this).data('lang'),save);
     });
 });
-function save(){
-    $('#out').removeClass('hidden');
-    $.post('/admin/api/translation/save',$('#modal-editor form .editor').serialize(),function(data){
-        $('#out').addClass('hidden');
+function save(lang){
+    $('.form-'+lang+' .out').removeClass('hidden');
+    $.post('/admin/api/translation/save',$('#modal-editor .form-'+lang+' .editor').serialize(),function(data){
+        $('.form-'+lang+' .out').addClass('hidden');
         var row=$('#translation tbody tr:eq('+$('#modal-editor').data('index')+')');
         $(row).find('.tbt').text(data['data']['tbt']);
         $(row).find('.out').text(data['data']['out']);
         $(row).find('.html').text(data['data']['html']);
         $('#translation').DataTable().draw();
-        $('#modal-editor').modal('hide');
+        // $('#modal-editor').modal('hide');
     });
 }
-function convertIn2Out(callback){
+function convertIn2Out(lang, callback){
     var actuallang =$('#code:visible').val();
     switch(actuallang){
         case 'html':
-                    $('#out').val($('#in').val());
-                    callback();
+                    $('.form-'+lang+' .out').val($('.form-'+lang+' .in').val());
+                    callback(lang);
                     break;
 
         case 'testo':
         case 'markdown':
-                    $.post('/admin/api/conversion',{ conversion: actuallang+'2html', in: $('#in').val() }, function(data){
-                        $('#out').val(data['out']);
-                        callback();
+                    $.post('/admin/api/conversion',{ conversion: actuallang+'2html', in: $('.form-'+lang+' .in').val() }, function(data){
+                        $('.form-'+lang+' .out').val(data['out']);
+                        callback(lang);
                     });
                     break;
-        default: 
-                    $('#out').val($('#in').val());
-                    callback();
+        default:
+                    $('.form-'+lang+' .out').val($('.form-'+lang+' .in').val());
+                    callback(lang);
                     break;
     }
 }
@@ -119,23 +116,33 @@ function changeSearch(){
     } );
 }
 function openEditor(index){
-    var elem = $('#translation').DataTable().ajax.json()['data'][index];
-    $("#in").markItUpRemove();
-    $('#in').addClass('markItUpEditor');
-    $('#modal-editor').data('index',index);
-    $('#modal-editor').modal();
-    $('#modal-editor form .editor[type!="checkbox"]:not("select")').each(function(){
-        $(this).val(elem[$(this).attr('id')]);
+    var row = $('#translation').DataTable().ajax.json()['data'][index];
+    // console.log(row);
+    $.get('/api/v1/translations',{context: row.context, key: row.key},function(data){
+        console.log(data);
+        $('#modal-editor form.generic .editor[type!="checkbox"]:not("select")').each(function(){
+            $(this).val(data[$(this).attr('name')]);
+        });
+        if(data['html'] === true){
+            $('#code option[value='+ data['code'] +']').prop('selected',true);
+            $('#code').data('prev',data['code']);
+            $('#code-group').removeClass('hidden');
+            changeCode($('#code').val());
+        }else{
+            $('#code-group').addClass('hidden');
+        }
+
+        $("#in").markItUpRemove();
+        $('#in').addClass('markItUpEditor');
+        $('#modal-editor').data('index',index);
+        $('#modal-editor').modal();
+        $.each(data['langs'], function(lang){
+            $('#modal-editor .form-'+lang+' .editor[type!="checkbox"]:not("select")').each(function(){
+                $(this).val(data['langs'][lang][$(this).attr('name')]);
+            });
+        });
+        // $('#modal-editor form .editor[type="checkbox"]').each(function(){
+        //     $(this).attr('checked',data[$(this).attr('name')]);
+        // });
     });
-    $('#modal-editor form .editor[type="checkbox"]').each(function(){
-        $(this).attr('checked',elem[$(this).attr('id')]);
-    });
-    if(elem['html'] === true){
-        $('#code option[value='+ elem['code'] +']').prop('selected',true);
-        $('#code').data('prev',elem['code']);
-        $('#code-group').removeClass('hidden');
-        changeCode($('#code').val());
-    }else{
-        $('#code-group').addClass('hidden');
-    }
 }

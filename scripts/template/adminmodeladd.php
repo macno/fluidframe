@@ -10,6 +10,7 @@ class Admin%model%addAction extends AuthAction {
 
     function prepare($args) {
         parent::prepare($args);
+        $this->renderOptions['form_action']=common_get_route('admin%model%add');
 /* PREPAREFIELDS */
         return true;
     }
@@ -22,6 +23,7 @@ class Admin%model%addAction extends AuthAction {
         }
         if ($this->isPost ()) {
             // devo validare i dati per l'inserimento
+            $validationRules = array();
             foreach( %MODEL%::getAdminTableStruct() as $fieldName=>$keys){
                 if($fieldName != 'id'){
                     foreach( $keys as $key=>$rules){

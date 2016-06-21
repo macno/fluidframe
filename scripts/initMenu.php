@@ -16,32 +16,31 @@ $roles = array (
         ),
         array (
                 'name' => 'ADMIN',
-                'description' => 'ADMINISTRATOR ROLE' 
+                'description' => 'ADMINISTRATOR ROLE'
         )
 );
 
 $menus = array (
         array (
                 'name' => 'ANON',
-                'description' => 'ANONYMOUS MENU' 
+                'description' => 'ANONYMOUS MENU'
         ),
         array (
                 'name' => 'ADMIN',
-                'description' => 'ADMINISTRATOR MENU' 
-        ) 
+                'description' => 'ADMINISTRATOR MENU'
+        )
 );
 
 $menuItems = array (
         array (
                 'name' => 'LOGIN',
                 'action' => 'login',
-                'params' => 'lang=$lang' 
-        ),
+                'params' => 'lang=$lang'
+            ),
         array(
-            'name' => 'TRADUZIONE',
-            'action' => 'admintranslationlist',
-            'params' => ''
-            )
+                'name' => 'TRADUZIONI',
+                'action' => 'admintranslationlist'
+        )
 );
 
 $role_menu = array(
@@ -51,18 +50,35 @@ $role_menu = array(
 
 $menu_menuitem = array(
         array('ANON','LOGIN',900),
-        array('ADMIN','TRADUZIONE',900),
+        array('ADMIN','TRADUZIONI',900),
 );
 
+// Clear all
+
+$deletes= array(
+        "delete from menu_menuitem",
+        "delete from menuitem",
+        "delete from role_menu",
+        "delete from menu"
+);
+
+$config = new Config();
+foreach ($deletes as $delete) {
+    $config->query($delete);
+}
+
 foreach ( $roles as $role ) {
-    $dbRole = new Role ();
-    $dbRole->name = $role ['name'];
-    $dbRole->description = $role ['description'];
-    $dbRole->status = 1;
-    $dbRole->created = common_sql_now ();
-    $roleId = $dbRole->insert ();
-    if($role['name'] == 'ANON') {
-        Config::save('role', 'anon', $roleId);
+    $dbRole = Role::staticGet('name',$role['name']);
+    if(!$dbRole) {
+        $dbRole = new Role ();
+        $dbRole->name = $role ['name'];
+        $dbRole->description = $role ['description'];
+        $dbRole->status = 1;
+        $dbRole->created = common_sql_now ();
+        $roleId = $dbRole->insert ();
+        if($role['name'] == 'ANON') {
+            Config::save('role', 'anon', $roleId);
+        }
     }
 }
 
@@ -72,43 +88,60 @@ foreach ( $menus as $menu ) {
     $dbMenu->description = $menu ['description'];
     $dbMenu->status = 1;
     $dbMenu->created = common_sql_now ();
-    $menuId = $dbMenu->insert ();
+    try {
+        $menuId = $dbMenu->insert ();
+    } catch(Exception $e) {
+
+    }
 }
 
 foreach ( $menuItems as $menuitem ) {
     $dbMenuItem = new MenuItem ();
     $dbMenuItem->name = $menuitem ['name'];
     $dbMenuItem->action = $menuitem ['action'];
-    $dbMenuItem->params = $menuitem ['params'];
+    if(isset($menuitem['params'])){
+        $dbMenuItem->params = $menuitem ['params'];
+    }
     $dbMenuItem->status = 1;
     $dbMenuItem->created = common_sql_now ();
-    $dbMenuItem->insert ();
+    try {
+        $dbMenuItem->insert ();
+    } catch(Exception $e) {
+
+    }
 }
 
 foreach ( $role_menu as $rm ) {
     $role = Role::staticGet('name',$rm[0]);
     $menu = Menu::staticGet('name',$rm[1]);
-    
+
     $roleMenuDb = new Role_menu();
     $roleMenuDb->role_id = $role->id;
     $roleMenuDb->menu_id = $menu->id;
     $roleMenuDb->weight = $rm[2];
     $roleMenuDb->created = common_sql_now();
-    
-    $roleMenuDb->insert();
+    try {
+        $roleMenuDb->insert();
+    } catch(Exception $e) {
+
+    }
 }
 
 foreach ( $menu_menuitem as $mmi ) {
     $menu = Menu::staticGet('name',$mmi[0]);
     $menuItem = MenuItem::staticGet('name',$mmi[1]);
-    
+
     $menuMenuItemDb = new Menu_menuitem();
     $menuMenuItemDb->menu_id = $menu->id;
     $menuMenuItemDb->menuitem_id = $menuItem->id;
     $menuMenuItemDb->weight = $mmi[2];
     $menuMenuItemDb->created = common_sql_now();
 
-    $menuMenuItemDb->insert();
+    try {
+        $menuMenuItemDb->insert();
+    } catch(Exception $e) {
+
+    }
 }
 
 

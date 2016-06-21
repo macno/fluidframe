@@ -1,10 +1,16 @@
 extends ../layouts/adminlayout.jade
 
 block content
-    #page-wrapper
+
       .row
         .col-lg-12
-          table#translation.display.table.table-striped.table-hover(cellspacing="0" width="100%")
+            .panel.panel-default
+                .panel-heading
+                    strong Traduzioni
+                .panel-body
+                    .dataTable_wrapper
+                        .dataTables_wrapper.form-inline.dt-bootstrap.no-footer
+                            table#translation.display.table.table-striped.table-hover(cellspacing="0" width="100%")
       .row
         .col-lg-12
           #editor

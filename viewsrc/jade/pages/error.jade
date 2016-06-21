@@ -1,6 +1,15 @@
-extends ../layouts/adminlayout.jade
+extends ../layouts/layout.jade
 
 block content
-  .error(style="text-align: center;")
-    block error
-      != this.message
+  include ../includes/site-page-header.jade
+  #top
+
+  #page-content
+    .row
+        .col-lg-12
+            .error-page
+                .h2 ERRORE - ERROR - ERREUR
+
+                .error
+                    != this.message
+    include ../includes/site-footer.jade
