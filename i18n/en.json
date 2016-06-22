@@ -27,9 +27,9 @@
         "key1": {
             "tbt": false,
             "html": true,
-            "in": "markdown\r\n========\r\n\r\n- item 1\r\n- item 2\r\n- item 3\r\n- item 4\r\n- item 5\r\n\r\n**fine**",
-            "out": "<h1>markdown<\/h1>\n<ul>\n<li>item 1<\/li>\n<li>item 2<\/li>\n<li>item 3<\/li>\n<li>item 4<\/li>\n<li>item 5<\/li>\n<\/ul>\n<p><strong>fine<\/strong><\/p>",
-            "code": "markdown"
+            "in": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
+            "out": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
+            "code": "testo"
         },
         "key2": {
             "tbt": true,
@@ -77,10 +77,11 @@
             "out": "testo originale"
         },
         "html": {
-            "tbt": true,
+            "tbt": false,
             "html": false,
-            "in": "HTML",
-            "out": "HTML"
+            "in": "HTMLX",
+            "out": "HTMLX",
+            "code": "testo"
         },
         "tbt": {
             "tbt": true,

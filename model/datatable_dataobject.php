@@ -1,6 +1,8 @@
 <?php
 
 abstract class DataTable_DataObject extends Managed_DataObject {
+    var $colAliases,
+        $foreignTables;
     private function parse_args($args){
         $tableParams = array();
         $tableParams['draw']=$args['draw'];
@@ -26,7 +28,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             }
         }
         if(strlen($qryWhere) > 0){
-            $qryWhere = " where".$qryWhere;
+            $qryWhere = " where (".$qryWhere." )";
         }
         return $qryWhere;
     }
@@ -60,7 +62,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             'lte'=>""
         );
         $columnAlias = $this->getColumnAlias();
-        $schemaDef = $this->schemaDef();
+        $thisSchema = $this->schemaDef();
         $operatorParams = explode(":",$operator);
         $sql = '';
         $tableStruct = static::getAdminTableStruct();
@@ -68,10 +70,18 @@ abstract class DataTable_DataObject extends Managed_DataObject {
             // in caso di una stringa semplica la vado a cercare in tutti i campi testuali che siano searchable
             case 1: $cnt = 0; foreach($tableStruct as $colName=>$col){
                         if(isset($col['searchable']) && ($col['searchable'])){
-                            if(($schemaDef['fields'][$colName]['type'] == 'varchar') ||
-                                ($schemaDef['fields'][$colName]['type'] == 'text')){
+                            if(!isset($col['queryable']) || ($col['queryable']==true)){
+                                // Il campo fa parte della tabella principale
+                                $tableName=$this->__table;
+                                $schemaDef=$thisSchema;
+                            }else{
+                                list($tableName,$insideName) = explode('|',$colName);
+                                $schemaDef = call_user_func(array(ucfirst($tableName),'schemaDef'));
+                            }
+                            if(($schemaDef['fields'][$insideName]['type'] == 'varchar') ||
+                                ($schemaDef['fields'][$insideName]['type'] == 'text')){
                                 $sql .= ($cnt++ == 0) ? ' ' : ' OR ';
-                                $sql .= 'lower('.$colName .') like \'%'. strtolower($operatorParams[0]) .'%\'';
+                                $sql .= 'lower('.$tableName.'.'.$insideName .') like \'%'. strtolower($operatorParams[0]) .'%\'';
                             }
                         }
                     }
@@ -143,7 +153,6 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                     }
                     break;
         }
-        // common_debug("SQL: ".$sql);
         return $sql;
     }
 
@@ -152,40 +161,72 @@ abstract class DataTable_DataObject extends Managed_DataObject {
 
     function getTableData($args){
         $tableParams=$this->parse_args($args);
-        $tableCols = static::getAdminTableStruct();
-
-        $sqlCols = array();
-
-        foreach ($tableCols as $colName=>$tableCol) {
-            if(!isset($tableCol['queryable']) || ($tableCol['queryable']==true)){
-                $sqlCols[] = $colName;
-            }
-        }
 
         $qry = "select count(*) as conta from ".$this->__table;
         $this->query($qry);
         $this->fetch();
         $recordsTotal=$this->conta;
 
-        $qry = "select " . implode(",", $sqlCols) . " from ".$this->__table;
+        $tableCols = static::getAdminTableStruct();
+        $schemaDef = static::schemaDef();
+        $this->foreignTables = array();
+        if(isset($schemaDef['foreign keys'])){
+            foreach($schemaDef['foreign keys'] as $fkey=>$fdata){
+                $this->foreignTables[$fdata[0]]=$fdata[1];
+            }
+        }
+        // common_debug("FT: ".print_r($this->foreignTables,true));
+
+        $sqlCols = array();
+
+        $qryFromArray=array($this->__table => true);
+        $qryWhereJoinArray=array();
+        $this->colAliases=array();
+        foreach ($tableCols as $colName=>$tableCol) {
+            if(!isset($tableCol['queryable']) || ($tableCol['queryable']==true)){
+                $colFullName=$this->__table.'.'.$colName;
+                $colAlias=str_replace('.','_',$colFullName);
+                $sqlCols[] = $colFullName .' as '. $colAlias;
+                $this->colAliases[$colName]=$colAlias;
+            }else{
+                list($tableName) = explode("|",$colName);
+                $colFullName=str_replace('|','.',$colName);
+                $colAlias=str_replace('|','_',$colName);
+                $sqlCols[] = $colFullName .' as '. $colAlias;
+                $this->colAliases[$colName]=$colAlias;
+                $qryFromArray[$tableName]=true;
+                $localCols=array_keys($this->foreignTables[$tableName]);
+                $localCol=$localCols[0];
+                $remoteCol=$this->foreignTables[$tableName][$localCol];
+                $tmpJoin=$this->__table.'.'.$localCol.' = '.$tableName.'.'.$remoteCol;
+                $qryWhereJoinArray[$tmpJoin]=true;
+            }
+        }
+        $qryFrom=implode(', ',array_keys($qryFromArray));
+        $qryWhereJoin=implode(', ',array_keys($qryWhereJoinArray));
+
+        $qry = "select " . implode(",", $sqlCols) . " from ".$qryFrom;
+        
         $qryWhere="";
         if(!empty($tableParams['search'])){
             $qryWhere = $this->searchToSQL($tableParams['search']);
             $qry .= $qryWhere;
             $qryFiltered = "select count(*) as conta from ".$this->__table;
             $qryFiltered .= $qryWhere;
+            $qryFiltered .= $qryWhereJoin;
             $this->query($qryFiltered);
             $this->fetch();
             $recordsFiltered=$this->conta;
         }else{
             $recordsFiltered=$recordsTotal;
         }
+        $qry .= (($qryWhere == '') ? (($qryWhereJoin == '') ? '' : ' where ') : ' AND ') . $qryWhereJoin;
 
         $qry .= " order by";
         $cnt=0;
         foreach($tableParams['order'] as $order){
             $qry .= ($cnt++ == 0) ? ' ' : ', ';
-            $qry .= $tableParams['columns'][(int)$order['column']]['data'] . " " . $order['dir'];
+            $qry .= $this->colAliases[$tableParams['columns'][(int)$order['column']]['data']] . " " . $order['dir'];
         }
         $qry .= " limit ".$tableParams['length'] . " offset ". $tableParams['start'] ;
 
@@ -198,8 +239,8 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         $objs = array();
         while($this->fetch()){
             $row = array();
-            foreach ($sqlCols as $sqlCol) {
-                $row[$sqlCol] = $this->{$sqlCol};
+            foreach ($this->colAliases as $colName=>$colAlias) {
+                $row[$colName] = $this->{$colAlias};
             }
             $objs[]=$row;
         }
@@ -217,7 +258,6 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         );
         foreach($validationRules as $fieldName=>$rules){
             foreach( $rules as $rule=>$extra ){
-                // common_debug($fieldName.": ".$rule." - ".$extra);
                 if($rule == 'required'){
                     if($extra === ""){
                         $result[$fieldName]="Campo obbligatorio";

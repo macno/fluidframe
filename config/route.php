@@ -49,12 +49,6 @@ class Route {
         $router->connect('admin/api/translation/save', array('action'=>'adminsavetranslationapi'));
         $router->connect('admin/translation', array('action'=>'admintranslationlist'));
 
-        // Gestione API
-        $router->connect('api/:version/:apiaction',array('action'=>'apihandler', 'apiaction'=>'[a-zA-Z0-9-\s_]+'));
-        // $router->connect('api/:version/:apiaction/:id',array('action'=>'apihandler', 'apiaction'=>'(product|products)', 'id'=>'[0-9]+'));
-        // $router->connect('api/:version/:apiaction/:slug',array('action'=>'apihandler', 'apiaction'=>'(product)', 'slug'=>'[a-zA-Z0-9-\s_]+'));
-        // $router->connect('api/:version/:apiaction/:subaction',array('action'=>'apihandler', 'apiaction'=>'(products)', 'subaction'=>'(search)'));
-
         // Gestione Tabelle
         $router->connect('admin/api/:model/datatable', array('action'=>'admintableapi','model' => '[a-zA-Z0-9-\s_]+'));
         $router->connect('admin/:model', array('action'=>'admintablelist','model' => '[a-zA-Z0-9-\s_]+'));

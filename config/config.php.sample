@@ -17,7 +17,17 @@ $config['log']['level'] = 100; // NONE= 0; DEBUG = 100; INFO = 200; NOTICE = 250
                                // WARNING = 300; ERROR = 400; CRITICAL = 500;
                                // ALERT = 550; EMERGENCY = 600;
 
-$config ['db'] ['database'] = 'mysqli://VHOST:VHOST@127.0.0.1/VHOST';
+/* $config ['db'] ['database'] = 'mysqli://VHOST:VHOST@127.0.0.1/VHOST'; */
+$config ['db'] ['database'] = array(
+        'phptype' => 'mysqli',
+        'username' => 'VHOST',
+        'password' => 'VHOST',
+        'hostspec' => '127.0.0.1',
+        'database' => 'VHOST',
+        'charset' => 'utf8',
+        'portability' => 94,
+        'debug' => 0
+);
 $config ['db'] ['type'] = 'mysql';
 $config ['db'] ['debug'] = 0;
 $config ['db'] ['schemacheck'] = 'script';

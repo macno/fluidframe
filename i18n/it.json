@@ -29,7 +29,7 @@
             "html": true,
             "in": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
             "out": "<h1>html<\/h1>\r\n<ul>\r\n<li>item 1<\/li>\r\n<li>item 2<\/li>\r\n<li>item 3<\/li>\r\n<li>item 4<\/li>\r\n<\/ul>\r\n<p><strong>fine<\/strong><\/p>",
-            "code": "html"
+            "code": "testo"
         },
         "key2": {
             "tbt": true,
@@ -76,10 +76,11 @@
             "out": "testo originale"
         },
         "html": {
-            "tbt": true,
+            "tbt": false,
             "html": false,
             "in": "HTML",
-            "out": "HTML"
+            "out": "HTML",
+            "code": "testo"
         },
         "tbt": {
             "tbt": true,
