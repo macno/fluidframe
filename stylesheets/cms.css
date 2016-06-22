@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+#tablelist  tbody tr,
+#translation tbody tr {
+  cursor: pointer;
+}
+.form-inline.property {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #999;
+}
+.property .form-group {
+  margin-left: 1em;
+  margin-bottom: 0.75em;
+}

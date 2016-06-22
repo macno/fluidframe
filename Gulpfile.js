@@ -103,7 +103,7 @@ gulp.task('watch',['dev-watch'], function(){
     gulp.watch('viewsrc/jade-sbadmin2/**/*.jade',['compile-jade']);
     if(!argv.nowatch){
         // quando viene modificato un file viene richiamato la funzione notifyLivereaload
-        gulp.watch(['view/*.php','actions/**/*.php','lib/*.php','js/*.js','stylesheets/*.css'],notifyLivereload);
+        gulp.watch(['view/*.php','actions/**/*.php','lib/*.php','javascripts/*.js','stylesheets/*.css'],notifyLivereload);
     }
 });
 

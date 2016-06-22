@@ -6,23 +6,38 @@
                     span(aria-hidden="true") &times;
                 h4.modal-title Traduzione
             .modal-body
-                form
-                    input#lang.editor(type='hidden', name='lang')
-                    input#context.editor(type='hidden', name='context')
-                    input#key.editor(type='hidden', name='key')
+                form.generic
+                    .form-group
+                        label Testo originale
+                        textarea#src.editor.form-control(name='src', disabled, readonly)
                     .form-group#code-group.hidden
                         label Codice
                         select.form-control#code.editor(name='code')
                             option(value='testo') Testo semplice
                             option(value='html') HTML
                             option(value='markdown') Markdown
-                    .form-group
-                        label Testo
-                        textarea#in.editor.form-control.markItUpEditor(name='in')
                     .form-group.hidden
                         label Codice
                         textarea#out.editor.form-control(readonly, name='out')
 
+                each lang in this.langs
+                    form(class="form-#{lang}")
+                        input.lang.editor(type='hidden', name='lang')
+                        input.context.editor(type='hidden', name='context')
+                        input.key.editor(type='hidden', name='key')
+                        .form-group.code-group.hidden
+                            label Codice
+                            select.form-control.code.editor(name='code')
+                                option(value='testo') Testo semplice
+                                option(value='html') HTML
+                                option(value='markdown') Markdown
+                        .form-group
+                            label Testo tradotto #{lang}
+                            textarea.in.editor.form-control.markItUpEditor(name='in')
+                        .form-group.hidden
+                            label Codice
+                            textarea.out.editor.form-control(readonly, name='out')
+                        button.btn.btn-primary.save-translation(type="button", data-lang=lang) Salva
+
             .modal-footer
                 button.btn.btn-default(type="button", data-dismiss="modal") Chiudi
-                button.btn.btn-primary#save-translation(type="button") Salva

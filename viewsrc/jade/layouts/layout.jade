@@ -4,6 +4,9 @@ html(lang= this.lang, xmlns:og="http://ogp.me/ns#")
     include ../includes/head.jade
   body(class=this.renderpage)
     block content
+    
+    
+    include ../includes/footer.jade
     block javascript
       each javascript in this.javascripts
         script(src=javascript)

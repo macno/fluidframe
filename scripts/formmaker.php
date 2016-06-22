@@ -119,7 +119,7 @@ $form .= <<<ENDFORM
 block pageJavascript
     if this.jsfile
         script(src=this.jsfile)
-    script(src="/js/adminaddedit.js")
+    script(src="/javascripts/adminaddedit.js")
 
 ENDFORM;
 
@@ -129,7 +129,7 @@ if((!file_exists($fileJade))||($force)){
 }
 
 // Generazione del template JAVASCRIPT
-$fileJS = INSTALLDIR .'/js/admin'. $cls .'.js';
+$fileJS = INSTALLDIR .'/javascripts/admin'. $cls .'.js';
 if((!file_exists($fileJS))||($force)){
     $js = file_get_contents(INSTALLDIR . '/scripts/template/adminmodel.js');
     file_put_contents($fileJS, $js);

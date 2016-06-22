@@ -5,17 +5,18 @@ html(lang= this.lang)
     link(href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" media=stylesheet['media'] type="text/css")
     link(href="/bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet" media=stylesheet['media'] type="text/css")
     link(href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" media=stylesheet['media'] type="text/css")
-    link(href="/stylesheets/cms.min.css" rel="stylesheet" media=stylesheet['media'] type="text/css")
+    link(href="/stylesheets/cms.css" rel="stylesheet" media=stylesheet['media'] type="text/css")
   body.cms
     #wrapper
       include ../includes/headeradmin.jade
-
+      
+      
       #page-wrapper
           .row
             .col-lg-12
                 a(href='/admin/')
                     h1.page-header Amministrazione
-
+          
           block content
     block javascript
       each javascript in this.javascripts

@@ -28,7 +28,7 @@ class AdminroleeditAction extends AuthAction {
 
     function handle() {
         parent::handle();
-        $jsfile = 'js/adminrole.js';
+        $jsfile = 'javascripts/adminrole.js';
         if(file_exists($jsfile)){
             $this->renderOptions['jsfile']='/'.$jsfile;
         }

@@ -1,8 +1,7 @@
-title= this.title
-
 meta(charset="utf-8")
 meta(http-equiv="X-UA-Compatible", content="IE=edge")
 meta(name="viewport", content="width=device-width, initial-scale=1")
+meta(property="og:image", content=this.metaogimage)
 
 each hreflang in this.hreflangs
   link(rel="alternate" hreflang=hreflang['lang'] href=hreflang['href'])
@@ -15,4 +14,7 @@ link(rel="icon",href="/assets/favicon.png",type="image/png")
 if this.tkenabled
     script(src="#{this.tkurl}")
     script try{ Typekit.load({ async: #{this.tkasync} }); } catch(e){}
+
+title= this.title
+
 block pageHead

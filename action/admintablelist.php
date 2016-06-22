@@ -36,7 +36,7 @@ class AdmintablelistAction extends AuthAction {
 
             // File opzionale con parametri custom da passare alla creazione della datatable
             // es. ordinare di default le notizie per data dalla più recente alla più remota
-            $jsfile = 'js/admintable'. strtolower($this->trimmed('model')) .'.js';
+            $jsfile = 'javascripts/admintable'. strtolower($this->trimmed('model')) .'.js';
             if(file_exists($jsfile)){
                 $this->renderOptions['jsfile']='/'.$jsfile;
             }

@@ -17,7 +17,7 @@ class Admin%model%addAction extends AuthAction {
 
     function handle() {
         parent::handle();
-        $jsfile = 'js/admin%model%.js';
+        $jsfile = 'javascripts/admin%model%.js';
         if(file_exists($jsfile)){
             $this->renderOptions['jsfile']='/'.$jsfile;
         }
