@@ -41,6 +41,7 @@ cachexml/
 bower_components/
 node_modules/
 *.log
+*.log.*
 config/config.php
 files/*
 data/*
@@ -54,4 +55,9 @@ vendor/*
 
 # Configurazione di Gulp
 vagrant.id
+
+#md5 usati da gulp per evitare di rilanciare task time consuming
+package.json.md5
+composer.json.md5
+bower.json.md5
 
