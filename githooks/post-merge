@@ -6,7 +6,7 @@ if [ -n "$path_to_executable" ] ; then
     if [ -z "$path_to_executable" ] ; then
         npm install -g gulp
     fi
-    if [ ! -d "node_modules"i ]
+    if [ ! -d "node_modules" ]
     then
         npm install
     fi
