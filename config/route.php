@@ -17,6 +17,11 @@ class Route {
         $router->connect ( '', array (
                 'action' => 'index'
         ) );
+        $router->connect(':lang/', array(
+                'action' => 'home',
+                'lang'=>'[a-z]{2}'
+            )
+        );
 
 
         // Api
