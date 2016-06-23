@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+.markItUp {
+	width: inherit;
+	padding: 5px;
+}
+.markItUpHeader {
+	min-height: 30px;
+	
+}
+.markItUpEditor {
+	background: none;
+	width: 100%;
+	padding: 5px;
+}

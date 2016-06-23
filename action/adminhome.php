@@ -34,7 +34,6 @@ class AdminhomeAction extends AuthAction {
         return [
             "/javascripts/set.js",
             "/bower_components/markitup/markitup/jquery.markitup.js",
-            "/javascripts/adminannuncio.js"
         ];
     }
 
