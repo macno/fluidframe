@@ -2,7 +2,7 @@
 if (! defined ( 'FLUIDFRAME' )) {
     exit ( 1 );
 }
-class HomeAction extends Sbadmin2Action {
+class HomeAction extends FrontendAction {
     function prepare($args) {
         parent::prepare($args);
         return true;
