@@ -100,7 +100,7 @@ gulp.task('watch',['dev-watch'], function(){
 
     // quando viene modificato un file scss viene richiamato il task 'compile-sass'
     gulp.watch('stylesheets/**/*.scss',['compile-sass']);
-    gulp.watch('viewsrc/jade-sbadmin2/**/*.jade',['compile-jade']);
+    gulp.watch('viewsrc/jade/**/*.jade',['compile-jade']);
     if(!argv.nowatch){
         // quando viene modificato un file viene richiamato la funzione notifyLivereaload
         gulp.watch(['view/*.php','actions/**/*.php','lib/*.php','javascripts/*.js','stylesheets/*.css'],notifyLivereload);
