@@ -2,9 +2,9 @@
 /**
  * Fluidframe - Fluidware Web Framework
  * Copyright (C) 2012, Fluidware
- * 
+ *
  * @author: Michele Azzolari michele@fluidware.it
- * 
+ *
  */
 
 if (!defined('FLUIDFRAME')) {
@@ -79,7 +79,7 @@ class Translation
                         'searchable'=> true,
                         'sortable' => true,
                         'visible' => true
-                ) 
+                )
         );
     }
 
@@ -160,7 +160,7 @@ class Translation
                                             }
                                             break;
                                 case 'src':
-                                case 'out': if(strpos($vals[$col['data']],$col['search']['value'])===false){
+                                case 'out': if(strpos(strtolower($vals[$col['data']]),strtolower($col['search']['value']))===false){
                                                 $found = false;
                                             }
                                             break;
