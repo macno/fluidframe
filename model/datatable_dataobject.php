@@ -74,6 +74,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                                 // Il campo fa parte della tabella principale
                                 $tableName=$this->__table;
                                 $schemaDef=$thisSchema;
+                                $insideName = $colName;
                             }else{
                                 list($tableName,$insideName) = explode('|',$colName);
                                 $schemaDef = call_user_func(array(ucfirst($tableName),'schemaDef'));
@@ -206,7 +207,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         $qryWhereJoin=implode(', ',array_keys($qryWhereJoinArray));
 
         $qry = "select " . implode(",", $sqlCols) . " from ".$qryFrom;
-        
+
         $qryWhere="";
         if(!empty($tableParams['search'])){
             $qryWhere = $this->searchToSQL($tableParams['search']);
@@ -220,7 +221,7 @@ abstract class DataTable_DataObject extends Managed_DataObject {
         }else{
             $recordsFiltered=$recordsTotal;
         }
-        $qry .= (($qryWhere == '') ? (($qryWhereJoin == '') ? '' : ' where ') : ' AND ') . $qryWhereJoin;
+        $qry .= (($qryWhere == '') ? (($qryWhereJoin == '') ? '' : ' where ') : (($qryWhereJoin == '') ? '' :' AND ' . $qryWhereJoin));
 
         $qry .= " order by";
         $cnt=0;
@@ -261,7 +262,65 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                 if($rule == 'required'){
                     if($extra === ""){
                         $result[$fieldName]="Campo obbligatorio";
+                        continue;
                     }
+                }
+                if($rule == 'unique'){
+                    $obj->$fieldName = $extra;
+                    if($obj->find()){
+                        $result[$fieldName]="Esiste un altro elemento con lo stesso valore";
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+    static function doValidateData($fields, $orig = false){
+        $result = array(
+            // 'fieldId'=> 'errorMessage'
+        );
+        $validationRules = array();
+        foreach( static::getAdminTableStruct() as $fieldName=>$keys){
+            if($fieldName != 'id'){
+                foreach( $keys as $key=>$rules){
+                    if($key == "rules"){
+                        foreach( $rules as $rule=>$extra ){
+                            // gestione campi richiesti
+                            if(($rule == 'required')&&($extra)){
+                                $validationRules[$fieldName][$rule] =
+                                    $fields[ $fieldName ];
+                            }
+                            if(($rule == 'unique')&&($extra)){
+                                $validationRules[$fieldName][$rule] =
+                                    $fields[ $fieldName ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        foreach($validationRules as $fieldName=>$rules){
+            foreach( $rules as $rule=>$extra ){
+                if($rule == 'required'){
+                    if($extra === ""){
+                        $result[$fieldName]="Campo obbligatorio";
+                        continue;
+                    }
+                }
+                if($rule == 'unique'){
+                    $obj = new static();
+                    $obj->$fieldName = $extra;
+                    if($obj->find(true)){
+                        if($orig){
+                            $pk = $orig->schemaDef()['primary key'][0];
+                            if($orig->$pk != $obj->$pk){
+                                $result[$fieldName]="Esiste un altro elemento con lo stesso valore";
+                            }
+                        }else{
+                            $result[$fieldName]="Esiste un altro elemento con lo stesso valore";
+                        }
+                    }
+                    $obj->free();
                 }
             }
         }

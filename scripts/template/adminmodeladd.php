@@ -23,23 +23,7 @@ class Admin%model%addAction extends AuthAction {
         }
         if ($this->isPost ()) {
             // devo validare i dati per l'inserimento
-            $validationRules = array();
-            foreach( %MODEL%::getAdminTableStruct() as $fieldName=>$keys){
-                if($fieldName != 'id'){
-                    foreach( $keys as $key=>$rules){
-                        if($key == "rules"){
-                            foreach( $rules as $rule=>$extra ){
-                                // gestione campi richiesti
-                                if(($rule == 'required')&&($extra)){
-                                    $validationRules[$fieldName][$rule] =
-                                        $this->field[ $fieldName ];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            $this->inputError = %MODEL%::validateData($validationRules);
+            $this->inputError = %MODEL%::doValidateData($this->field);
 
             $this->obj = new %MODEL%();
             foreach ($this->field as $fieldName=>$value){

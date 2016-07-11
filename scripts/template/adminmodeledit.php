@@ -37,6 +37,7 @@ class Admin%model%editAction extends AuthAction {
     }
 
     function handlePost(){
+        $orig = clone($this->obj);
         // ho ricevuto i dati per l'aggiornamento/cancellazione
         if($this->trimmed( 'remove' ) == 'on'){
             $this->obj->delete();
@@ -45,21 +46,7 @@ class Admin%model%editAction extends AuthAction {
             )));
         }
         // se non si tratta di una cancellazione allora devo validare
-        $validationRules = array();
-        foreach( %MODEL%::getAdminTableStruct() as $fieldName=>$keys){
-            foreach( $keys as $key=>$rules){
-                if($key == "rules"){
-                    foreach( $rules as $rule=>$extra ){
-                        // gestione campi richiesti
-                        if(($rule == 'required')&&($extra)){
-                            $validationRules[$fieldName][$rule] =
-                                $this->field[ $fieldName ];
-                        }
-                    }
-                }
-            }
-        }
-        $this->inputError = %MODEL%::validateData($validationRules);
+        $this->inputError = %MODEL::doValidateData($this->field, $orig);
 
         foreach ($this->field as $fieldName=>$value){
             $this->obj->$fieldName = $value;
@@ -69,13 +56,13 @@ class Admin%model%editAction extends AuthAction {
             $this->showForm();
         }else{
             $this->obj->modified = common_sql_now();
-            if($this->obj->update()){
+            if($this->obj->update($orig) === FALSE){
+                common_log_db_error($this->obj, 'UPDATE', __FILE__);
+                throw new ServerException( 'Impossibile aggiornare il %MODEL%.' );
+            }else{
                 common_redirect( common_get_route('admintablelist', array(
                     'model' => '%model%'
                 )));
-            }else{
-                common_debug("ERRORE IN UPDATE %MODEL%: ". print_r($this->obj,true));
-                throw new ServerException( 'Impossibile aggiornare il %MODEL%.' );
             }
         }
     }
