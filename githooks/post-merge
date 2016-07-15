@@ -1,16 +1,22 @@
 #!/bin/bash
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export PATH=$HOME/bin:$PATH
+
 path_to_executable=$(which npm)
 if [ -n "$path_to_executable" ] ; then
     path_to_executable=$(which gulp)
     if [ -z "$path_to_executable" ] ; then
         npm install -g gulp
     fi
-    if [ ! -d "node_modules" ]
+    if [ ! -d "node_modules"i ]
     then
         npm install
     fi
     gulp dev
+    gulp design-dev
 else
     echo "NODE.JS non risulta installato. Si prega di provvedere."
 fi
