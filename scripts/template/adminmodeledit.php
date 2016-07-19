@@ -46,7 +46,7 @@ class Admin%model%editAction extends AuthAction {
             )));
         }
         // se non si tratta di una cancellazione allora devo validare
-        $this->inputError = %MODEL::doValidateData($this->field, $orig);
+        $this->inputError = %MODEL%::doValidateData($this->field, $orig);
 
         foreach ($this->field as $fieldName=>$value){
             $this->obj->$fieldName = $value;
