@@ -241,7 +241,9 @@ class MysqlSchema extends Schema
     {
         $query = "SELECT * FROM INFORMATION_SCHEMA.%s " .
                  "WHERE TABLE_SCHEMA='%s' AND TABLE_NAME='%s'";
-        $schema = $this->conn->dsn['database'];
+        
+        $schema = $this->conn->database_name;
+        common_debug("SCHEMA " . $schema);
         $sql = sprintf($query, $infoTable, $schema, $table);
         if ($orderBy) {
             $sql .= ' ORDER BY ' . $orderBy;
@@ -259,7 +261,7 @@ class MysqlSchema extends Schema
     {
         $query = "SELECT * FROM INFORMATION_SCHEMA.%s " .
                 "WHERE CONSTRAINT_SCHEMA='%s' AND CONSTRAINT_NAME='%s'";
-        $schema = $this->conn->dsn['database'];
+        $schema = $this->conn->database_name;
         $sql = sprintf($query, $infoTable, $schema, $constraint);
         if ($orderBy) {
             $sql .= ' ORDER BY ' . $orderBy;
@@ -292,8 +294,9 @@ class MysqlSchema extends Schema
         
         if(count($fks)>0) {
             $ret = array();
+            
             foreach ($fks as $id => $fkz) {
-                
+                                
                 $fk = $fkz[0];
                 
                 
