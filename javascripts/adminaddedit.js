@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    if(typeof(customHandlers) === 'function'){
+        customHandlers();
+    }
     $(document).on('click','#cancel',function(event){
         event.preventDefault();
         window.location = window.location.origin
@@ -9,7 +12,7 @@ $(document).ready(function(){
         $('.has-error').removeClass('has-error');
         $('.has-error .text-danger').addClass('hidden').text('');
         if($('#remove').prop('checked')){
-            if(confirm('Sei sicuro di voler cancellare questo ruolo?')){
+            if(confirm('Sei sicuro di voler cancellare questo elemento?')){
                 console.log("Allora cancello");
                 $('form').submit();
             }else{
@@ -28,9 +31,15 @@ $(document).ready(function(){
                         .removeClass('hidden');
                 });
             }else{
+                if(typeof(preSubmit) === 'function'){
+                    preSubmit();
+                }
                 $('form').submit();
             }
         }else{
+            if(typeof(preSubmit) === 'function'){
+                preSubmit();
+            }
             $('form').submit();
         }
     });
