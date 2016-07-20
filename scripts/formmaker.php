@@ -84,7 +84,7 @@ $form = <<<FORM
 extends ../layouts/adminlayout.jade
 
 block content
-        form(method="POST", action=this.form_action)
+        form(method="POST", action=this.form_action, autocomplete="off")
             input#id(type="hidden", value="#{this.{$cls}_id}")
 
 FORM;
