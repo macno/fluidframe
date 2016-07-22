@@ -92,7 +92,7 @@ function common_get_route($action, $args=null, $params=null, $fragment=null, $ad
 
     return $url;
 }
-function common_redirect($url, $code = 307) {
+function common_redirect($url, $code = 303) {
     static $status = array (
             301 => "Moved Permanently",
             302 => "Found",
