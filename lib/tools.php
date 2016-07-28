@@ -67,6 +67,9 @@ function add() {
     $args = func_get_args ();
     $concat = false;
     foreach ( $args as $arg ) {
+        if(is_array ($arg)) {
+          continue;
+        }
         if ($concat || is_string ( $arg )) {
             $concat = true;
             $result .= $arg;
@@ -116,7 +119,10 @@ function common_language() {
         if (! empty ( $httplang )) {
             $language = client_prefered_language ( $httplang );
             if ($language) {
-                return $language;
+                $langs = common_config ( 'site', 'langs' );
+                if (! isset ( $langs [$language] )) {
+                    return $language;
+                }
             }
         }
     }
