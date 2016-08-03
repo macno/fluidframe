@@ -40,7 +40,7 @@ function _scandir($dir) {
 
 function _parseFile($file) {
     $source = file_get_contents($file);
-    
+
     $func = '_i18n';
     $p = 0;
     while( ($p = strpos($source, $func,$p)) !== false) {
@@ -97,7 +97,7 @@ function _parseFile($file) {
                             $args[] = $arg;
                         }
                     } else if( ($c == ',' || $c == ' ') && !$issingle && !$isdouble) {
-                        
+
                         $skip = true;
                         $inarg = false;
                         if(trim($arg) != '')
@@ -110,7 +110,7 @@ function _parseFile($file) {
             }
             $p++;
         }
-        
+
     }
 }
 
@@ -121,7 +121,7 @@ function checkString($arg) {
     if(!isset($sources[$arg[0]]))
         $sources[$arg[0]]=array();
     $sources[$arg[0]][$arg[1]]=$arg[2];
-    foreach (common_config('site', 'langs') as $lang=>$desc) { 
+    foreach (common_config('site', 'langs') as $lang=>$desc) {
         if(isset($i18ns[$lang][$arg[0]]) && isset($i18ns[$lang][$arg[0]][$arg[1]])) {
             // is to be translated?
             if(isset($i18ns[$lang][$arg[0]][$arg[1]]['tbt']) && $i18ns[$lang][$arg[0]][$arg[1]]['tbt']) {
@@ -131,13 +131,13 @@ function checkString($arg) {
                 $i18ns[$lang][$arg[0]][$arg[1]]['html']=(isset($arg[3]) ? $arg[3] : false);
             }
         } else {
-            
+
             if(!isset($i18ns[$lang][$arg[0]])) {
                 $i18ns[$lang][$arg[0]] = array();
             }
             $i18ns[$lang][$arg[0]][$arg[1]] = array(
                     'tbt'=>true, // ToBeTranslated
-                    'html'=>(isset($arg[3]) ? filter_var($arg[3], FILTER_VALIDATE_BOOLEAN) : false),
+                    'html'=>(isset($arg[3]) ? (bool)filter_var($arg[3], FILTER_VALIDATE_BOOLEAN) : false),
                     'in'=>$arg[2],
                     'out'=>$arg[2]
             );
