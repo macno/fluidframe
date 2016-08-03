@@ -71,11 +71,11 @@ function changeCode(code){
             $('#in').val(data['out']);
         });
     }
-    $("#in").markItUpRemove();
+    $("textarea.in").markItUpRemove();
     switch(code){
-        case 'testo': $("#in").addClass('markItUpEditor'); break;
-        case 'html': $("#in").markItUp(myHtmlSettings); break;
-        case 'markdown': $("#in").markItUp(myMarkdownSettings); break;
+        case 'testo': $("textarea.in").addClass('markItUpEditor'); break;
+        case 'html': $("textarea.in").markItUp(myHtmlSettings); break;
+        case 'markdown': $("textarea.in").markItUp(myMarkdownSettings); break;
     }
 }
 function changeSearch(){
@@ -132,8 +132,8 @@ function openEditor(index){
             $('#code-group').addClass('hidden');
         }
 
-        $("#in").markItUpRemove();
-        $('#in').addClass('markItUpEditor');
+        $("textarea.in").markItUpRemove();
+        $('textarea.in').addClass('markItUpEditor');
         $('#modal-editor').data('index',index);
         $('#modal-editor').modal();
         $.each(data['langs'], function(lang){
