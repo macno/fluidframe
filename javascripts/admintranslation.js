@@ -67,8 +67,12 @@ function changeCode(code){
     if(actual != prev) {
         $('#code').data('prev',actual);
         conversion = prev+"2"+actual;
-        $.post('/admin/api/conversion',{ conversion: conversion, in: $('#in').val() }, function(data){
-            $('#in').val(data['out']);
+        $("form[class|='form']").each(function(){
+            var that=this;
+            $.post('/admin/api/conversion',{ conversion: conversion, in: $(this).find('.in').val() }, function(data){
+                $(that).find('.in').val(data['out']);
+                $(that).find('.code').val(code);
+            });
         });
     }
     $("textarea.in").markItUpRemove();
