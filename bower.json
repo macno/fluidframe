@@ -15,10 +15,12 @@
     "tests"
   ],
   "dependencies": {
-    "markitup": "Edo78/markitup#~1.1.18",
-    "bootstrap": "~3.3.7"
-  },
-  "resolutions": {
-    "datatables-plugins": "~1.0.1"
+      "markitup": "Edo78/markitup#~1.1.18",
+      "bootstrap": "~3.3.7",
+      "metisMenu": "^2.5.2",
+      "datatables-plugins": "^1.10.12",
+      "font-awesome": "^4.7.0",
+      "datatables": "^1.10.12",
+      "datatables-responsive": "^2.1.0"
   }
 }
