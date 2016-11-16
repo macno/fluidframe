@@ -15,8 +15,8 @@
     "tests"
   ],
   "dependencies": {
-    "startbootstrap-sb-admin-2": "~1.0.7",
-    "markitup": "Edo78/markitup#~1.1.18"
+    "markitup": "Edo78/markitup#~1.1.18",
+    "bootstrap": "~3.3.7"
   },
   "resolutions": {
     "datatables-plugins": "~1.0.1"
