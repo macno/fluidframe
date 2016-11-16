@@ -25,7 +25,7 @@ cachexml/
 # PDT-specific
 .buildpath
 
-# sbteclipse plugin 
+# sbteclipse plugin
 .target
 
 # TeXlipse plugin
@@ -61,3 +61,5 @@ package.json.md5
 composer.json.md5
 bower.json.md5
 
+# css compilati
+stylesheets/*.min.*
