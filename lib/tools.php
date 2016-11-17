@@ -333,7 +333,7 @@ function common_remembered_user() {
         return null;
     }
 
-    $rm = Remember_me::staticGet ( $code );
+    $rm = Remember_me::staticGet ( 'code', $code );
 
     if (! $rm) {
         common_log ( LOG_WARNING, 'No such remember code: ' . $code );
