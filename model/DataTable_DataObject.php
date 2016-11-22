@@ -272,7 +272,6 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                     }
                 }
                 if($rule == 'email'){
-                    common_debug("email");
                     if(filter_var($extra, FILTER_VALIDATE_EMAIL) === false){
                         $result[$fieldName]="Inserire un indirizzo valido";
                         continue;
