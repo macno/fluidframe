@@ -271,6 +271,13 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                         $result[$fieldName]="Esiste un altro elemento con lo stesso valore";
                     }
                 }
+                if($rule == 'email'){
+                    common_debug("email");
+                    if(filter_var($extra, FILTER_VALIDATE_EMAIL) === false){
+                        $result[$fieldName]="Inserire un indirizzo valido";
+                        continue;
+                    }
+                }
             }
         }
         return $result;
@@ -291,6 +298,10 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                                     $fields[ $fieldName ];
                             }
                             if(($rule == 'unique')&&($extra)){
+                                $validationRules[$fieldName][$rule] =
+                                    $fields[ $fieldName ];
+                            }
+                            if(($rule == 'email')&&($extra)){
                                 $validationRules[$fieldName][$rule] =
                                     $fields[ $fieldName ];
                             }
@@ -321,6 +332,12 @@ abstract class DataTable_DataObject extends Managed_DataObject {
                         }
                     }
                     $obj->free();
+                }
+                if($rule == 'email'){
+                    if(filter_var($extra, FILTER_VALIDATE_EMAIL) === false){
+                        $result[$fieldName]="Non è un'indirizzo valido";
+                        continue;
+                    }
                 }
             }
         }
