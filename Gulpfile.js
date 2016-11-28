@@ -21,7 +21,6 @@ gulp.task('dev-watch',function(){
     gulp.watch('composer.json',['dev-composer']);
     gulp.watch('bower.json',['dev-bower']);
     gulp.watch(['model/*.php'],['dev-schema']);
-    gulp.watch('viewsrc/jade/**/*.jade',['compile-jade']);
     gulp.watch('scripts/initMenu.php',['dev-menu']);
 });
 
@@ -109,4 +108,4 @@ gulp.task('watch',['dev-watch'], function(){
 
 // Default Task
 // Per sicurezza all'avvio lancio il task 'compile-sass' e inizio a monitorare i cambiamenti
-gulp.task('default',['dev','design-dev','watch']); 
+gulp.task('default',['dev','design-dev','watch']);
